@@ -68,7 +68,8 @@ density_HO_T1
 
 ```
   
-As can be seen, before the COVID-19 Crisis hit, work from home was rather sparse. Only `r nrow(na.omit(data_HO[data_HO$T1_home_office>0,2]))` of the `r length(na.omit(data_HO$T1_home_office))` participants, who answered this question, had indicated that they worked from home at all (equalling `r round((nrow(na.omit(data_HO[data_HO$T1_home_office>0,2]))/length(na.omit(data_HO$T1_home_office)))*100,digits = 2)`%)   
+As can be seen, before the COVID-19 Crisis hit, work from home was rather sparse. Only `r nrow(na.omit(data_HO[data_HO$T1_home_office>0,2]))` of the `r length(na.omit(data_HO$T1_home_office))` participants, who answered this question, had indicated that they worked from home at all (equalling `r round((nrow(na.omit(data_HO[data_HO$T1_home_office>0,2]))/length(na.omit(data_HO$T1_home_office)))*100,digits = 2)`%)  
+
 ## Development over Time  
 Since December, the first time we asked our participants about their work in the Home Office again was in April of 2020, and then, with the exception of June, monthly. Specifically, we wanted to know:  
 _"In the past 4 weeks (Since the beginning of ...: What percentage of Your average work week did you spend in the Home Office?"_

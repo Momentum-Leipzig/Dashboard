@@ -434,9 +434,10 @@ density_HO_T1</code></pre>
 Percentage of time worked from home in December 2019
 </p>
 </div>
-<p>As can be seen, before the COVID-19 Crisis hit, work from home was rather sparse. Only of the 1639 participants, who answered this question, had indicated that they worked from home at all (equalling %)<br />
-## Development over Time<br />
-Since December, the first time we asked our participants about their work in the Home Office again was in April of 2020, and then, with the exception of June, monthly. Specifically, we wanted to know:<br />
+<p>As can be seen, before the COVID-19 Crisis hit, work from home was rather sparse. Only of the 1639 participants, who answered this question, had indicated that they worked from home at all (equalling %)</p>
+<div id="development-over-time" class="section level2">
+<h2>Development over Time</h2>
+<p>Since December, the first time we asked our participants about their work in the Home Office again was in April of 2020, and then, with the exception of June, monthly. Specifically, we wanted to know:<br />
 <em>“In the past 4 weeks (Since the beginning of …: What percentage of Your average work week did you spend in the Home Office?”</em></p>
 <pre class="r"><code>#HO6
 HO_Perc = data_HO[,grep(names(data_HO), pattern = &quot;_HO6&quot;, value = T)]
@@ -515,6 +516,7 @@ animate(HO_Perc_ani, renderer = gifski_renderer())</code></pre>
 
 HO_Perc_dens</code></pre>
 <p><img src="HomeOffice_files/figure-html/Percentage%20over%20Time-3.png" width="90%" /></p>
+</div>
 </div>
 <div id="possibility-to-work-from-home" class="section level1">
 <h1>Possibility to work from home</h1>
