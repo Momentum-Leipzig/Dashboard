@@ -15,7 +15,11 @@ knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
 library(ggplot2)
 library(dplyr)
 library(plotly)
-source("data/variables.R")
+library(tidyr)
+library(hrbrthemes)
+library(gganimate)
+options(scipen = 999)
+data_HO = read.csv("data/data_Homeoffice.csv")
 ```
 
 # Introduction
@@ -27,23 +31,22 @@ In December of 2019, when the coronavirus was just one of many news stories from
 The following graphs show the average proportion of time spent in Home Office and how the percentages were distributed back then.
 
 
-```{r Percent-HO, include=TRUE, fig.show='hold', out.width = c('50%','50%')}
+```{r Percent-HO, include=TRUE, fig.show='hold', out.width = c('50%','50%'), fig.cap= "Percentage of time worked from home in December 2019"}
 home_office_T1 = data.frame(
   label = c("In Home Office", "Out of Home Office"),
-  Percent = round(c(mean(data_HO$T1_home_office, na.rm = T),100-mean(data_HO$T1_home_office, na.rm = T)), digits = 2)
+  percent = round(c(mean(data_HO$T1_home_office, na.rm = T),100-mean(data_HO$T1_home_office, na.rm = T)), digits = 2)
 )
 home_office_T1 <- home_office_T1 %>% 
   arrange(desc(label)) %>%
-  mutate(prop = Percent / sum(home_office_T1$Percent) *100) %>%
-  mutate(ypos = cumsum(prop)- 0.5*prop )
+  mutate(ypos = cumsum(percent)- 0.5*percent)
 
-home_office_T1$ypos = c(44.2,92.5)
+home_office_T1$ypos = c(44.2,92.5) #Nicer positioning of the labels inside the Pie-Chart
 
-mean_HO_T1 = ggplot(home_office_T1, aes(x="", y=Percent, fill = label))+
+mean_HO_T1 = ggplot(home_office_T1, aes(x="", y=percent, fill = label))+
   geom_bar(width = 1, stat = "identity", color = "white", alpha = .9) +
   scale_fill_manual(values = c("darkslategray1","dodgerblue1"))+
   coord_polar("y", direction = -1)+
-  geom_text(aes(y = ypos, label = paste0(Percent, '%')), color = "grey32", size=6) +
+  geom_text(aes(y = ypos, label = paste0(percent, '%')), color = "grey32", size=6) +
   guides(fill=guide_legend(title="Average proportion of worktime spent...", title.position = "top"))+
   theme_void()+
   theme(legend.position="bottom", legend.text = element_text(size = 14), legend.title = element_text(size = 14.5) )
@@ -54,7 +57,7 @@ mean_HO_T1
 density_HO_T1 = ggplot(data_HO, aes(T1_home_office))+
   theme_classic()+
   geom_histogram(binwidth=10,col="dodgerblue2", fill = "dodgerblue", alpha = .4)+
-  geom_vline(aes(xintercept=mean(T1_home_office, na.rm=T)), linetype="dashed", size= 0.5)+
+  geom_vline(aes(xintercept=mean(T1_home_office, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
   labs(x="Percentage of worktime spent in Home Office", y = "Amount of participants")+
   scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), '%')) +
   scale_y_continuous(breaks=seq(0, 1500, 250))+
@@ -64,6 +67,209 @@ density_HO_T1
 
 
 ```
+  
+As can be seen, before the COVID-19 Crisis hit, work from home was rather sparse. Only `r nrow(na.omit(data_HO[data_HO$T1_home_office>0,2]))` of the `r length(na.omit(data_HO$T1_home_office))` participants, who answered this question, had indicated that they worked from home at all (equalling `r round((nrow(na.omit(data_HO[data_HO$T1_home_office>0,2]))/length(na.omit(data_HO$T1_home_office)))*100,digits = 2)`%)   
+## Development over Time  
+Since December, the first time we asked our participants about their work in the Home Office again was in April of 2020, and then, with the exception of June, monthly. Specifically, we wanted to know:  
+_"In the past 4 weeks (Since the beginning of ...: What percentage of Your average work week did you spend in the Home Office?"_
+```{r Percentage over Time, include = TRUE, out.width='90%'}
+#HO6
+HO_Perc = data_HO[,grep(names(data_HO), pattern = "_HO6", value = T)]
+HO_Perc_rel = data.frame(
+  month = as.factor(c("April","May","June","July", "August", "September")),
+  mean_perc = c(
+    mean(HO_Perc$T3_HO6, na.rm = T),
+    mean(HO_Perc$T4_HO6, na.rm = T),
+    NA,
+    mean(HO_Perc$T6_HO6, na.rm = T),
+    mean(HO_Perc$T7_HO6, na.rm = T),
+    mean(HO_Perc$T8_HO6, na.rm = T)
+  ),
+  sd_perc = c(
+    sd(HO_Perc$T3_HO6, na.rm = T),
+    sd(HO_Perc$T4_HO6, na.rm = T),
+    NA,
+    sd(HO_Perc$T6_HO6, na.rm = T),
+    sd(HO_Perc$T7_HO6, na.rm = T),
+    sd(HO_Perc$T8_HO6, na.rm = T)
+  )
+) # Data-Frame with the means and standard deviations of the percentages of time Worked in Home Office, Long Format (Because of the many NAs, ggplots stat = "mean" could have shown errrors)
 
-As can be seen, before the COVID-19 Crisis hit, work from home was rather sparse. Only `r nrow(na.omit(data_HO[data_HO$T1_home_office>0,2]))` of the `r length(na.omit(data_HO$T1_home_office))` participants, who answered this question, had indicated that they worked from home at all (equalling `r round((nrow(na.omit(data_HO[data_HO$T1_home_office>0,2]))/length(na.omit(data_HO$T1_home_office)))*100,digits = 2)`%)  
+HO_Perc_rel$missing = c(NA, HO_Perc_rel[2,2],mean(c(HO_Perc_rel[2,2],HO_Perc_rel[4,2])),HO_Perc_rel[4,2],NA,NA) #Extrapolating the missing value in June to make a seperate connecting line in the graph
+HO_Perc_rel$mis_sd = c(NA, HO_Perc_rel[2,3],mean(c(HO_Perc_rel[2,3],HO_Perc_rel[4,3])),HO_Perc_rel[4,3],NA,NA)
+HO_Perc_rel$sd_bottom = HO_Perc_rel$mean_perc-HO_Perc_rel$sd_perc/2 #for the ribbon
+HO_Perc_rel$sd_upper = HO_Perc_rel$mean_perc+HO_Perc_rel$sd_perc/2
+HO_Perc_rel$mis_sd_bottom = HO_Perc_rel$missing-HO_Perc_rel$mis_sd/2
+HO_Perc_rel$mis_sd_upper = HO_Perc_rel$missing+HO_Perc_rel$mis_sd/2
+
+HO_Perc_plot = ggplot(HO_Perc_rel, aes(x=month, y = mean_perc)) + 
+  geom_line(aes(group=1, color = "darkslategray3"), col= "darkslategray3", size = 1.5)+
+  geom_line(aes(x=month, y=missing, group =1,color = "darkslategray3"), col= "darkslategray3", size = 1.5, linetype = "dashed" )+
+  geom_point(col= "darkslategray3", size = 3)+
+  geom_ribbon(aes(y=mean_perc, ymin = sd_bottom, ymax = sd_upper, group = 1),fill="darkslategray3", alpha=0.4) +
+  geom_ribbon(aes(y=missing, ymin = mis_sd_bottom, ymax = mis_sd_upper, group = 1),fill="darkslategray3", alpha=0.2) +
+  coord_cartesian(ylim = c(0,60))+
+  theme_minimal()+
+  scale_x_discrete(limits = c("April","May","June","July", "August", "September"), name ="" )+
+  scale_y_continuous(breaks = seq(0,60,10), labels = paste0(seq(0,60,10), "%"), name = "Percentage of a week worked from home")+
+  labs(caption = "Note: Data was missing for June. Ribbon represents 1SD around the mean.")
+
+HO_Perc_plot
+
+HO_Perc_long = gather(HO_Perc, month, percentage)
+HO_Perc_long$month = factor(HO_Perc_long$month, levels = names(HO_Perc), labels = c("April","May","July", "August", "September"))
+
+## Here are some attempts to show the distribution of the percentages over time, to show that the middle part of the distribution remained sparse and only the right border grew, accounting for the overall increase in Home Office time. But I am far from satisfied with the result. --> Relevant?
+
+HO_Perc_ani = ggplot(HO_Perc_long, aes(percentage)) +
+  theme_classic()+
+  geom_histogram(binwidth=10,col="dodgerblue2", fill = "dodgerblue", alpha = .4)+
+  labs(x="Percentage of worktime spent in Home Office", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), '%')) +
+  scale_y_continuous(breaks=seq(0, 1500, 250))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+
+  transition_states(month,
+                    transition_length = 2,
+                    state_length = 1) +
+
+  ggtitle('{closest_state}') +
+
+  ease_aes('cubic-in-out')
+
+animate(HO_Perc_ani, renderer = gifski_renderer())
+
+HO_Perc_dens = ggplot(HO_Perc_long, aes(percentage, y=..density.., fill = month, color = month)) +
+  theme_classic()+
+  geom_density(alpha = .1)+
+  labs(x="Percentage of worktime spent in Home Office", y = "Density")+
+  scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), '%')) +
+  scale_fill_brewer(palette="Blues", direction = -1) +
+  scale_color_brewer(palette="Blues", direction = -1) +
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14))
+
+HO_Perc_dens
+
+
+```
+
+
+
+```{r shinyPerc, eval=FALSE, cache=FALSE, include=FALSE}
+
+selectInput(
+  "month", label = "Month",
+  choices = c("April"=1,"May"=2,"July"=3, "August"=4, "September"=5), selected = "April"
+)
+sliderInput(
+  "month2", label = "Timepoint", min = 1, max = 5, value = 1, step = 1
+)
+
+colnames(HO_Perc) = c(1:5)
+
+reactive_data = reactive({input$month
+})
+
+renderPlot({
+  ggplot(HO_Perc, aes(x=HO_Perc[,reactive_data()]))+
+  theme_classic()+
+  geom_histogram(binwidth=10,col="dodgerblue2", fill = "dodgerblue", alpha = .4)+
+  labs(x="Percentage of worktime spent in Home Office", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), '%')) +
+  scale_y_continuous(breaks=seq(0, 900, 150))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14))
+  #HO_Perc_shiny()
+  
+  
+})
+
+```
+
+  
+# Possibility to work from home
+In March 2020 the Coronavirus hit Germany. Many businesses had to shut down, public life was reduced to a bear minimum. In April, we asked our participants two questions:  
+_"Before the COVID-19 Pandemic (Corona-Crisis): In general, did You have the possibility to work in home office?"_  
+_"During the past 4 weeks (Since the beginning of March): In general, did You have the possibility to work in home office?"_
+
+
+```{r Possibility to work from home, include=T, fig.show='hold', out.width = c('50%','50%'), fig.cap="Allowed to work from home"}
+# 1 = Not possible, 2 = Possible
+HO_Pos_T3 = round(data.frame(
+                    pre = c(length(which(data_HO$T3_HO1 == 2)),length(which(data_HO$T3_HO1 == 1 ))) /length(which((data_HO$T3_HO1 != "NA"))),
+                    post = c(length(which(data_HO$T3_HO4 == 2)),length(which(data_HO$T3_HO4 == 1 ))) /length(which((data_HO$T3_HO4 != "NA")))
+                       )*100,digits = 2)
+
+HO_Pos_T3 <- HO_Pos_T3 %>%
+  mutate(ypos_pre = cumsum(pre)- 0.5*pre) %>% #Positions for the labels inside the Pie-Chart
+  mutate(ypos_post = cumsum(post)- 0.5*post)
+HO_Pos_T3$labels = c("Yes","No")
+
+  
+
+HO_Pos_pre = ggplot(HO_Pos_T3, aes(x="", y= pre, fill = labels)) +
+  geom_bar(width = 1, stat = "identity", color = "white", alpha = .9) +
+  scale_fill_discrete(breaks=c("Yes","No")) +
+  scale_fill_manual(values = c("dodgerblue1","darkslategray1"))+
+  coord_polar("y")+
+  geom_text(aes(y = ypos_pre, label = paste0(pre, '%')), color = "grey32", size=6) +
+  guides(fill=guide_legend(title="Before the Pandemic", title.position = "top"))+
+  theme_void()+
+  theme(legend.position="bottom", legend.text = element_text(size = 14), legend.title = element_text(size = 14.5) )
+  
+
+HO_Pos_pre
+
+HO_Pos_post = ggplot(HO_Pos_T3, aes(x="", y= post, fill = labels)) +
+  geom_bar(width = 1, stat = "identity", color = "white", alpha = .9) +
+  scale_fill_manual(values = c("dodgerblue1","darkslategray1"))+
+  coord_polar("y")+
+  geom_text(aes(y = ypos_post, label = paste0(post, '%')), color = "grey32", size=6) +
+  guides(fill=guide_legend(title="Since March", title.position = "top"))+
+  theme_void()+
+  theme(legend.position="bottom", legend.text = element_text(size = 14), legend.title = element_text(size = 14.5))
+
+HO_Pos_post
+
+```
+  
+  
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. 
+  
+  
+Since June (?) life in Germany started gradually coming back to a new normality. Businesses were allowed to reopen, albeit under strict regulations and with individual concepts for how to uphold these regulations (so called "hygene concepts"). Regarding the previous graphs it grows obvious, that before the pandemic, only few people could work from home, but when it became inevitable, the possibility was suddenly there in many cases.  
+It would be interesting to see, how this general permission fares over time:
+
+```{r Permission over Time, include = TRUE, out.width = '90%', out.height= '70%'}
+HO_Perm = data_HO[,c("ID",grep("_HO4",names(data_HO), value = T))]
+HO_Perm_rel = data.frame(
+  perm = round(c((length(which(HO_Perm$T3_HO4 == 2))/length(which((HO_Perm$T3_HO4 != "NA")))),
+           (length(which(HO_Perm$T4_HO4 == 2))/length(which((HO_Perm$T4_HO4 != "NA")))),
+           NA,
+           (length(which(HO_Perm$T6_HO4 == 2))/length(which((HO_Perm$T6_HO4 != "NA")))),
+           (length(which(HO_Perm$T7_HO4 == 2))/length(which((HO_Perm$T7_HO4 != "NA")))),
+           (length(which(HO_Perm$T8_HO4 == 2))/length(which((HO_Perm$T8_HO4 != "NA"))))
+    
+            )*100, digits = 2),
+  
+  month = as.factor(c("April","May","June","July", "August", "September"))
+)
+HO_Perm_rel$missing = c(NA,HO_Perm_rel[2,1],mean(c(HO_Perm_rel[2,1],HO_Perm_rel[4,1])),HO_Perm_rel[4,1],NA,NA)
+
+
+
+HO_Perm_plot = ggplot(HO_Perm_rel, aes(x=month, y = perm)) + 
+  geom_line(aes(group=1, color = "darkslategray3"), col= "darkslategray3", size = 1.5)+
+  geom_line(aes(x=month, y=missing, group =1,color = "darkslategray3"), col= "darkslategray3", size = 1.5, linetype = "dashed" )+
+  geom_point(col= "darkslategray3", size = 3)+
+  geom_area(aes(group=1), fill="darkslategray3", alpha=0.4) +
+  coord_cartesian(ylim = c(20,60))+
+  theme_minimal()+
+  scale_x_discrete(limits = c("April","May","June","July", "August", "September"), name ="" )+
+  scale_y_continuous(breaks = seq(20,60,10), labels = paste0(seq(20,60,10), "%"), name = "Allowed to work from home")+
+  labs(caption = "Note: Data was missing for June.")
+
+HO_Perm_plot
+```
 
