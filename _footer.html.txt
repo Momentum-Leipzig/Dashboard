@@ -1,0 +1,12 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Copyright &copy; 2020 Universität Leipzig. All rights reserved. </p>
+
+</body>
+</html>
+
+
+
