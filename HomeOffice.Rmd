@@ -354,7 +354,7 @@ HO_loc_plot = ggplot(HO_loc_prop_long, aes(x=percentage, y = month)) +
 HO_loc_plot
 ```
   
-Even though there was no noteworthy change over time, the aspect of locality at home should not be dismissed to early. While further analyses would go beyond the scope of this brief discussion, one could still wonder about possible associated effects. Is there a relationship between place of work and satisfaction? If yes, which one would be the most appropriate? Is a designated spot enough, or does having an own room add incremental gain in satisfaction?
+Even though there was no noteworthy change over time, the aspect of locality at home should not be dismissed too early. While further analyses would go beyond the scope of this brief discussion, one could still wonder about possible associated effects. Is there a relationship between place of work and satisfaction? If yes, which one would be the most appropriate? Is a designated spot enough, or does having an own room add incremental gain in satisfaction?
   
 ***  
   
