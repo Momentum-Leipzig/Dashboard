@@ -355,13 +355,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="analysis.html">Analysis</a>
-</li>
-<li>
   <a href="HomeOffice.html">Home Office</a>
-</li>
-<li>
-  <a href="links.html">Links</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -397,15 +391,15 @@ div.tocify {
 <!-- </style> -->
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>With the increasing digitalization of work, the idea of working from home gained more and more traction. For some, it’s a convenience in the face of unnecessary commuting to work (e.g. when you’re a programmer, who doesn’t need to come into work every day while working on a software), for others it can be a crucial part in balancing out work and family demands. It surely has its advantages and disadvantages, both for the worker and for the company, but having it as a possibility increases flexibility and adaptability.<br />
-With the global COVID-19 pandemic, working from home drastically shifted from mere convenience to a necessity in many cases, as social distancing guidelines were imposed and businesses had to shut down. This put additional interest into the topic of Home Office - how it’s being implemented, what effect it has on the workers and how it can be improved on.<br />
-Beginning in our third wave of inquiry in April, we started to ask our participants various questions about their experience regarding Home Office. With the exception of June, where a part of the questions needed to be reduced in order to gather data on work and ageing, we then continued presenting our participants the same items monthly. Below, You can see some descriptive statistics about various topics connected to working from home. Please note that these results present only an overview of our data, and causal interpretations can exclusively be made after rigorous analysis, published elsewhere. Feel free, however, to get inspirations for future research!</p>
+<p>With the increasing digitalization of work, the idea of <strong>working from home</strong> gained more and more traction. For some, it’s a convenience in the face of unnecessary commuting to work (e.g. when you’re a programmer, who doesn’t need to come into work every day while working on a software), for others it can be a crucial part in balancing out work and family demands. It surely has its advantages and disadvantages, both for the worker and for the company, but having it as a possibility increases flexibility and adaptability.</p>
+<p>With the global COVID-19 pandemic, <strong>working from home</strong> drastically shifted from mere convenience to a <strong>necessity</strong> in many cases, as social distancing guidelines were imposed and businesses had to shut down. This put additional interest into the topic of Home Office - how it’s being implemented, what effect it has on the workers and how it can be improved on.</p>
+<p>Beginning in our third wave of inquiry in <strong>April</strong>, we started to ask our participants various questions about their <strong>experience regarding Home Office</strong>. With the exception of June, where a part of the questions needed to be reduced in order to gather data on work and ageing, we then continued presenting our participants the same items monthly. Below, You can see some <strong>descriptive statistics</strong> about various topics connected to working from home. Please note that these results present only an <strong>overview of our data</strong>, and causal interpretations can exclusively be made after rigorous analysis, published elsewhere. Feel free, however, to get inspirations for future research!</p>
 <hr />
 </div>
-<div id="average-time-spent-in-home-office" class="section level1">
-<h1><span class="header-section-number">2</span> Average time spent in Home Office</h1>
-<p>In December of 2019, when the coronavirus was just one of many news stories from abroad, we coincidentally asked the participants of our study: <em>“What percentage of Your worktime do You work from home (Home Office)?”</em><br />
-The following graphs show the average proportion of time spent in Home Office and how the percentages were distributed back then.</p>
+<div id="average-time-spent-in-home-office" class="section level1 tabset tabset-fade">
+<h1><span class="header-section-number">2</span> Average Time Spent in Home Office</h1>
+<div id="plot" class="section level2 unnumbered">
+<h2>Plot</h2>
 <pre class="r"><code>home_office_T1 = data.frame(
   label = c(&quot;In Home Office&quot;, &quot;Out of Home Office&quot;),
   percent = round(c(mean(data_HO$T1_home_office, na.rm = T),100-mean(data_HO$T1_home_office, na.rm = T)), digits = 2)
@@ -444,11 +438,33 @@ density_HO_T1</code></pre>
 Percentage of time worked from home in December 2019
 </p>
 </div>
-<p>As can be seen, before the COVID-19 Crisis hit, work from home was rather sparse. Only 725 of the 1639 participants, who answered this question, had indicated that they worked from home at all (equaling 44.23%)</p>
-<div id="development-over-time" class="section level2">
+<p> <br />
+ </p>
+</div>
+<div id="additional-information" class="section level2 unnumbered">
+<h2>Additional Information</h2>
+<p>In December of 2019, when the coronavirus was just one of many news stories from abroad, we coincidentally asked the participants of our study:<br />
+<strong><em>“What percentage of Your worktime do You work from home (Home Office)?”</em></strong><br />
+The following graphs show the <strong>average proportion of time</strong> spent in Home Office and how the percentages were <strong>distributed</strong> back then.</p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+mean_HO_T1
+density_HO_T1</code></pre>
+<div class="figure">
+<img src="HomeOffice_files/figure-html/unnamed-chunk-1-1.png" alt="Percentage of time worked from home in December 2019" width="50%" /><img src="HomeOffice_files/figure-html/unnamed-chunk-1-2.png" alt="Percentage of time worked from home in December 2019" width="50%" />
+<p class="caption">
+Percentage of time worked from home in December 2019
+</p>
+</div>
+<p>As can be seen, before the COVID-19 Crisis hit, <strong>work from home was rather sparse</strong>. Only 725 of the 1639 participants, who answered this question, had indicated that they worked from home at all (equaling 44.23%)</p>
+</div>
+</div>
+<div id="section" class="section level1 unnumbered toc-ignore">
+<h1></h1>
+<div id="development-over-time" class="section level2 tabset tabset-fade">
 <h2><span class="header-section-number">2.1</span> Development over Time</h2>
-<p>Since December, the first time we asked our participants about their work in the Home Office again was in April of 2020, and then, with the exception of June, monthly. Specifically, we wanted to know:<br />
-<em>“In the past 4 weeks (Since the beginning of …): What percentage of Your average work week did you spend in Home Office?”</em></p>
+<div id="plots" class="section level3 unnumbered">
+<h3>Plots</h3>
 <pre class="r"><code>#HO6
 HO_Perc = data_HO[,grep(names(data_HO), pattern = &quot;_HO6&quot;, value = T)]
 HO_Perc_rel = data.frame(
@@ -494,7 +510,7 @@ HO_Perc_plot = ggplot(HO_Perc_rel, aes(x=month, y = mean_perc)) +
 
 HO_Perc_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/Percentage%20over%20Time-1.png" width="100%" /></p>
-<p>Notably and expectedly, the mean time spent in Home Office grew as the pandemic unfolded. At its peak in May, the percentage was three times as high as in December. Furthermore, as infection rates dropped in the summer and some form of “new normality” emerged, working from home steadily declined. Remembering, however, how disproportionate the various rates were distributed in December, it would be interesting to look at how the distribution changed over time:</p>
+<p> </p>
 <pre class="r"><code>HO_Perc_long = gather(HO_Perc, month, percentage)
 HO_Perc_long$month = factor(HO_Perc_long$month, levels = names(HO_Perc), labels = months_miss)
 
@@ -530,16 +546,36 @@ HO_Perc_dens = ggplot(HO_Perc_long, aes(percentage, y=..density.., fill = month,
 
 HO_Perc_dens</code></pre>
 <p><img src="HomeOffice_files/figure-html/distributions%20over%20Time-1.gif" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time-2.png" width="50%" /></p>
-<p>Looking at these distributions it grows clear that the increased percentage worked from home was mainly driven by the outer right part of the distribution, i.e. the people who worked from home entirely, while the rest continued working fully at their regular workplace. Moreover, the decrease over time seems to be attributed to the workers, who returned from their Home Offices, while the middle of the distribution remained largely unchanged. Note that the steep increase in October was partially due to a resampling of new participants in order to compensate for the gradual dropout.</p>
+<p> <br />
+ </p>
+</div>
+<div id="additional-information-1" class="section level3 unnumbered">
+<h3>Additional Information</h3>
+<p>Since December, the first time we asked our participants about their work in the Home Office again was in April of 2020, and then, with the exception of June, monthly. Specifically, we wanted to know:<br />
+<strong><em>“In the past 4 weeks (Since the beginning of …): What percentage of Your average work week did you spend in Home Office?”</em></strong></p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+HO_Perc_plot</code></pre>
+<p><img src="HomeOffice_files/figure-html/Percentage%20over%20Time%202-1.png" width="100%" /></p>
+<p>Notably and expectedly, the mean <strong>time spent in Home Office grew</strong> as the pandemic unfolded. At its peak in <strong>May</strong>, the percentage was <strong>three times as high as in December</strong>. Furthermore, as infection rates dropped in the summer and some form of “new normality” emerged, working from home steadily declined. Remembering, however, how disproportionate the various rates were distributed in December, it would be interesting to look at how the <strong>distribution changed over time</strong>:</p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+animate(HO_Perc_ani, renderer = gifski_renderer())
+HO_Perc_dens</code></pre>
+<p><img src="HomeOffice_files/figure-html/distributions%20over%20Time%202-1.gif" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time%202-2.png" width="50%" /></p>
+<p>Looking at these distributions it grows clear that the increased percentage worked from home was mainly driven by the outer right part of the distribution, i.e. the people who <strong>worked from home entirely</strong>, while the rest continued working fully at their regular workplace.</p>
+<p>Moreover, the decrease over time seems to be attributed to the workers, who returned from their Home Offices, while the <strong>middle</strong> of the distribution remained largely <strong>unchanged</strong>. Note that the steep increase in October was partially due to a resampling of new participants in order to compensate for the gradual dropout.</p>
 <hr />
 </div>
 </div>
-<div id="possibility-to-work-from-home" class="section level1">
-<h1><span class="header-section-number">3</span> Possibility to work from home</h1>
-<p>One important aspect when talking about Home Office is the extend, to which employers <strong>allow</strong> their employees to work from home. A manager could have many reasons not to give that permission, such as fearing loss of control over subordinates, thinking that work won’t be done in time, doubts about feasibility or just personal preference. Looking at how the constraint of the pandemic and the measures undertaken by the German government influenced the permission of employers might give an insight into how sound those arguments against Home Office really were.<br />
-In March 2020 the coronavirus hit Germany. Many businesses had to shut down, public life was reduced to a bare minimum. In April, we asked our participants two questions:<br />
-<em>“Before the COVID-19 Pandemic (Corona-Crisis): In general, did You have the possibility to work in Home Office?”</em><br />
-<em>“During the past 4 weeks (Since the beginning of March): In general, did You have the possibility to work in Home Office?”</em></p>
+<div id="section-1" class="section level2 unnumbered">
+<h2></h2>
+</div>
+</div>
+<div id="possibility-to-work-from-home" class="section level1 tabset tabset-fade">
+<h1><span class="header-section-number">3</span> Possibility to Work from Home</h1>
+<div id="plots-1" class="section level2 unnumbered">
+<h2>Plots</h2>
 <pre class="r"><code># 1 = Not possible, 2 = Possible
 HO_Pos_T3 = round(data.frame(
                     pre = c(length(which(data_HO$T3_HO1 == 2)),length(which(data_HO$T3_HO1 == 1 ))) /length(which((data_HO$T3_HO1 != &quot;NA&quot;))),
@@ -582,8 +618,34 @@ HO_Pos_post</code></pre>
 Allowed to work from home
 </p>
 </div>
-<p>Since June life in Germany started gradually coming back to a new normality. Businesses were allowed to reopen, albeit under strict regulations and with individual concepts for how to uphold these regulations (so called “hygiene concepts”). Regarding the previous graphs it becomes obvious, that before the pandemic, only few people could work from home, but when it became inevitable, the possibility suddenly emerged in many cases, raising questions about why it was not possible before.<br />
-It would be interesting to see, how this general permission fares over time:</p>
+<p> <br />
+ </p>
+</div>
+<div id="additional-information-2" class="section level2 unnumbered">
+<h2>Additional Information</h2>
+<p>One important aspect when talking about Home Office is the extend, to which employers <strong>allow</strong> their employees to work from home. A manager could have many reasons not to give that permission, such as fearing loss of control over subordinates, thinking that work won’t be done in time, doubts about feasibility or just personal preference. Looking at how the constraint of the pandemic and the measures undertaken by the German government influenced the permission of employers might give an insight into how sound those arguments against Home Office really were.</p>
+<p><strong>In March 2020</strong> the coronavirus hit Germany. Many businesses had to shut down, public life was reduced to a bare minimum. In <strong>April</strong>, we asked our participants two questions:</p>
+<p><strong><em>“Before the COVID-19 Pandemic (Corona-Crisis): In general, did You have the possibility to work in Home Office?”</em></strong><br />
+<strong><em>“During the past 4 weeks (Since the beginning of March): In general, did You have the possibility to work in Home Office?”</em></strong></p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+HO_Pos_pre
+
+HO_Pos_post</code></pre>
+<div class="figure">
+<img src="HomeOffice_files/figure-html/Possibility%20to%20work%20from%20home%202-1.png" alt="Allowed to work from home" width="50%" /><img src="HomeOffice_files/figure-html/Possibility%20to%20work%20from%20home%202-2.png" alt="Allowed to work from home" width="50%" />
+<p class="caption">
+Allowed to work from home
+</p>
+</div>
+</div>
+</div>
+<div id="section-2" class="section level1 unnumbered toc-ignore">
+<h1></h1>
+<div id="permission-over-time" class="section level2 tabset tabset-fade">
+<h2><span class="header-section-number">3.1</span> Permission over Time</h2>
+<div id="plot-1" class="section level3 unnumbered">
+<h3>Plot</h3>
 <pre class="r"><code>HO_Perm = data_HO[,c(&quot;ID&quot;,grep(&quot;_HO4&quot;,names(data_HO), value = T))]
 HO_Perm_rel = data.frame(
   perm = round(c((length(which(HO_Perm$T3_HO4 == 2))/length(which((HO_Perm$T3_HO4 != &quot;NA&quot;)))),
@@ -614,13 +676,30 @@ HO_Perm_plot = ggplot(HO_Perm_rel, aes(x=month, y = perm)) +
   labs(caption = &quot;Note: Data was missing for June.&quot;)
 
 HO_Perm_plot</code></pre>
-<p><img src="HomeOffice_files/figure-html/Permission%20over%20Time-1.png" width="100%" /> Comparable to the first section of this website, the possibility to work from home peaked in May and steadily declined until September after that, showing that in some cases, the workers were given this permission only as long as it was imperative by law or public pressure. Notably, the level is still far from the 22% it was before the pandemic. Furthermore, there is now a coordinated effort by the German <em>Federal Minister for Labour and Social Affairs</em> <a href="https://en.wikipedia.org/wiki/Hubertus_Heil">Hubertus Heil</a> to pass legislation introducing the “right to Home Office”. Regardless of its success in parliament, it illustrates how the topic of Home Office and the possibility to work there gained traction through the pandemic.</p>
+<p><img src="HomeOffice_files/figure-html/Permission%20over%20Time-1.png" width="100%" /></p>
+<p> <br />
+ </p>
+</div>
+<div id="additional-information-3" class="section level3 unnumbered">
+<h3>Additional Information</h3>
+<p>Since <strong>June</strong> life in Germany started gradually coming back to a new <strong>normality</strong>. Businesses were allowed to reopen, albeit under strict regulations and with individual concepts for how to uphold these regulations (so called “hygiene concepts”). Regarding the previous graphs it becomes obvious, that <strong>before the pandemic</strong>, only <strong>few</strong> people could <strong>work from home</strong>, but when it became inevitable, the possibility suddenly emerged in many cases, raising questions about why it was not possible before.<br />
+It would be interesting to see, how this general permission fares over time:</p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+HO_Perm_plot</code></pre>
+<p><img src="HomeOffice_files/figure-html/Permission%20over%20Time%202-1.png" width="100%" /></p>
+<p>Comparable to the first section of this website, the <strong>possibility</strong> to work from home <strong>peaked in May</strong> and <strong>steadily declined until September</strong> after that, showing that in some cases, the workers were given this permission only as long as it was imperative by law or public pressure. Notably, the level is still far from the 22% it was before the pandemic. Furthermore, there is now a coordinated effort by the German <em>Federal Minister for Labour and Social Affairs</em> <a href="https://en.wikipedia.org/wiki/Hubertus_Heil">Hubertus Heil</a> to <strong>pass legislation</strong> introducing the “right to Home Office”. Regardless of its success in parliament, it illustrates how the topic of Home Office and the possibility to work there gained traction through the pandemic.</p>
+</div>
+</div>
+<div id="section-3" class="section level2 unnumbered">
+<h2></h2>
 <hr />
 </div>
-<div id="working-from-home---but-where" class="section level1">
-<h1><span class="header-section-number">4</span> Working from home - but where?</h1>
-<p>Home Office does not equal Home Office. There is a difference in one’s experience when working from home, depending on the <strong>locality</strong>. Some people have the opportunity of a separate room, which is reserved for work only and has all the needed equipment and supplies, while others might need to improvise a workspace, especially if they never worked from home before. No matter how it is done, there needs to be a separate place at home, where one can and must work. This is important in terms of detachment and productivity. The local separation of work and leisure, typically provided by an outside workplace, helps to separate work and leisure mentally, which in turn increases attention, concentration and motivation.<br />
-In our sample, we asked our participants where they worked from when in Home Office. One could expect to see an increase in designated spots as time progresses and people have had the chance to accommodate themselves to working from home. Unfortunately, this trend couldn’t be identified in our data:</p>
+</div>
+<div id="working-from-home---but-where" class="section level1 tabset tabset-fade">
+<h1><span class="header-section-number">4</span> Working from Home - but Where?</h1>
+<div id="plot-2" class="section level2 unnumbered">
+<h2>Plot</h2>
 <pre class="r"><code># 1 = own, separated Room
 # 2 = Designated spot elsewhere
 # 3 = Changing places at home depending on the need
@@ -657,16 +736,25 @@ HO_loc_plot = ggplot(HO_loc_prop_long, aes(x=percentage, y = month)) +
 
 HO_loc_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/Location%20of%20work-1.png" width="100%" /></p>
-<p>Even though there was no noteworthy change over time, the aspect of locality at home should not be dismissed too early. While further analyses would go beyond the scope of this brief discussion, one could still wonder about possible associated effects. Is there a relationship between place of work and satisfaction? If yes, which one would be the most appropriate? Is a designated spot enough, or does having an own room add incremental gain in satisfaction?</p>
+<p> <br />
+ </p>
+</div>
+<div id="additional-information-4" class="section level2 unnumbered">
+<h2>Additional Information</h2>
+<p>Home Office does not equal Home Office. There is a difference in one’s experience when working from home, depending on the <strong>locality</strong>. Some people have the opportunity of a <strong>separate room</strong>, which is reserved for work only and has all the needed equipment and supplies, while others might need to <strong>improvise a workspace</strong>, especially if they never worked from home before. No matter how it is done, there needs to be a separate place at home, where one can and must work. This is important in terms of <strong>detachment and productivity</strong>. The local separation of work and leisure, typically provided by an outside workplace, helps to separate work and leisure mentally, which in turn increases attention, concentration and motivation.<br />
+In our sample, we asked our participants <strong><em>where they worked from when in Home Office</em></strong>. One could expect to see an increase in designated spots as time progresses and people have had the chance to accommodate themselves to working from home. Unfortunately, this trend couldn’t be identified in our data:</p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+HO_loc_plot</code></pre>
+<p><img src="HomeOffice_files/figure-html/Location%20of%20work%202-1.png" width="100%" /></p>
+<p>Even though there was <strong>no noteworthy change over time</strong>, the aspect of locality at home should <strong>not be dismissed</strong> too early. While further analyses would go beyond the scope of this brief discussion, one could still wonder about possible associated effects. Is there a relationship between place of work and satisfaction? If yes, which one would be the most appropriate? Is a designated spot enough, or does having an own room add incremental gain in satisfaction?</p>
 <hr />
 </div>
-<div id="feeling-of-isolation" class="section level1">
+</div>
+<div id="feeling-of-isolation" class="section level1 tabset tabset-fade">
 <h1><span class="header-section-number">5</span> Feeling of Isolation</h1>
-<p>In most cases, working is a social process and the workplace is an inherently social space. Regular meetings, quick coordination of further steps, running into each other in the hallways, eating lunch together, sharing personal stories and experiences, and so on. All of that was not possible in the same manner when a portion of the workforce was forced to work from home only.<br />
-In the field of telework and telecommuting, the concept of <strong>Professional Isolation</strong> emerged, being defined as “a state of mind or belief that one is out of touch with others in the workplace” (Golden et al., 2008). This isn’t necessarily bound to happen when people work from home. In its core, it is a feeling of not being involved in the essential professional networks, which can also occur while sitting in a regular office. Nonetheless there is a tendency among teleworkers to lack social comparison of their performance and more complex contextual clues about their workplace.<br />
-In line of this research, we measured professional isolation by having people rate, for example:<br />
-<em>“I feel left out on activities and meetings that could enhance my career”</em><br />
-<em>“I miss informal interaction with others.”</em></p>
+<div id="plot-3" class="section level2 unnumbered">
+<h2>Plot</h2>
 <pre class="r"><code># HO13 - 16
 HO_Isol_Vars = c(grep(&quot;_HO13&quot;, names(data_HO), value = T), grep(&quot;_HO14&quot;, names(data_HO), value = T),grep(&quot;_HO15&quot;, names(data_HO), value = T),grep(&quot;_HO16&quot;, names(data_HO), value = T))
 HO_Isol = data_HO[, c(&quot;ID&quot;, HO_Isol_Vars)]
@@ -742,16 +830,33 @@ cor(HO_Isol[,&quot;T7mean&quot;], HO_Isol[,&quot;T7_HO6&quot;], use = &quot;comp
 cor(HO_Isol[,&quot;T8mean&quot;], HO_Isol[,&quot;T8_HO6&quot;], use = &quot;complete.obs&quot;),
 cor(HO_Isol[,&quot;T9mean&quot;], HO_Isol[,&quot;T9_HO6&quot;], use = &quot;complete.obs&quot;)
 )), digits = 2)</code></pre>
-<p>Regarding the fact, that the response Scale ranged from 1 - <em>Never</em> to 5 - <em>Very often</em>, this level of average Isolation is rather surprising. Apparently, feeling out of the loop and missing the informal conversation with colleagues wasn’t as much of an issue.<br />
-The potential reasons for that can be manyfold. Maybe the communication through digital media was sufficient to replace real meetings. Or maybe the data isn’t representative, as not that many people indicated working from home entirely.<br />
-Investigating a smaller subset of participants, the ones who spent most of their worktime in Home Office, could yield different results. The mean correlation of 0.23 between the percentage of time spent in Home Office and feeling of professional isolation serves as further evidence of this possibility, as it shows that the more one works from home, the more he or she tends to feel isolated.</p>
+<p> <br />
+ </p>
+</div>
+<div id="additional-information-5" class="section level2 unnumbered">
+<h2>Additional Information</h2>
+<p>In most cases, working is a social process and the workplace is an inherently social space. Regular meetings, quick coordination of further steps, running into each other in the hallways, eating lunch together, sharing personal stories and experiences, and so on. All of that was not possible in the same manner when a portion of the workforce was forced to work from home only.<br />
+In the field of telework and telecommuting, the concept of <strong>Professional Isolation</strong> emerged, being defined as <strong>“a state of mind or belief that one is out of touch with others in the workplace”</strong> (Golden et al., 2008). This isn’t necessarily bound to happen when people work from home. In its core, it is a <strong>feeling of not being involved</strong> in the essential professional networks, which <strong>can also occur</strong> while sitting <strong>in a regular office</strong>. Nonetheless there is a tendency among teleworkers to lack social comparison of their performance and more complex contextual clues about their workplace.<br />
+In line of this research, we measured professional isolation by having people rate, for example:</p>
+<p><em>“I feel left out on activities and meetings that could enhance my career”</em><br />
+<em>“I miss informal interaction with others.”</em></p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+HO_Isol_plot</code></pre>
+<p><img src="HomeOffice_files/figure-html/Isolation%202-1.png" width="100%" /> Regarding the fact, that the response Scale ranged from 1 - <em>Never</em> to 5 - <em>Very often</em>, this level of average Isolation is rather surprising. Apparently, <strong>feeling out of the loop</strong> and missing the informal conversation with colleagues <strong>wasn’t as much of an issue</strong>.<br />
+The potential reasons for that can be manyfold. Maybe the <strong>communication through digital media</strong> was <strong>sufficient</strong> to replace real meetings. Or maybe the <strong>data isn’t representative</strong>, as not that many people indicated working from home entirely.<br />
+Investigating a smaller subset of participants, the ones who spent most of their worktime in Home Office, could yield different results. The <strong>mean correlation of 0.23</strong> between the percentage of <strong>time spent in Home Office</strong> and feeling of <strong>professional isolation</strong> serves as further evidence of this possibility, as it shows that the more one works from home, the more he or she tends to feel isolated.</p>
 <hr />
+</div>
 </div>
 <div id="satisfaction-with-home-office" class="section level1">
 <h1><span class="header-section-number">6</span> Satisfaction with Home Office</h1>
-<p>At the end of the day, one of the most important lesson to draw from this pandemic regarding Home Office would be how to make working from home as <em>satisfactory</em> as possible. To be able to draw conclusions from this data, it is necessary to first get an overall view of the satisfaction experienced when it comes to working from home, and subsequently look at potential correlates and causes.</p>
-<div id="overall-development-over-time" class="section level2">
+<div id="overall-development-over-time" class="section level2 tabset tabset-fold">
 <h2><span class="header-section-number">6.1</span> Overall Development over Time</h2>
+<div id="plot-4" class="section level3 unnumbered">
+<h3>Plot</h3>
+<p> <br />
+ </p>
 <pre class="r"><code># HO31 = Satisfaction 
 # HO32 = Efficacy
 # HO3 = Equipment (1=No, 2=Yes)
@@ -812,12 +917,22 @@ HO_Sat_plot = ggplot(HO_Sat_means, aes(x=month, y = means)) +
   labs(caption = &quot;Note: Data was missing for June. Ribbon represents 1SD around the mean.&quot;)
 HO_Sat_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/Satisfaction-1.png" width="100%" /></p>
-<p>Satisfaction was consistently above the average of 3, indicating that most people were rather happy with their overall experience in Home Office.<br />
-Now that in and of itself is good news. Even though the all-encompassing situation was rather grim, people apparently were more or less happy with their work from home. The interesting point now is to find out, what caused this satisfaction, so that we can learn how to improve the experience for others.</p>
 </div>
-<div id="child-care" class="section level2">
+<div id="additional-information-6" class="section level3 unnumbered">
+<h3>Additional Information</h3>
+<p>At the end of the day, one of the most important lesson to draw from this pandemic regarding Home Office would be how to make working from home as <strong>satisfactory</strong> as possible. To be able to draw conclusions from this data, it is necessary to first get an <strong>overall view of the satisfaction</strong> experienced when it comes to working from home, and subsequently look at potential correlates and causes.</p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+HO_Sat_plot</code></pre>
+<p><img src="HomeOffice_files/figure-html/Satisfaction%202-1.png" width="100%" /></p>
+<p>Satisfaction was <strong>consistently above the average of 3</strong>, indicating that most people were <strong>rather happy</strong> with their overall experience in Home Office.<br />
+Now that in and of itself is good news. Even though the all-encompassing situation was rather grim, people apparently were more or less happy with their work from home. The interesting point now is to find out, <strong>what caused</strong> this satisfaction, so that we can learn how to improve the experience for others.</p>
+</div>
+</div>
+<div id="child-care" class="section level2 tabset tabset-fold">
 <h2><span class="header-section-number">6.2</span> Child Care</h2>
-<p>One factor that could hold influence is higher demand at work, like is generally theorized in the <em>Work-Demands-Resources-Model</em>. One such demand could be the additional workload of caring for children, since kindergartens and schools were closed also and only in extreme cases parents could get “emergency childcare”. So, let us compare the situation of those, who had to care for their children by themselves with those, whose partners took on the task of caring for their children.</p>
+<div id="plot-5" class="section level3 unnumbered">
+<h3>Plot</h3>
 <pre class="r"><code>HO_Sat_means = HO_Sat_means %&gt;%
   mutate(means_care_self = c(
     mean(HO_Sat[(HO_Sat$T3_covid11 == 3 &amp; HO_Sat$T3_HO31&gt;0), &quot;T3_HO31&quot;], na.rm = T),
@@ -881,13 +996,26 @@ HO_Sat_care_plot = ggplot(HO_Sat_means, aes(x=month, y = means)) +
 
 HO_Sat_care_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/Satisfaction%20parenting-1.png" width="100%" /></p>
-<p>Surprisingly, whether or not one had to care for their children at home had seemingly no effect on the overall satisfaction with Home Office. At least, there is no indication for a main effect. Further down the way, a more complex investigation into corollaries and moderators might, however, uncover clearer effects.</p>
+<p> <br />
+ </p>
 </div>
-<div id="efficacy" class="section level2">
+<div id="additional-information-7" class="section level3 unnumbered">
+<h3>Additional Information</h3>
+<p>One factor that could hold influence is higher demand at work, like is generally theorized in the <strong>Work-Demands-Resources-Model</strong>. One such demand could be the additional <strong>workload of caring for children</strong>, since kindergartens and schools were closed also and only in extreme cases parents could get “emergency childcare”. So, let us compare the situation of those, who had to care for their children by themselves with those, whose partners took on the task of caring for their children.</p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+
+HO_Sat_care_plot</code></pre>
+<p><img src="HomeOffice_files/figure-html/Satisfaction%20parenting%202-1.png" width="100%" /></p>
+<p>Surprisingly, whether or not one had to care for their children at home had seemingly <strong>no effect</strong> on the overall satisfaction with Home Office. At least, there is no indication for a main effect. Further down the way, a more complex investigation into corollaries and moderators might, however, uncover clearer effects.</p>
+</div>
+</div>
+<div id="efficacy" class="section level2 tabset tabset-fold">
 <h2><span class="header-section-number">6.3</span> Efficacy</h2>
-<p>In general, people tend to crave a feeling of <em>self-efficacy</em> - that they can accomplish goals by putting in their own effort. Whether at work, while exercising one’s hobbies or in social relationships, self-efficacy - and a lack thereof - plays an integral role in forming one’s self-image and influences well-being. Therefore, we can assume, that the feeling self-efficacy also took part in the rating of satisfaction with Home Office. The following graph shows the relationship between these two constructs over all measurement points. Upon first inspection it became obvious, that the coefficients did not vary significantly between the months.<br />
-To measure self-efficacy, we asked our participants to rate the following statement:<br />
-<em>“I am certain that I can successfully fulfill my tasks in the Home Office.”</em></p>
+<div id="plot-6" class="section level3 unnumbered">
+<h3>Plot</h3>
+<p> <br />
+ </p>
 <pre class="r"><code>HO_Sat_Eff =   reshape(HO_Sat[,!(names(HO_Sat) %in% c(&quot;T4_HO3&quot;,&quot;T6_HO3&quot;, grep( &quot;_covid11&quot;,names(HO_Sat), value = T)))], varying = list(c(&quot;T3_HO31&quot;,&quot;T4_HO31&quot;,&quot;T6_HO31&quot;,&quot;T7_HO31&quot;,&quot;T8_HO31&quot;, &quot;T9_HO31&quot;), c(&quot;T3_HO32&quot;,&quot;T4_HO32&quot;,&quot;T6_HO32&quot;,&quot;T7_HO32&quot;,&quot;T8_HO32&quot;, &quot;T9_HO32&quot;)), direction = &quot;long&quot;, timevar = &quot;month&quot;, idvar = &quot;ID&quot;, v.names = c(&quot;Sat&quot;, &quot;Eff&quot;))
 
 #test reshape
@@ -926,7 +1054,26 @@ HO_Sat_Equip= dplyr::filter(HO_Sat_Eff,month == &quot;April&quot;,Equip_T3 != &q
 
 #insufficient, sufficient
 HO_Equip = plyr::count(HO_Sat_Eff[HO_Sat_Eff$month == &quot;April&quot;,], vars = &quot;Equip_T3&quot;)[2:3,2]</code></pre>
-<p>As predicted, there was a very strong relationship between satisfaction and efficacy, further emphasizing the importance of the latter. Nevertheless, this was just a quick and cursory analysis which doesn’t allow causal inference yet. A cross-lagged study predicting satisfaction in point <em>T</em> through efficacy at point <em>T-1</em> and vice versa could give further insight into the underlying mechanisms.</p>
+</div>
+<div id="additional-information-8" class="section level3 unnumbered">
+<h3>Additional Information</h3>
+<p>In general, people tend to crave a feeling of <em>self-efficacy</em> - that they can accomplish goals by putting in their own effort. Whether at work, while exercising one’s hobbies or in social relationships, self-efficacy - and a lack thereof - plays an integral role in forming one’s self-image and influences well-being. Therefore, we can assume, that the feeling self-efficacy also took part in the rating of satisfaction with Home Office. The following graph shows the relationship between these two constructs over all measurement points. Upon first inspection it became obvious, that the coefficients did not vary significantly between the months.<br />
+To measure self-efficacy, we asked our participants to rate the following statement:<br />
+<em>“I am certain that I can successfully fulfill my tasks in the Home Office.”</em></p>
+<pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+HO_Sat_Eff_plot</code></pre>
+<p><img src="HomeOffice_files/figure-html/efficacy%202-1.png" width="100%" /></p>
+<p>As predicted, there was a very <strong>strong relationship</strong> between <strong>satisfaction and efficacy</strong>, further emphasizing the importance of the latter. Nevertheless, this was just a quick and cursory analysis which doesn’t allow causal inference yet. A cross-lagged study predicting satisfaction in point <em>T</em> through efficacy at point <em>T-1</em> and vice versa could give further insight into the underlying mechanisms.</p>
+</div>
+</div>
+<div id="section-4" class="section level2 unnumbered">
+<h2></h2>
+</div>
+<div id="sufficient-equipment" class="section level2 tabset tabset-fade">
+<h2><span class="header-section-number">6.4</span> Sufficient Equipment</h2>
+<div id="plot-7" class="section level3 unnumbered">
+<h3>Plot</h3>
 <pre class="r"><code>r_Sat_Equip = round(cor(filter(HO_Sat_Eff,month == &quot;April&quot;,Equip_T3 != &quot;Missing&quot; )$Sat, filter(HO_Sat_Eff,month == &quot;April&quot;,Equip_T3 != &quot;Missing&quot; )$T3_HO3),digits = 2)*100
 
 HO_Sat_Equip_plot = ggplot(HO_Sat_Equip, aes(y= Sat_mean, x = Equip_T3, fill =Equip_T3))+
@@ -939,19 +1086,55 @@ HO_Sat_Equip_plot = ggplot(HO_Sat_Equip, aes(y= Sat_mean, x = Equip_T3, fill =Eq
                     labs(x=&quot;Availability of technical equipment\n at home&quot;,y = &quot;Satisfaction with Home Office&quot;, caption = paste0(&quot;Point-biserial correlation was .&quot;, r_Sat_Equip,&quot;. Errorbars\n represent one SD above and below the mean.&quot;), title = &quot;Relationship between \nequipment for and satisfaction \nwith Home Office&quot;, subtitle = &quot;In April&quot;)
 
 HO_Sat_Equip_plot</code></pre>
-<p><img src="HomeOffice_files/figure-html/equipment-1.png" width="288" style="float:right; padding:10px" /></p>
+<p><img src="HomeOffice_files/figure-html/equipment-1.png" width="288" style="float:left; padding:10px" />  <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ </p>
 </div>
-<div id="sufficient-equipment" class="section level2">
-<h2><span class="header-section-number">6.4</span> Sufficient Equipment</h2>
-<p>Similar to the workspace itself, having the right equipment for working at home can be important for the satisfaction experienced. What kind of equipment is needed can vary from job to job. For some, a simple laptop and a steady internet-connection could be enough (although granted, not always available), while others might need strong hardware, specific software, or special devices. So we just asked our participants in general whether or not they had sufficient technical equipment at home, as to not assume what that should include. The barplot on the right shows the results for April.<br />
-In general, 460 out of 595 (= 77.31%) participants indicated in April to have sufficient equipment when working from home. So, while most people seemed to have the right equipment at home, for the rest the insufficiency was associated with lower satisfaction. Again, statistical significance and causal analysis pending.</p>
+<div id="additional-information-9" class="section level3 unnumbered">
+<h3>Additional Information</h3>
+<pre class="r"><code>HO_Sat_Equip_plot</code></pre>
+<p><img src="HomeOffice_files/figure-html/equipment%202-1.png" width="288" style="float:left; padding:10px" /></p>
+<p>Similar to the workspace itself, having the <strong>right equipment</strong> for working at home can be important for the <strong>satisfaction</strong> experienced. What kind of equipment is needed can vary from job to job. For some, a simple laptop and a steady internet-connection could be enough (although granted, not always available), while others might need strong hardware, specific software, or special devices. So we just asked our participants in general <strong>whether or not they had sufficient technical equipment</strong> at home, as to not assume what that should include. The barplot on the right shows the results for April.<br />
+In general, 460 out of 595 (= 77.31%) participants indicated in April to have sufficient equipment when working from home. So, while <strong>most people</strong> seemed to have the <strong>right equipment</strong> at home, for the <strong>rest</strong> the <strong>insufficiency</strong> was associated with <strong>lower satisfaction</strong>. Again, statistical significance and causal analysis pending.</p>
 <hr />
+<p> <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ <br />
+ </p>
+</div>
 </div>
 </div>
 <div id="summary-and-conclusion" class="section level1">
 <h1><span class="header-section-number">7</span> Summary and Conclusion</h1>
 <p>As stated above, the COVID-19 Crisis brought emphasis on the topic of Home Office among other things. Coerced by the circumstances, many people started working from home. Where there were hindrances before, new possibilities arose. And while both the prevalence and permission of Home Office slowly decrease, for some the boundaries were broken for good.<br />
+ <br />
 Questions arose beyond possibility and prevalence: How do people feel, when they work from home? How should the work be designed to yield best outcomes? In our short portrayal we could give first answers to these questions. In general, there is above average satisfaction with working in the Home Office. This seems to hold true regardless of childcare but is potentially influenced by the perception of self-efficacy and the presence of sufficient technical equipment. The feeling of professional isolation is relatively low, albeit a differentiation between those who work entirely from home is needed. When someone is in Home Office, having a designated spot to work from seems to be present for most, yet not given for everybody.<br />
+ <br />
 We hope, that we were able to give some insights into the topic of Home Office based on our sample and to inspire future rigorous research. We believe, that with digitalization progressing relentlessly, we as researchers and practitioners of work and organizational psychology need to be ready to give well-funded advice on how to create the best circumstances for Home Office possible.</p>
 </div>
 
