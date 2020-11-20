@@ -82,6 +82,7 @@ vignettes/*.pdf
 # .Rbuildignore - not needed for lectures/lessons
 .Rbuildignore
 
-# SPSS files #
+# Data files #
 ##############
 *.sav
+*.csv
