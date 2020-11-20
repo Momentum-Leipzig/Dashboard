@@ -1,6 +1,6 @@
-name: "COVID-19 Dashboard"
+name: "Momentum"
 navbar:
-  title: "COVID-19 Dashboard"
+  title: "Momentum"
   left:
     - text: "Home"
       href: index.html

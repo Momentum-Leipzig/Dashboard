@@ -1,5 +1,5 @@
 ---
-title: "COVID-19 Dashboard"
+title: "Momentum"
 output: html_document
 ---
 
@@ -15,33 +15,42 @@ output: html_document
 </style>
 
 <div class="row" style="padding-top: 30px;">
-<div class="col-sm-6">
+<div class="col-sm-9">
 
-# **COVID-19 Dashboard**
+# **THE ROLE OF WORK IN THE DEVELOPMENT OF CIVILIZATION DISEASES**
 
-Example Text
+Reducing premature mortality due to civilization diseases by one third until 2030 through prevention and treatment is one of the United Nation's Sustainable Development Goals. The reorientation of the professorship contributes to efforts that address this societal "grand challenge" by examining the joint effects of work design and individuals' work-related actions on the development of civilization diseases using a transdisciplinary and multifaceted approach that integrates research, teaching, and community engagement activities.  
+So far, work and organizational psychologists have shied away from investigating the role of work with regard to the prevention, onset, and development of noncommunicable and chronic civilization diseases. The motivation for the perspective extension stems from three central reasons. First, psychological theories and methods are currently underutilized with regard to understanding the "grand challenge" of civilization diseases. Second, addressing this challenge and, thus, having an impact on public health requires innovative teaching methods and career guidance for students as well as enhanced science communication with practitioners and the public. Third, this program offers the opportunity to integrate the chair with the existing research strengths and core research areas in Leipzig.
 
-## Example Text
-
-1. Example Text
-
-2. Example Text
-
-3. Example Text
-
-4. Example Text
-
+### In Cooperation with:
+<h4> [Volkswagen Foundation](https://www.volkswagenstiftung.de/) </h4>  
+&nbsp;  
+<h4> [Department of Work and Organizational Psychology, Leipzig University](https://www.lw.uni-leipzig.de/aopsych)  </h4>  
+&nbsp;  
+<h4> [Department of Psychology, Saint Louis University](https://www.slu.edu/arts-and-sciences/psychology/) </h4>   
+&nbsp;  
 </div>
-<div class="col-sm-6">
+<div class="col-sm-3">
+&nbsp;  
+&nbsp;  
+&nbsp;  
 
-### [Website: Example](https://www.lw.uni-leipzig.de/aopsych)
+
+<a href = "https://www.volkswagenstiftung.de/">
+<img src="images/VWST_RGB_150.gif">
+
+</a>
+
+
 <a href = "https://www.lw.uni-leipzig.de/aopsych">
 <img src="images/logo1.png">
 </a>
 
-### [Website: Example](https://www.cortrudolph.com)
+
+
+
 <a href = "https://www.cortrudolph.com">
-<img src="images/logo2.png" width="200" height="225">
+<img src="images/logo2.png">
 
 </a>
 </div>
