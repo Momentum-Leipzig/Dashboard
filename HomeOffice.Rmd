@@ -8,7 +8,7 @@ output:
     number_sections: true
     toc_depth: 1
     include:
-      after_body: _footer.html.txt
+      after_body: _footer_Richard.txt
     
 ---
 
@@ -797,9 +797,9 @@ HO_Equip = plyr::count(HO_Sat_Eff[HO_Sat_Eff$month == "April",], vars = "Equip_T
   
 
 ### Additional Information {-}
-In general, people tend to crave a feeling of _self-efficacy_ - that they can accomplish goals by putting in their own effort. Whether at work, while exercising one's hobbies or in social relationships, self-efficacy - and a lack thereof - plays an integral role in forming one's self-image and influences well-being. Therefore, we can assume, that the feeling self-efficacy also took part in the rating of satisfaction with Home Office. The following graph shows the relationship between these two constructs over all measurement points. Upon first inspection it became obvious, that the coefficients did not vary significantly between the months.  
+In general, people tend to crave a feeling of __self-efficacy__ - that they can __accomplish goals__ by putting in their own effort. Whether at work, while exercising one's hobbies or in social relationships, __self-efficacy__ - and a lack thereof - plays an integral role in __forming__ one's __self-image__ and __influences well-being__. Therefore, we can assume, that the feeling of self-efficacy also took part in the rating of __satisfaction__ with Home Office. The following graph shows the relationship between these two constructs over all measurement points. Upon first inspection it became obvious, that the coefficients did not vary significantly between the months.  
 To measure self-efficacy, we asked our participants to rate the following statement:  
-_"I am certain that I can successfully fulfill my tasks in the Home Office."_
+__"I am certain that I can successfully fulfill my tasks in the Home Office."__
 ```{r efficacy 2, include= TRUE, fig.height=3.5, out.width='100%' }
 ## For details on the code for the plots, please change to the "Plots"-Tab and unfold the code there. ##
 
@@ -882,3 +882,8 @@ As stated above, the COVID-19 Crisis brought emphasis on the topic of Home Offic
 Questions arose beyond possibility and prevalence: How do people feel, when they work from home? How should the work be designed to yield best outcomes? In our short portrayal we could give first answers to these questions. In general, there is above average satisfaction with working in the Home Office. This seems to hold true regardless of childcare but is potentially influenced by the perception of self-efficacy and the presence of sufficient technical equipment. The feeling of professional isolation is relatively low, albeit a differentiation between those who work entirely from home is needed. When someone is in Home Office, having a designated spot to work from seems to be present for most, yet not given for everybody.  
 &nbsp;  
 We hope, that we were able to give some insights into the topic of Home Office based on our sample and to inspire future rigorous research. We believe, that with digitalization progressing relentlessly, we as researchers and practitioners of work and organizational psychology need to be ready to give well-funded advice on how to create the best circumstances for Home Office possible.
+
+```{r clean up}
+rm(list=ls())
+```
+
