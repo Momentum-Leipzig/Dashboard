@@ -34,8 +34,8 @@ library(gganimate)
 
 options(scipen = 999)
 data_HO = read.csv("data/data_Homeoffice.csv")
-months_compl = c("April", "May", "June", "July", "August", "September", "October")
-months_miss = c("April", "May", "July", "August", "September", "October")
+months_compl = c("April", "May", "June", "July", "August", "September", "October", "November")
+months_miss = c("April", "May", "July", "August", "September", "October", "November")
 ```
 
 # Introduction 
@@ -130,7 +130,8 @@ HO_Perc_rel = data.frame(
     mean(HO_Perc$T6_HO6, na.rm = T),
     mean(HO_Perc$T7_HO6, na.rm = T),
     mean(HO_Perc$T8_HO6, na.rm = T),
-    mean(HO_Perc$T9_HO6, na.rm = T)
+    mean(HO_Perc$T9_HO6, na.rm = T),
+    mean(HO_Perc$T10_HO6, na.rm = T)
   ),
   sd_perc = c(
     sd(HO_Perc$T3_HO6, na.rm = T),
@@ -139,12 +140,13 @@ HO_Perc_rel = data.frame(
     sd(HO_Perc$T6_HO6, na.rm = T),
     sd(HO_Perc$T7_HO6, na.rm = T),
     sd(HO_Perc$T8_HO6, na.rm = T),
-    sd(HO_Perc$T9_HO6, na.rm = T)
+    sd(HO_Perc$T9_HO6, na.rm = T),
+    sd(HO_Perc$T10_HO6, na.rm = T)
   )
 ) # Data-Frame with the means and standard deviations of the percentages of time Worked in Home Office, Long Format (Because of the many NAs, ggplots stat = "mean" could have shown errrors)
 
-HO_Perc_rel$missing = c(NA, HO_Perc_rel[2,2],mean(c(HO_Perc_rel[2,2],HO_Perc_rel[4,2])),HO_Perc_rel[4,2],NA,NA,NA) #Extrapolating the missing value in June to make a separate connecting line in the graph
-HO_Perc_rel$mis_sd = c(NA, HO_Perc_rel[2,3],mean(c(HO_Perc_rel[2,3],HO_Perc_rel[4,3])),HO_Perc_rel[4,3],NA,NA,NA)
+HO_Perc_rel$missing = c(NA, HO_Perc_rel[2,2],mean(c(HO_Perc_rel[2,2],HO_Perc_rel[4,2])),HO_Perc_rel[4,2],NA,NA,NA,NA) #Extrapolating the missing value in June to make a separate connecting line in the graph
+HO_Perc_rel$mis_sd = c(NA, HO_Perc_rel[2,3],mean(c(HO_Perc_rel[2,3],HO_Perc_rel[4,3])),HO_Perc_rel[4,3],NA,NA,NA,NA)
 HO_Perc_rel$sd_bottom = HO_Perc_rel$mean_perc-HO_Perc_rel$sd_perc/2 #for the ribbon
 HO_Perc_rel$sd_upper = HO_Perc_rel$mean_perc+HO_Perc_rel$sd_perc/2
 HO_Perc_rel$mis_sd_bottom = HO_Perc_rel$missing-HO_Perc_rel$mis_sd/2
@@ -203,7 +205,7 @@ HO_Perc_dens = ggplot(HO_Perc_long, aes(percentage, y=..density.., fill = month,
   labs(x="Percentage of worktime spent in Home Office", y = "Density", legend = NULL)+
   scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), '%')) +
   scale_fill_brewer(palette="Blues", direction = -1) +
-  scale_color_brewer(palette="Blues", direction = -1) +
+  scale_color_brewer(palette="Blues", direction = 1) +
   theme(axis.text=element_text(size=12), axis.title = element_text(size = 14))
 
 HO_Perc_dens
@@ -357,13 +359,14 @@ HO_Perm_rel = data.frame(
            (length(which(HO_Perm$T6_HO4 == 2))/length(which((HO_Perm$T6_HO4 != "NA")))),
            (length(which(HO_Perm$T7_HO4 == 2))/length(which((HO_Perm$T7_HO4 != "NA")))),
            (length(which(HO_Perm$T8_HO4 == 2))/length(which((HO_Perm$T8_HO4 != "NA")))),
-           (length(which(HO_Perm$T9_HO4 == 2))/length(which((HO_Perm$T9_HO4 != "NA"))))
+           (length(which(HO_Perm$T9_HO4 == 2))/length(which((HO_Perm$T9_HO4 != "NA")))),
+           (length(which(HO_Perm$T9_HO4 == 2))/length(which((HO_Perm$T10_HO4 != "NA"))))
     
             )*100, digits = 2),
   
   month = as.factor(months_compl)
 )
-HO_Perm_rel$missing = c(NA,HO_Perm_rel[2,1],mean(c(HO_Perm_rel[2,1],HO_Perm_rel[4,1])),HO_Perm_rel[4,1],NA,NA,NA)
+HO_Perm_rel$missing = c(NA,HO_Perm_rel[2,1],mean(c(HO_Perm_rel[2,1],HO_Perm_rel[4,1])),HO_Perm_rel[4,1],NA,NA,NA,NA)
 
 
 
@@ -425,11 +428,12 @@ HO_loc_prop <- data.frame(
     July = plyr::count(df = HO_loc, vars = "T6_HO18")[2:5,2]/length(which(HO_loc$T6_HO18 > 0)),
     August = plyr::count(df = HO_loc, vars = "T7_HO18")[2:5,2]/length(which(HO_loc$T7_HO18 > 0)),
     September = plyr::count(df = HO_loc, vars = "T8_HO18")[2:5,2]/length(which(HO_loc$T8_HO18 > 0)),
-    October = plyr::count(df = HO_loc, vars = "T9_HO18")[2:5,2]/length(which(HO_loc$T9_HO18 > 0))
+    October = plyr::count(df = HO_loc, vars = "T9_HO18")[2:5,2]/length(which(HO_loc$T9_HO18 > 0)),
+    November = plyr::count(df = HO_loc, vars = "T10_HO18")[2:5,2]/length(which(HO_loc$T10_HO18 > 0))
     )
 HO_loc_prop_long = gather(HO_loc_prop, month, percentage)
 HO_loc_prop_long$month = factor(HO_loc_prop_long$month, levels = rev(months_miss), labels = rev(months_miss))
-HO_loc_prop_long$location = rep(c("Own Room","Designated Spot","Changing","Other"), 6)
+HO_loc_prop_long$location = rep(c("Own Room","Designated Spot","Changing","Other"), 7)
 HO_loc_prop_long$location = factor(HO_loc_prop_long$location, levels = c("Own Room","Designated Spot","Changing","Other"))
 HO_loc_prop_long$location_rev = factor(HO_loc_prop_long$location, levels = rev(c("Own Room","Designated Spot","Changing","Other")))
 
@@ -482,6 +486,7 @@ HO_Isol$T6mean = rowMeans(HO_Isol[,c("T6_HO13","T6_HO14","T6_HO15","T6_HO16")])
 HO_Isol$T7mean = rowMeans(HO_Isol[,c("T7_HO13","T7_HO14","T7_HO15","T7_HO16")])
 HO_Isol$T8mean = rowMeans(HO_Isol[,c("T8_HO13","T8_HO14","T8_HO15","T8_HO16")])
 HO_Isol$T9mean = rowMeans(HO_Isol[,c("T9_HO13","T9_HO14","T9_HO15","T9_HO16")])
+HO_Isol$T10mean = rowMeans(HO_Isol[,c("T10_HO13","T10_HO14","T10_HO15","T10_HO16")])
 
 HO_Isol_means = data.frame(
   month = as.factor(months_compl),
@@ -492,13 +497,15 @@ HO_Isol_means = data.frame(
     mean(HO_Isol$T6mean, na.rm = T),
     mean(HO_Isol$T7mean, na.rm = T),
     mean(HO_Isol$T8mean, na.rm = T),
-    mean(HO_Isol$T9mean, na.rm = T)
+    mean(HO_Isol$T9mean, na.rm = T),
+    mean(HO_Isol$T10mean, na.rm = T)
   ),
   missing = c(
     NA,
     mean(HO_Isol$T4mean, na.rm = T),
     mean(c(mean(HO_Isol$T4mean, na.rm = T),mean(HO_Isol$T6mean, na.rm = T))),
     mean(HO_Isol$T6mean, na.rm = T),
+    NA,
     NA,
     NA,
     NA
@@ -510,13 +517,15 @@ HO_Isol_means = data.frame(
     sd(HO_Isol$T6mean, na.rm = T),
     sd(HO_Isol$T7mean, na.rm = T),
     sd(HO_Isol$T8mean, na.rm = T),
-    sd(HO_Isol$T9mean, na.rm = T)
+    sd(HO_Isol$T9mean, na.rm = T),
+    sd(HO_Isol$T10mean, na.rm = T)
   ),
   sd_missing = c(
     NA,
     sd(HO_Isol$T4mean, na.rm = T),
     mean(sd(c(HO_Isol$T4mean, na.rm = T), sd(HO_Isol$T6mean, na.rm = T))),
     sd(HO_Isol$T6mean, na.rm = T),
+    NA,
     NA,
     NA,
     NA
@@ -546,7 +555,8 @@ cor(HO_Isol[,"T4mean"], HO_Isol[,"T4_HO6"], use = "complete.obs"),
 cor(HO_Isol[,"T6mean"], HO_Isol[,"T6_HO6"], use = "complete.obs"),
 cor(HO_Isol[,"T7mean"], HO_Isol[,"T7_HO6"], use = "complete.obs"),
 cor(HO_Isol[,"T8mean"], HO_Isol[,"T8_HO6"], use = "complete.obs"),
-cor(HO_Isol[,"T9mean"], HO_Isol[,"T9_HO6"], use = "complete.obs")
+cor(HO_Isol[,"T9mean"], HO_Isol[,"T9_HO6"], use = "complete.obs"),
+cor(HO_Isol[,"T10mean"], HO_Isol[,"T10_HO6"], use = "complete.obs")
 )), digits = 2)
 ```
   
@@ -601,7 +611,8 @@ HO_Sat_means = data.frame(
     mean(HO_Sat[HO_Sat$T6_HO31>0,"T6_HO31"], na.rm = T),
     mean(HO_Sat[HO_Sat$T7_HO31>0,"T7_HO31"], na.rm = T),
     mean(HO_Sat[HO_Sat$T8_HO31>0,"T8_HO31"], na.rm = T),
-    mean(HO_Sat[HO_Sat$T9_HO31>0,"T9_HO31"], na.rm = T)
+    mean(HO_Sat[HO_Sat$T9_HO31>0,"T9_HO31"], na.rm = T),
+    mean(HO_Sat[HO_Sat$T10_HO31>0,"T10_HO31"], na.rm = T)
     ),
   sd = c(
     sd(HO_Sat[HO_Sat$T3_HO31>0,"T3_HO31"], na.rm = T),
@@ -610,7 +621,8 @@ HO_Sat_means = data.frame(
     sd(HO_Sat[HO_Sat$T6_HO31>0,"T6_HO31"], na.rm = T),
     sd(HO_Sat[HO_Sat$T7_HO31>0,"T7_HO31"], na.rm = T),
     sd(HO_Sat[HO_Sat$T8_HO31>0,"T8_HO31"], na.rm = T),
-    sd(HO_Sat[HO_Sat$T9_HO31>0,"T9_HO31"], na.rm = T)
+    sd(HO_Sat[HO_Sat$T9_HO31>0,"T9_HO31"], na.rm = T),
+    sd(HO_Sat[HO_Sat$T10_HO31>0,"T10_HO31"], na.rm = T)
   ),
   missing = c(
      NA,
@@ -619,13 +631,15 @@ HO_Sat_means = data.frame(
     mean(HO_Sat[HO_Sat$T6_HO31>0,"T6_HO31"], na.rm = T),
     NA,
     NA,
-    NA
+    NA,
+   NA
   ),
   mis_sd = c(
      NA,
     sd(HO_Sat[HO_Sat$T4_HO31>0,"T4_HO31"], na.rm = T),
     mean(c(sd(HO_Sat[HO_Sat$T4_HO31>0,"T4_HO31"], na.rm = T),sd(HO_Sat[HO_Sat$T6_HO31>0,"T6_HO31"], na.rm = T))),
     sd(HO_Sat[HO_Sat$T6_HO31>0,"T6_HO31"], na.rm = T),
+    NA,
     NA,
     NA,
     NA
@@ -675,7 +689,8 @@ HO_Sat_means = HO_Sat_means %>%
     mean(HO_Sat[(HO_Sat$T6_covid11 == 3 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T),
     mean(HO_Sat[(HO_Sat$T7_covid11 == 3 & HO_Sat$T7_HO31>0), "T7_HO31"], na.rm = T),
     mean(HO_Sat[(HO_Sat$T8_covid11 == 3 & HO_Sat$T8_HO31>0), "T8_HO31"], na.rm = T),
-    mean(HO_Sat[(HO_Sat$T9_covid11 == 3 & HO_Sat$T9_HO31>0), "T9_HO31"], na.rm = T)
+    mean(HO_Sat[(HO_Sat$T9_covid11 == 3 & HO_Sat$T9_HO31>0), "T9_HO31"], na.rm = T),
+    mean(HO_Sat[(HO_Sat$T10_covid11 == 3 & HO_Sat$T10_HO31>0), "T10_HO31"], na.rm = T)
   ))%>%
   mutate(means_care_partner =  c(
     mean(HO_Sat[(HO_Sat$T3_covid11 == 4 & HO_Sat$T3_HO31>0), "T3_HO31"], na.rm = T),
@@ -684,13 +699,15 @@ HO_Sat_means = HO_Sat_means %>%
     mean(HO_Sat[(HO_Sat$T6_covid11 == 4 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T),
     mean(HO_Sat[(HO_Sat$T7_covid11 == 4 & HO_Sat$T7_HO31>0), "T7_HO31"], na.rm = T),
     mean(HO_Sat[(HO_Sat$T8_covid11 == 4 & HO_Sat$T8_HO31>0), "T8_HO31"], na.rm = T),
-    mean(HO_Sat[(HO_Sat$T9_covid11 == 4 & HO_Sat$T9_HO31>0), "T9_HO31"], na.rm = T)
+    mean(HO_Sat[(HO_Sat$T9_covid11 == 4 & HO_Sat$T9_HO31>0), "T9_HO31"], na.rm = T),
+    mean(HO_Sat[(HO_Sat$T10_covid11 == 4 & HO_Sat$T10_HO31>0), "T10_HO31"], na.rm = T)
   ))%>%
   mutate(missing_self = c(
     NA,
      mean(HO_Sat[(HO_Sat$T4_covid11 == 3 & HO_Sat$T4_HO31>0), "T4_HO31"], na.rm = T),
     mean(c( mean(HO_Sat[(HO_Sat$T4_covid11 == 3 & HO_Sat$T4_HO31>0), "T4_HO31"], na.rm = T),mean(HO_Sat[(HO_Sat$T6_covid11 == 3 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T))),
     mean(HO_Sat[(HO_Sat$T6_covid11 == 3 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T),
+    NA,
     NA,
     NA,
     NA
@@ -700,6 +717,7 @@ HO_Sat_means = HO_Sat_means %>%
     mean(HO_Sat[(HO_Sat$T4_covid11 == 4 & HO_Sat$T4_HO31>0), "T4_HO31"], na.rm = T),
     mean(c( mean(HO_Sat[(HO_Sat$T4_covid11 == 4 & HO_Sat$T4_HO31>0), "T4_HO31"], na.rm = T),mean(HO_Sat[(HO_Sat$T6_covid11 == 4 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T))),
     mean(HO_Sat[(HO_Sat$T6_covid11 == 4 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T),
+    NA,
     NA,
     NA,
     NA
@@ -754,7 +772,7 @@ Surprisingly, whether or not one had to care for their children at home had seem
 &nbsp;
   
 ```{r efficacy , include= TRUE, fig.height=3.5, out.width='100%' }
-HO_Sat_Eff =   reshape(HO_Sat[,!(names(HO_Sat) %in% c("T4_HO3","T6_HO3", grep( "_covid11",names(HO_Sat), value = T)))], varying = list(c("T3_HO31","T4_HO31","T6_HO31","T7_HO31","T8_HO31", "T9_HO31"), c("T3_HO32","T4_HO32","T6_HO32","T7_HO32","T8_HO32", "T9_HO32")), direction = "long", timevar = "month", idvar = "ID", v.names = c("Sat", "Eff"))
+HO_Sat_Eff =   reshape(HO_Sat[,!(names(HO_Sat) %in% c("T4_HO3","T6_HO3", grep( "_covid11",names(HO_Sat), value = T)))], varying = list(c("T3_HO31","T4_HO31","T6_HO31","T7_HO31","T8_HO31", "T9_HO31", "T10_HO31"), c("T3_HO32","T4_HO32","T6_HO32","T7_HO32","T8_HO32", "T9_HO32", "T10_HO32")), direction = "long", timevar = "month", idvar = "ID", v.names = c("Sat", "Eff"))
 
 #test reshape
 # table(HO_Sat$T3_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==1, "Sat"])
@@ -763,15 +781,17 @@ HO_Sat_Eff =   reshape(HO_Sat[,!(names(HO_Sat) %in% c("T4_HO3","T6_HO3", grep( "
 # table(HO_Sat$T7_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==4, "Sat"])
 # table(HO_Sat$T8_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==5, "Sat"])
 # table(HO_Sat$T9_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==6, "Sat"])
-# 
+# table(HO_Sat$T10_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==7, "Sat"])
+
 # table(HO_Sat$T3_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==1, "Eff"])
 # table(HO_Sat$T4_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==2, "Eff"])
 # table(HO_Sat$T6_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==3, "Eff"])
 # table(HO_Sat$T7_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==4, "Eff"])
 # table(HO_Sat$T8_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==5, "Eff"])
 # table(HO_Sat$T9_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==6, "Eff"])
+# table(HO_Sat$T10_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==7, "Eff"])
 
-HO_Sat_Eff$month = factor(HO_Sat_Eff$month, levels = 1:6, labels = months_miss)
+HO_Sat_Eff$month = factor(HO_Sat_Eff$month, levels = 1:7, labels = months_miss)
 HO_Sat_Eff = HO_Sat_Eff[HO_Sat_Eff$Sat > 0 & HO_Sat_Eff$Eff >0,]
 r_Sat_Eff = round(cor(HO_Sat_Eff$Sat,HO_Sat_Eff$Eff, use = "complete.obs"), digits = 2)
 HO_Sat_Eff_plot = ggplot(HO_Sat_Eff, aes(x=Eff,y= Sat)) + 
