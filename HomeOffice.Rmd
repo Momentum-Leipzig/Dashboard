@@ -9,7 +9,8 @@ output:
     toc_depth: 1
     include:
       after_body: _footer_Richard.txt
-    
+bibliography: references.bib
+csl: apa.csl    
 ---
 
 <!-- <style type="text/css"> -->
@@ -555,7 +556,7 @@ cor(HO_Isol[,"T9mean"], HO_Isol[,"T9_HO6"], use = "complete.obs")
 ## Additional Information {-}
 
 In most cases, working is a social process and the workplace is an inherently social space. Regular meetings, quick coordination of further steps, running into each other in the hallways, eating lunch together, sharing personal stories and experiences, and so on. All of that was not possible in the same manner when a portion of the workforce was forced to work from home only.  
-In the field of telework and telecommuting, the concept of __Professional Isolation__ emerged, being defined as __"a state of mind or belief that one is out of touch with others in the workplace"__ (Golden et al., 2008). This isn't necessarily bound to happen when people work from home. In its core, it is a __feeling of not being involved__ in the essential professional networks, which __can also occur__ while sitting __in a regular office__. Nonetheless there is a tendency among teleworkers to lack social comparison of their performance and more complex contextual clues about their workplace.  
+In the field of telework and telecommuting, the concept of __Professional Isolation__ emerged, being defined as __"a state of mind or belief that one is out of touch with others in the workplace"__ [@Golden.2008] (Golden et al., 2008). This isn't necessarily bound to happen when people work from home. In its core, it is a __feeling of not being involved__ in the essential professional networks, which __can also occur__ while sitting __in a regular office__. Nonetheless there is a tendency among teleworkers to lack social comparison of their performance and more complex contextual clues about their workplace.  
 In line of this research, we measured professional isolation by having people rate, for example:  
   
 _"I feel left out on activities and meetings that could enhance my career"_  
@@ -881,8 +882,11 @@ As stated above, the COVID-19 Crisis brought emphasis on the topic of Home Offic
 &nbsp;  
 Questions arose beyond possibility and prevalence: How do people feel, when they work from home? How should the work be designed to yield best outcomes? In our short portrayal we could give first answers to these questions. In general, there is above average satisfaction with working in the Home Office. This seems to hold true regardless of childcare but is potentially influenced by the perception of self-efficacy and the presence of sufficient technical equipment. The feeling of professional isolation is relatively low, albeit a differentiation between those who work entirely from home is needed. When someone is in Home Office, having a designated spot to work from seems to be present for most, yet not given for everybody.  
 &nbsp;  
-We hope, that we were able to give some insights into the topic of Home Office based on our sample and to inspire future rigorous research. We believe, that with digitalization progressing relentlessly, we as researchers and practitioners of work and organizational psychology need to be ready to give well-funded advice on how to create the best circumstances for Home Office possible.
+We hope, that we were able to give some insights into the topic of Home Office based on our sample and to inspire future rigorous research. We believe, that with digitalization progressing relentlessly, we as researchers and practitioners of work and organizational psychology need to be ready to give well-funded advice on how to create the best circumstances for Home Office possible.  
+&nbsp; 
+&nbsp; 
 
+# References {-}  
 ```{r clean up}
 rm(list=ls())
 ```

@@ -4,8 +4,12 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Research Team"
+      href: team.html
     - text: "Home Office"
       href: HomeOffice.html
+    - text: "Published Articles"
+      href: articles.html
 
 output:
   html_document:

@@ -1,0 +1,18 @@
+---
+title: "Published Articles"
+output: html_document
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+.main-container {
+  max-width: 1175px !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
+</style>
