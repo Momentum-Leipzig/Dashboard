@@ -360,9 +360,6 @@ div.tocify {
 <li>
   <a href="HomeOffice.html">Home Office</a>
 </li>
-<li>
-  <a href="articles.html">Published Articles</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -388,19 +385,18 @@ div.tocify {
 </div>
 
 
-<!-- <style type="text/css"> -->
-<!-- .main-container { -->
-<!--   max-width: 1800px !important; -->
-<!--   margin-left: auto; -->
-<!--   margin-right: auto; -->
-<!-- } -->
-<!-- </style> -->
+<!-- "after body" is referencing what should stand in the end of the page. I created a .txt file with some HTML-Code, indicating the copyright of the page and who is responsible for this particular site (in this case, me) -->
+<!-- "bibliography" takes the references.bib I created with Citavi and creates a bibliography (oh surprise) of the citations used in the text -->
+<!-- "csl: apa.csl" makes the citation apa-compatible (using the mentioned .csl file) -->
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
 <p>With the increasing digitalization of work, the idea of <strong>working from home</strong> gained more and more traction. For some, it’s a convenience in the face of unnecessary commuting to work (e.g. when you’re a programmer, who doesn’t need to come into work every day while working on a software), for others it can be a crucial part in balancing out work and family demands. It surely has its advantages and disadvantages, both for the worker and for the company, but having it as a possibility increases flexibility and adaptability.</p>
 <p>With the global COVID-19 pandemic, <strong>working from home</strong> drastically shifted from mere convenience to a <strong>necessity</strong> in many cases, as social distancing guidelines were imposed and businesses had to shut down. This put additional interest into the topic of Home Office - how it’s being implemented, what effect it has on the workers and how it can be improved on.</p>
 <p>Beginning in our third wave of inquiry in <strong>April</strong>, we started to ask our participants various questions about their <strong>experience regarding Home Office</strong>. With the exception of June, where a part of the questions needed to be reduced in order to gather data on work and ageing, we then continued presenting our participants the same items monthly. Below, You can see some <strong>descriptive statistics</strong> about various topics connected to working from home. Please note that these results present only an <strong>overview of our data</strong>, and causal interpretations can exclusively be made after rigorous analysis, published elsewhere. Feel free, however, to get inspirations for future research!</p>
 <hr />
+<!-- .tabset and .tabset fade creates tabs, where content will be stored. -->
+<!-- The individual tabs are marked by headers one level under the tabset, in this case the tabset is at level 1 and all subsequent level 2 headers will be presented as tabs under the tabset, until another level 1 header is written. -->
+<!-- The "{-}" after "Plot" prevents this level 2 header to be counted when counting through the individual headers -->
 </div>
 <div id="average-time-spent-in-home-office" class="section level1 tabset tabset-fade">
 <h1><span class="header-section-number">2</span> Average Time Spent in Home Office</h1>
@@ -410,32 +406,48 @@ div.tocify {
   label = c(&quot;In Home Office&quot;, &quot;Out of Home Office&quot;),
   percent = round(c(mean(data_HO$T1_home_office, na.rm = T),100-mean(data_HO$T1_home_office, na.rm = T)), digits = 2)
 )
+
 home_office_T1 &lt;- home_office_T1 %&gt;% 
   arrange(desc(label)) %&gt;%
   mutate(ypos = cumsum(percent)- 0.5*percent)
+# Code for making the numbers in the pie chart nicely positioned
 
-home_office_T1$ypos = c(44.2,92.5) #Nicer positioning of the labels inside the Pie-Chart
+home_office_T1$ypos = c(44.2,92.5) 
+#Nicer positioning of the labels inside the Pie-Chart by manually adjusting the calculated values from above
 
-mean_HO_T1 = ggplot(home_office_T1, aes(x=&quot;&quot;, y=percent, fill = label))+
-  geom_bar(width = 1, stat = &quot;identity&quot;, color = &quot;white&quot;, alpha = .9) +
-  scale_fill_manual(values = c(&quot;#bdd7e7&quot;,&quot;#3182bd&quot;))+
+mean_HO_T1 = ggplot(home_office_T1, aes(x=&quot;&quot;, y=percent, fill = label))+    
+  #aes(x=&quot;&quot;,...) for pie chart
+  geom_bar(width = 1, stat = &quot;identity&quot;, color = &quot;white&quot;, alpha = .9) +     
+  #stat = &quot;identity&quot; for taking the exact numbers from the dataframe, without further calculations; color = &quot;white&quot; for the outlining
+  scale_fill_manual(values = c(&quot;#bdd7e7&quot;,&quot;#3182bd&quot;))+                       
+  #colours taken from colour_scale_brewer, Blue. Names of colours taken from https://colorbrewer2.org/#type=sequential&amp;scheme=Blues&amp;n=5
   coord_polar(&quot;y&quot;, direction = -1)+
-  geom_text(aes(y = ypos, label = paste0(percent, &#39;%&#39;)), color = &quot;grey32&quot;, size=6) +
+  # direction of the parts
+  geom_text(aes(y = ypos, label = paste0(percent, &#39;%&#39;)), size=6, colour = &quot;#3e3f3a&quot;) +
+  # paste0 for creating (a vector of) strings out of numeral data
+  # For some reason, font_colour didn&#39;t overwrite the font colour inside the chart (earlier it did...)
   guides(fill=guide_legend(title=&quot;Average proportion of worktime spent...&quot;, title.position = &quot;top&quot;))+
   theme_void()+
-  theme(legend.position=&quot;bottom&quot;, legend.text = element_text(size = 14), legend.title = element_text(size = 14.5) )
+  # losing all other lines for sleeker look
+  theme(legend.position=&quot;bottom&quot;, legend.text = element_text(size = 14), legend.title = element_text(size = 14.5))+
+  font_colour
   
 
 mean_HO_T1
+# presenting the plot
 
 density_HO_T1 = ggplot(data_HO, aes(T1_home_office))+
   theme_classic()+
   geom_histogram(binwidth=10,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  # binwidth = how wide should the individual coloums be? col for the linecolour, fill for the filled colour
   geom_vline(aes(xintercept=mean(T1_home_office, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
   labs(x=&quot;Percentage of worktime spent in Home Office&quot;, y = &quot;Amount of participants&quot;)+
   scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), &#39;%&#39;)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
   scale_y_continuous(breaks=seq(0, 1500, 250))+
-  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14))
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+  
   
 density_HO_T1</code></pre>
 <div class="figure">
@@ -445,7 +457,8 @@ Percentage of time worked from home in December 2019
 </p>
 </div>
 <p> <br />
- </p>
+ <br />
+<!-- &nbsp;  (attention, two spaces afterwards are very important!) is a more reliable way for making line breaks - double spacing doesn't always work out very well  --> <!-- In order to have less text, the information can be viewed by klicking on this tab. For that to work, there is an R-Chunk which just presents the graphs from above with the desired text around it. --> <!-- If you find a better way to make text appear and disappear, feel free to tell me! --></p>
 </div>
 <div id="additional-information" class="section level2 unnumbered">
 <h2>Additional Information</h2>
@@ -453,6 +466,9 @@ Percentage of time worked from home in December 2019
 <strong><em>“What percentage of Your worktime do You work from home (Home Office)?”</em></strong><br />
 The following graphs show the <strong>average proportion of time</strong> spent in Home Office and how the percentages were <strong>distributed</strong> back then.</p>
 <pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
+
+#cache.whatever inside the chunk options tells the chunk, that it has to be invalidated, as soon as one of these variables change. Otherwise, changing the plots in the chunk above doesn&#39;t invalidate this chunk and the lastly cached version will be displayes.
+
 
 mean_HO_T1
 density_HO_T1</code></pre>
@@ -463,6 +479,7 @@ Percentage of time worked from home in December 2019
 </p>
 </div>
 <p>As can be seen, before the COVID-19 Crisis hit, <strong>work from home was rather sparse</strong>. Only 725 of the 1639 participants, who answered this question, had indicated that they worked from home at all (equaling 44.23%)</p>
+<!-- To end the tabset from above without starting a new level 1 header, the following line of code is needed. .unnumbered is equivalent to {-} and .toc-ignore lets the toc not include this header. This is necessary, since we told the toc to include all level 1 headers, so otherwise there would be an ugly space in the toc, leading to this point in the page -->
 </div>
 </div>
 <div id="section" class="section level1 unnumbered toc-ignore">
@@ -473,6 +490,8 @@ Percentage of time worked from home in December 2019
 <h3>Plots</h3>
 <pre class="r"><code>#HO6
 HO_Perc = data_HO[,grep(names(data_HO), pattern = &quot;_HO6&quot;, value = T)]
+# grep searches for patterns in a given Vector (in this case, the pattern &quot;_HO6&quot; in names(data_HO)). This allows easy finding of the same variable over different time points 
+
 HO_Perc_rel = data.frame(
   month = as.factor(months_compl),
   mean_perc = c(
@@ -495,26 +514,45 @@ HO_Perc_rel = data.frame(
     sd(HO_Perc$T9_HO6, na.rm = T),
     sd(HO_Perc$T10_HO6, na.rm = T)
   )
-) # Data-Frame with the means and standard deviations of the percentages of time Worked in Home Office, Long Format (Because of the many NAs, ggplots stat = &quot;mean&quot; could have shown errrors)
+) 
+# Data-Frame with the means and standard deviations of the percentages of time Worked in Home Office, Long Format (Because of the many NAs, ggplots stat = &quot;mean&quot; could have shown errrors)
+# Usually Colmeans would have maybe done the trick, but we don&#39;t have the data for every month, and need an NA, so that we can fill that with in the plot
 
-HO_Perc_rel$missing = c(NA, HO_Perc_rel[2,2],mean(c(HO_Perc_rel[2,2],HO_Perc_rel[4,2])),HO_Perc_rel[4,2],NA,NA,NA,NA) #Extrapolating the missing value in June to make a separate connecting line in the graph
-HO_Perc_rel$mis_sd = c(NA, HO_Perc_rel[2,3],mean(c(HO_Perc_rel[2,3],HO_Perc_rel[4,3])),HO_Perc_rel[4,3],NA,NA,NA,NA)
-HO_Perc_rel$sd_bottom = HO_Perc_rel$mean_perc-HO_Perc_rel$sd_perc/2 #for the ribbon
-HO_Perc_rel$sd_upper = HO_Perc_rel$mean_perc+HO_Perc_rel$sd_perc/2
-HO_Perc_rel$mis_sd_bottom = HO_Perc_rel$missing-HO_Perc_rel$mis_sd/2
-HO_Perc_rel$mis_sd_upper = HO_Perc_rel$missing+HO_Perc_rel$mis_sd/2
+# For every new wave, that is entered, this new TX_HOY needs to be added in these dataframes and NAs in the &quot;Missing&quot; cols
+
+HO_Perc_rel$missing = c(NA, 
+                        HO_Perc_rel[2,2],
+                        mean(c(HO_Perc_rel[2,2],HO_Perc_rel[4,2])),
+                        HO_Perc_rel[4,2],
+                        NA,
+                        NA,
+                        NA,
+                        NA) 
+#Extrapolating the missing value in June to make a separate connecting line between May and July in the graph
+HO_Perc_rel$mis_sd = c(NA, 
+                       HO_Perc_rel[2,3],
+                       mean(c(HO_Perc_rel[2,3],HO_Perc_rel[4,3])),
+                       HO_Perc_rel[4,3],
+                       NA,
+                       NA,
+                       NA,
+                       NA)
 
 HO_Perc_plot = ggplot(HO_Perc_rel, aes(x=month, y = mean_perc)) + 
-  geom_line(aes(group=1, color = &quot;#3182bd&quot;), col= &quot;#3182bd&quot;, size = 1.5)+
+  geom_line(aes(group=1), col= &quot;#3182bd&quot;, size = 1.5)+
   geom_line(aes(x=month, y=missing, group =1,color = &quot;#3182bd&quot;), col= &quot;#3182bd&quot;, size = 1.5, linetype = &quot;dashed&quot; )+
+  # for the connecting dashed line
   geom_point(col= &quot;#3182bd&quot;, size = 3)+
-  geom_ribbon(aes(y=mean_perc, ymin = sd_bottom, ymax = sd_upper, group = 1),fill=&quot;#3182bd&quot;, alpha=0.4) +
-  geom_ribbon(aes(y=missing, ymin = mis_sd_bottom, ymax = mis_sd_upper, group = 1),fill=&quot;#3182bd&quot;, alpha=0.3) +
+  # for the points at every month
+  geom_ribbon(aes(y=mean_perc, ymin = mean_perc - (sd_perc/2), ymax = mean_perc + (sd_perc/2), group = 1),fill=&quot;#3182bd&quot;, alpha=0.4) +
+  geom_ribbon(aes(y=missing, ymin = missing - (mis_sd/2), ymax = missing + (mis_sd/2), group = 1),fill=&quot;#3182bd&quot;, alpha=0.3) +
+  # only half a SD around the mean, because the whole SD would have filled the whole scale
   coord_cartesian(ylim = c(0,60))+
   theme_minimal()+
   scale_x_discrete(limits = months_compl, name =&quot;&quot; )+
   scale_y_continuous(breaks = seq(0,60,10), labels = paste0(seq(0,60,10), &quot;%&quot;), name = &quot;Percentage of a week worked from home&quot;)+
-  labs(caption = &quot;Note: Data was missing for June. Ribbon represents 1SD around the mean.&quot;)
+  labs(caption = &quot;Note: Data was missing for June. Ribbon represents 1SD around the mean.&quot;)+
+  font_colour
 
 HO_Perc_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/Percentage%20over%20Time-1.png" width="100%" /></p>
@@ -522,7 +560,7 @@ HO_Perc_plot</code></pre>
 <pre class="r"><code>HO_Perc_long = gather(HO_Perc, month, percentage)
 HO_Perc_long$month = factor(HO_Perc_long$month, levels = names(HO_Perc), labels = months_miss)
 
-## Here are some attempts to show the distribution of the percentages over time, to show that the middle part of the distribution remained sparse and only the right border grew, accounting for the overall increase in Home Office time. But I am far from satisfied with the result. --&gt; Relevant?
+## Here are some attempts to show the distribution of the percentages over time, to show that the middle part of the distribution remained sparse and only the right border grew, accounting for the overall increase in Home Office time. 
 
 HO_Perc_ani = ggplot(HO_Perc_long, aes(percentage)) +
   theme_classic()+
@@ -531,14 +569,16 @@ HO_Perc_ani = ggplot(HO_Perc_long, aes(percentage)) +
   scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), &#39;%&#39;)) +
   scale_y_continuous(breaks=seq(0, 1500, 250))+
   theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
-
+  font_colour +
+# normal ggplot plot
   transition_states(month,
                     transition_length = 2,
                     state_length = 1) +
-
+# by adding this part, it becomes a animated plot. the first argument indicates, by which variable the states should be calculated
   ggtitle(&#39;{closest_state}&#39;) +
-
+# for the title to indicate the respective month
   ease_aes(&#39;cubic-in-out&#39;)
+# for nicer transitioning
 
 animate(HO_Perc_ani, renderer = gifski_renderer())
 
@@ -550,7 +590,8 @@ HO_Perc_dens = ggplot(HO_Perc_long, aes(percentage, y=..density.., fill = month,
   scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), &#39;%&#39;)) +
   scale_fill_brewer(palette=&quot;Blues&quot;, direction = -1) +
   scale_color_brewer(palette=&quot;Blues&quot;, direction = 1) +
-  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14))
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
 
 HO_Perc_dens</code></pre>
 <p><img src="HomeOffice_files/figure-html/distributions%20over%20Time-1.gif" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time-2.png" width="50%" /></p>
@@ -586,8 +627,10 @@ HO_Perc_dens</code></pre>
 <h2>Plots</h2>
 <pre class="r"><code># 1 = Not possible, 2 = Possible
 HO_Pos_T3 = round(data.frame(
-                    pre = c(length(which(data_HO$T3_HO1 == 2)),length(which(data_HO$T3_HO1 == 1 ))) /length(which((data_HO$T3_HO1 != &quot;NA&quot;))),
-                    post = c(length(which(data_HO$T3_HO4 == 2)),length(which(data_HO$T3_HO4 == 1 ))) /length(which((data_HO$T3_HO4 != &quot;NA&quot;)))
+                    pre = c(length(which(data_HO$T3_HO1 == 2)),
+                            length(which(data_HO$T3_HO1 == 1 ))) /length(which((data_HO$T3_HO1 != &quot;NA&quot;))),
+                    post = c(length(which(data_HO$T3_HO4 == 2)),
+                             length(which(data_HO$T3_HO4 == 1 ))) /length(which((data_HO$T3_HO4 != &quot;NA&quot;)))
                        )*100,digits = 2)
 
 HO_Pos_T3 &lt;- HO_Pos_T3 %&gt;%
@@ -602,10 +645,11 @@ HO_Pos_pre = ggplot(HO_Pos_T3, aes(x=&quot;&quot;, y= pre, fill = labels)) +
   scale_fill_discrete(breaks=c(&quot;Yes&quot;,&quot;No&quot;)) +
   scale_fill_manual(values = c(&quot;#3182bd&quot;,&quot;#bdd7e7&quot;))+
   coord_polar(&quot;y&quot;)+
-  geom_text(aes(y = ypos_pre, label = paste0(pre, &#39;%&#39;)), color = &quot;grey32&quot;, size=6) +
+  geom_text(aes(y = ypos_pre, label = paste0(pre, &#39;%&#39;)), size=6, colour = &quot;#3e3f3a&quot;) +
   guides(fill=guide_legend(title=&quot;Before the Pandemic&quot;, title.position = &quot;top&quot;))+
   theme_void()+
-  theme(legend.position=&quot;bottom&quot;, legend.text = element_text(size = 14), legend.title = element_text(size = 14.5) )
+  theme(legend.position=&quot;bottom&quot;, legend.text = element_text(size = 14), legend.title = element_text(size = 14.5) )+
+  font_colour
   
 
 HO_Pos_pre
@@ -614,10 +658,11 @@ HO_Pos_post = ggplot(HO_Pos_T3, aes(x=&quot;&quot;, y= post, fill = labels)) +
   geom_bar(width = 1, stat = &quot;identity&quot;, color = &quot;white&quot;, alpha = .9) +
   scale_fill_manual(values = c(&quot;#3182bd&quot;,&quot;#bdd7e7&quot;))+
   coord_polar(&quot;y&quot;)+
-  geom_text(aes(y = ypos_post, label = paste0(post, &#39;%&#39;)), color = &quot;grey32&quot;, size=6) +
+  geom_text(aes(y = ypos_post, label = paste0(post, &#39;%&#39;)), size=6, colour = &quot;#3e3f3a&quot;) +
   guides(fill=guide_legend(title=&quot;Since March&quot;, title.position = &quot;top&quot;))+
   theme_void()+
-  theme(legend.position=&quot;bottom&quot;, legend.text = element_text(size = 14), legend.title = element_text(size = 14.5))
+  theme(legend.position=&quot;bottom&quot;, legend.text = element_text(size = 14), legend.title = element_text(size = 14.5))+
+  font_colour
 
 HO_Pos_post</code></pre>
 <div class="figure">
@@ -656,20 +701,30 @@ Allowed to work from home
 <h3>Plot</h3>
 <pre class="r"><code>HO_Perm = data_HO[,c(&quot;ID&quot;,grep(&quot;_HO4&quot;,names(data_HO), value = T))]
 HO_Perm_rel = data.frame(
-  perm = round(c((length(which(HO_Perm$T3_HO4 == 2))/length(which((HO_Perm$T3_HO4 != &quot;NA&quot;)))),
+  perm = round(c(
+           (length(which(HO_Perm$T3_HO4 == 2))/length(which((HO_Perm$T3_HO4 != &quot;NA&quot;)))),
            (length(which(HO_Perm$T4_HO4 == 2))/length(which((HO_Perm$T4_HO4 != &quot;NA&quot;)))),
            NA,
            (length(which(HO_Perm$T6_HO4 == 2))/length(which((HO_Perm$T6_HO4 != &quot;NA&quot;)))),
            (length(which(HO_Perm$T7_HO4 == 2))/length(which((HO_Perm$T7_HO4 != &quot;NA&quot;)))),
            (length(which(HO_Perm$T8_HO4 == 2))/length(which((HO_Perm$T8_HO4 != &quot;NA&quot;)))),
            (length(which(HO_Perm$T9_HO4 == 2))/length(which((HO_Perm$T9_HO4 != &quot;NA&quot;)))),
-           (length(which(HO_Perm$T9_HO4 == 2))/length(which((HO_Perm$T10_HO4 != &quot;NA&quot;))))
+           (length(which(HO_Perm$T10_HO4 == 2))/length(which((HO_Perm$T10_HO4 != &quot;NA&quot;))))
     
             )*100, digits = 2),
   
   month = as.factor(months_compl)
 )
-HO_Perm_rel$missing = c(NA,HO_Perm_rel[2,1],mean(c(HO_Perm_rel[2,1],HO_Perm_rel[4,1])),HO_Perm_rel[4,1],NA,NA,NA,NA)
+# (length(which(HO_Perm$T3_HO4 == 2)) returns the length of the vector of rows, where T3_HO4 is 2 (i.e. those who had permission to work from home). the second term in the division indicates the total amount of responses in the respective month. Rounding all of this after multiplying by 100 for percentages
+
+HO_Perm_rel$missing = c(NA,
+                        HO_Perm_rel[2,1],
+                        mean(c(HO_Perm_rel[2,1],HO_Perm_rel[4,1])),
+                        HO_Perm_rel[4,1],
+                        NA,
+                        NA,
+                        NA,
+                        NA)
 
 
 
@@ -682,7 +737,8 @@ HO_Perm_plot = ggplot(HO_Perm_rel, aes(x=month, y = perm)) +
   theme_minimal()+
   scale_x_discrete(limits = months_compl, name =&quot;&quot; )+
   scale_y_continuous(breaks = seq(20,60,10), labels = paste0(seq(20,60,10), &quot;%&quot;), name = &quot;Allowed to work from home&quot;)+
-  labs(caption = &quot;Note: Data was missing for June.&quot;)
+  labs(caption = &quot;Note: Data was missing for June.&quot;)+
+  font_colour
 
 HO_Perm_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/Permission%20over%20Time-1.png" width="100%" /></p>
@@ -718,7 +774,7 @@ HO_Perm_plot</code></pre>
 HO_loc = data_HO[,grep(&quot;_HO18&quot;,names(data_HO), value = T )]
 
 HO_loc_prop &lt;- data.frame(
-    row.names = c(&quot;Own Room&quot;,&quot;Designated Spot&quot;,&quot;Changing&quot;,&quot;Other&quot;),
+    location = c(&quot;Own Room&quot;,&quot;Designated Spot&quot;,&quot;Changing&quot;,&quot;Other&quot;),
     April = plyr::count(df = HO_loc, vars = &quot;T3_HO18&quot;)[2:5,2]/length(which(HO_loc$T3_HO18 &gt; 0)),
     May = plyr::count(df = HO_loc, vars = &quot;T4_HO18&quot;)[2:5,2]/length(which(HO_loc$T4_HO18 &gt; 0)),
     July = plyr::count(df = HO_loc, vars = &quot;T6_HO18&quot;)[2:5,2]/length(which(HO_loc$T6_HO18 &gt; 0)),
@@ -727,11 +783,16 @@ HO_loc_prop &lt;- data.frame(
     October = plyr::count(df = HO_loc, vars = &quot;T9_HO18&quot;)[2:5,2]/length(which(HO_loc$T9_HO18 &gt; 0)),
     November = plyr::count(df = HO_loc, vars = &quot;T10_HO18&quot;)[2:5,2]/length(which(HO_loc$T10_HO18 &gt; 0))
     )
-HO_loc_prop_long = gather(HO_loc_prop, month, percentage)
+# this one is a bit complicated :D I wanted to have the proportions of people woking from the respective places.
+# plyr::count(df = HO_loc, vars = &quot;T3_HO18&quot;) counts the frequency of every value inside a vector and returns a tibble with two columns (Value and Frequency) per variable. in this case, there are 6 &quot;Values&quot;, being 0,1,2,3,6 and NA.
+# by adding [2:5,2] we say that we want only the frequencies (second column) of 1,2,3 and 6 (rows 2:5), since these are the ones that are interesting for us. (see avove)
+# length(which(HO_loc$T3_HO18 &gt; 0)) returns the total of valid responses
+
+HO_loc_prop_long = gather(HO_loc_prop, month, percentage, -location)
 HO_loc_prop_long$month = factor(HO_loc_prop_long$month, levels = rev(months_miss), labels = rev(months_miss))
-HO_loc_prop_long$location = rep(c(&quot;Own Room&quot;,&quot;Designated Spot&quot;,&quot;Changing&quot;,&quot;Other&quot;), 7)
-HO_loc_prop_long$location = factor(HO_loc_prop_long$location, levels = c(&quot;Own Room&quot;,&quot;Designated Spot&quot;,&quot;Changing&quot;,&quot;Other&quot;))
+# here we use rev(), so that the plot returns the months from oldest to most recent
 HO_loc_prop_long$location_rev = factor(HO_loc_prop_long$location, levels = rev(c(&quot;Own Room&quot;,&quot;Designated Spot&quot;,&quot;Changing&quot;,&quot;Other&quot;)))
+# for better order
 
 # Not much change over Time
 HO_loc_plot = ggplot(HO_loc_prop_long, aes(x=percentage, y = month)) +
@@ -741,7 +802,8 @@ HO_loc_plot = ggplot(HO_loc_prop_long, aes(x=percentage, y = month)) +
   labs(y=&quot;&quot;, x = &quot;&quot;)+
   scale_x_continuous(breaks = seq(0,1,.25), labels = paste0(seq(0,100,25), &quot;%&quot;))+
   guides(fill=guide_legend(title=&quot;Workplace in the Home Office&quot;, title.position = &quot;top&quot;, reverse = T))+
-  theme(legend.position=&quot;top&quot;, legend.text = element_text(), legend.title = element_text())
+  theme(legend.position=&quot;top&quot;)+
+  font_colour
   
 
 HO_loc_plot</code></pre>
@@ -767,14 +829,17 @@ HO_loc_plot</code></pre>
 <h2>Plot</h2>
 <pre class="r"><code># HO13 - 16
 HO_Isol_Vars = c(grep(&quot;_HO13&quot;, names(data_HO), value = T), grep(&quot;_HO14&quot;, names(data_HO), value = T),grep(&quot;_HO15&quot;, names(data_HO), value = T),grep(&quot;_HO16&quot;, names(data_HO), value = T))
+
+
 HO_Isol = data_HO[, c(&quot;ID&quot;, HO_Isol_Vars)]
-HO_Isol$T3mean = rowMeans(HO_Isol[,c(&quot;T3_HO13&quot;,&quot;T3_HO14&quot;,&quot;T3_HO15&quot;,&quot;T3_HO16&quot;)])
-HO_Isol$T4mean = rowMeans(HO_Isol[,c(&quot;T4_HO13&quot;,&quot;T4_HO14&quot;,&quot;T4_HO15&quot;,&quot;T4_HO16&quot;)])
-HO_Isol$T6mean = rowMeans(HO_Isol[,c(&quot;T6_HO13&quot;,&quot;T6_HO14&quot;,&quot;T6_HO15&quot;,&quot;T6_HO16&quot;)])
-HO_Isol$T7mean = rowMeans(HO_Isol[,c(&quot;T7_HO13&quot;,&quot;T7_HO14&quot;,&quot;T7_HO15&quot;,&quot;T7_HO16&quot;)])
-HO_Isol$T8mean = rowMeans(HO_Isol[,c(&quot;T8_HO13&quot;,&quot;T8_HO14&quot;,&quot;T8_HO15&quot;,&quot;T8_HO16&quot;)])
-HO_Isol$T9mean = rowMeans(HO_Isol[,c(&quot;T9_HO13&quot;,&quot;T9_HO14&quot;,&quot;T9_HO15&quot;,&quot;T9_HO16&quot;)])
-HO_Isol$T10mean = rowMeans(HO_Isol[,c(&quot;T10_HO13&quot;,&quot;T10_HO14&quot;,&quot;T10_HO15&quot;,&quot;T10_HO16&quot;)])
+HO_Isol$T3mean = rowMeans(HO_Isol[,grep(&quot;T3_HO1&quot;, names(HO_Isol), value = T)])
+HO_Isol$T4mean = rowMeans(HO_Isol[,grep(&quot;T4_HO1&quot;, names(HO_Isol), value = T)])
+HO_Isol$T6mean = rowMeans(HO_Isol[,grep(&quot;T6_HO1&quot;, names(HO_Isol), value = T)])
+HO_Isol$T7mean = rowMeans(HO_Isol[,grep(&quot;T7_HO1&quot;, names(HO_Isol), value = T)])
+HO_Isol$T8mean = rowMeans(HO_Isol[,grep(&quot;T8_HO1&quot;, names(HO_Isol), value = T)])
+HO_Isol$T9mean = rowMeans(HO_Isol[,grep(&quot;T9_HO1&quot;, names(HO_Isol), value = T)])
+HO_Isol$T10mean = rowMeans(HO_Isol[,grep(&quot;T10_HO1&quot;, names(HO_Isol), value = T)])
+# Compiling the respective individual means of Isolation at every datapoint (dyplr might have given an easyer way)
 
 HO_Isol_means = data.frame(
   month = as.factor(months_compl),
@@ -832,11 +897,13 @@ HO_Isol_plot = ggplot(HO_Isol_means, aes(x=month, y = means)) +
   coord_cartesian(ylim = c(1,3))+
   scale_x_discrete(limits = months_compl, name =&quot;&quot; )+
   scale_y_continuous(breaks = seq(1.5,3,0.5), name = &quot;Feeling of Isolation&quot;)+
-  labs(caption = &quot;Note: Data was missing for June. Ribbon represents 1SD around the mean.&quot;)
+  labs(caption = &quot;Note: Data was missing for June. Ribbon represents 1SD around the mean.&quot;)+
+  font_colour
 
 HO_Isol_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/Isolation-1.png" width="100%" /></p>
 <pre class="r"><code>HO_Isol =  cbind(HO_Isol, HO_Perc)
+#adding percentage of time worked in Home Office for Correlation seen in the text below
 mean_r = round(mean(c(
 cor(HO_Isol[,&quot;T3mean&quot;], HO_Isol[,&quot;T3_HO6&quot;], use = &quot;complete.obs&quot;),
 cor(HO_Isol[,&quot;T4mean&quot;], HO_Isol[,&quot;T4_HO6&quot;], use = &quot;complete.obs&quot;),
@@ -880,6 +947,10 @@ Investigating a smaller subset of participants, the ones who spent most of their
 Sat_variables = c(grep(&quot;_HO3&quot;,names(data_HO), value = T),grep(&quot;_covid11&quot;,names(data_HO), value = T), &quot;ID&quot;)
 HO_Sat =  data_HO[,Sat_variables]
 HO_Sat = HO_Sat[,-which(names(HO_Sat) %in% grep(&quot;_HO30&quot;,names(HO_Sat), value = T))]
+# since grep(&quot;_HO3&quot;,names(data_HO), value = T) returns all the names with _H03 in them, and we don&#39;t need HO30, this line above removes all the Tx_HO30 from the dataframe
+
+
+# Satisfaction (_HO31) was measured on a scale of 1-5, but there are Missings in the form of zeroes. So in order to avoid a distortion of the mean, we only use the rows, where the value is greater than 0 
 HO_Sat_means = data.frame(
   month = as.factor(months_compl),
   means = c(
@@ -934,7 +1005,8 @@ HO_Sat_plot = ggplot(HO_Sat_means, aes(x=month, y = means)) +
   coord_cartesian(ylim = c(1,5))+
   scale_x_discrete(limits = months_compl, name =&quot;&quot; )+
   scale_y_continuous(breaks = seq(1,5,1), name = &quot;Satisfaction with Home Office&quot;)+
-  labs(caption = &quot;Note: Data was missing for June. Ribbon represents 1SD around the mean.&quot;)
+  labs(caption = &quot;Note: Data was missing for June. Ribbon represents 1SD around the mean.&quot;)+
+  font_colour
 HO_Sat_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/Satisfaction-1.png" width="100%" /></p>
 </div>
@@ -953,7 +1025,8 @@ Now that in and of itself is good news. Even though the all-encompassing situati
 <h2><span class="header-section-number">6.2</span> Child Care</h2>
 <div id="plot-5" class="section level3 unnumbered">
 <h3>Plot</h3>
-<pre class="r"><code>HO_Sat_means = HO_Sat_means %&gt;%
+<pre class="r"><code># Here we use the syntax of dplyr. We add a column with the means of &quot;satisfaction&quot; by group (Childcare provided by oneself, covid11 == 3, or by the partner, covid11 == 4) by using the &quot;mutate&quot; function: creating a vector called means_care_..., filling it with the conditional means, and adding it to the existing dataframe.
+HO_Sat_means = HO_Sat_means %&gt;%
   mutate(means_care_self = c(
     mean(HO_Sat[(HO_Sat$T3_covid11 == 3 &amp; HO_Sat$T3_HO31&gt;0), &quot;T3_HO31&quot;], na.rm = T),
     mean(HO_Sat[(HO_Sat$T4_covid11 == 3 &amp; HO_Sat$T4_HO31&gt;0), &quot;T4_HO31&quot;], na.rm = T),
@@ -995,6 +1068,7 @@ Now that in and of itself is good news. Even though the all-encompassing situati
     NA
   ))
 colors = c(&quot;oneself&quot; = &quot;#e6550d&quot;, &quot;partner&quot; = &quot;#31a354&quot;)
+# this is for the subsequent plot, in Order to have a legend with custom labels
 
 HO_Sat_care_plot = ggplot(HO_Sat_means, aes(x=month, y = means)) + 
   geom_line(aes(group=1, color = &quot;#3182bd&quot;),col = &quot;#3182bd&quot;, size = 1, linetype = &quot;twodash&quot;)+
@@ -1008,6 +1082,8 @@ HO_Sat_care_plot = ggplot(HO_Sat_means, aes(x=month, y = means)) +
   scale_y_continuous(breaks = seq(1,5,1), name = &quot;Satisfaction with Home Office&quot;)+
   labs(caption = &quot;Note: Data was missing for June. Ribbon represents 1SD around the mean.&quot;, color = &quot;Childcare provided by...&quot;)+
   
+  # up until now, same graph as before. Adding the conditional lines:
+  
   geom_line(aes(x=month, y= means_care_self, group=1, color=&quot;oneself&quot;), size = 1.5 )+
   geom_line(aes(x=month, y=missing_self, group =1,color = &quot;oneself&quot;),  size = 1.5, linetype = &quot;dashed&quot; )+
   geom_point(aes(x=month, y = means_care_self, color = &quot;oneself&quot;), size = 3)+
@@ -1015,8 +1091,14 @@ HO_Sat_care_plot = ggplot(HO_Sat_means, aes(x=month, y = means)) +
   geom_line(aes(x=month, y= means_care_partner, group=1, color=&quot;partner&quot;), size = 1.5 )+
   geom_line(aes(x=month, y=missing_partner, group =1,color = &quot;partner&quot;), size = 1.5, linetype = &quot;dashed&quot; )+
   geom_point(aes(x=month, y = means_care_partner, color = &quot;partner&quot;), size = 3)+
+  
+  #we defined the colors above, so we can use color = &quot;oneself&quot;/&quot;partner&quot; 
+  
   scale_color_manual(values = colors)+
-  theme(legend.position = &quot;top&quot;)
+  # Here we tell the legend, how it should call its values, using the vector from above
+  
+  theme(legend.position = &quot;top&quot;)+
+  font_colour
 
 HO_Sat_care_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/Satisfaction%20parenting-1.png" width="100%" /></p>
@@ -1040,9 +1122,32 @@ HO_Sat_care_plot</code></pre>
 <h3>Plot</h3>
 <p> <br />
  </p>
-<pre class="r"><code>HO_Sat_Eff =   reshape(HO_Sat[,!(names(HO_Sat) %in% c(&quot;T4_HO3&quot;,&quot;T6_HO3&quot;, grep( &quot;_covid11&quot;,names(HO_Sat), value = T)))], varying = list(c(&quot;T3_HO31&quot;,&quot;T4_HO31&quot;,&quot;T6_HO31&quot;,&quot;T7_HO31&quot;,&quot;T8_HO31&quot;, &quot;T9_HO31&quot;, &quot;T10_HO31&quot;), c(&quot;T3_HO32&quot;,&quot;T4_HO32&quot;,&quot;T6_HO32&quot;,&quot;T7_HO32&quot;,&quot;T8_HO32&quot;, &quot;T9_HO32&quot;, &quot;T10_HO32&quot;)), direction = &quot;long&quot;, timevar = &quot;month&quot;, idvar = &quot;ID&quot;, v.names = c(&quot;Sat&quot;, &quot;Eff&quot;))
+<pre class="r"><code># Using the reshape function for long format now
+HO_Sat_Eff =   reshape(
+  
+  HO_Sat[,!(names(HO_Sat) %in% c(&quot;T4_HO3&quot;,&quot;T6_HO3&quot;, grep( &quot;_covid11&quot;,names(HO_Sat), value = T)))], 
+  # Excluding the not needed variables from the dataframe, namely the childcare variables and the equipment variables for T4 and T6
+  
+  varying = list(grep( &quot;_HO31&quot;, names(HO_Sat), value = T), grep(&quot;_HO32&quot;, names(HO_Sat), value = T)), 
+  # Telling reshape, which variables should be compiled into one, here they are HO31 (Satisfaction) and HO32 (Efficacy) respectively
+  
+  v.names = c(&quot;Sat&quot;, &quot;Eff&quot;),
+  # How should the newly created variables be called?
+  
+  direction = &quot;long&quot;, 
+  # Reshape into which direction?
+  
+  timevar = &quot;month&quot;, 
+  # How should the variable indicating the timepoint be called?
+  
+  idvar = &quot;ID&quot; 
+  # What&#39;s the Variable identifying unique observations?
+)               
+                       
+                    
 
-#test reshape
+## test reshape
+# These tables can be uncommented and executed, to be sure that the reshaping was successfull. If it was, every one should return only TRUEs
 # table(HO_Sat$T3_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==1, &quot;Sat&quot;])
 # table(HO_Sat$T4_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==2, &quot;Sat&quot;])
 # table(HO_Sat$T6_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==3, &quot;Sat&quot;])
@@ -1050,7 +1155,7 @@ HO_Sat_care_plot</code></pre>
 # table(HO_Sat$T8_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==5, &quot;Sat&quot;])
 # table(HO_Sat$T9_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==6, &quot;Sat&quot;])
 # table(HO_Sat$T10_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==7, &quot;Sat&quot;])
-
+# 
 # table(HO_Sat$T3_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==1, &quot;Eff&quot;])
 # table(HO_Sat$T4_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==2, &quot;Eff&quot;])
 # table(HO_Sat$T6_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==3, &quot;Eff&quot;])
@@ -1059,27 +1164,25 @@ HO_Sat_care_plot</code></pre>
 # table(HO_Sat$T9_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==6, &quot;Eff&quot;])
 # table(HO_Sat$T10_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==7, &quot;Eff&quot;])
 
-HO_Sat_Eff$month = factor(HO_Sat_Eff$month, levels = 1:7, labels = months_miss)
+HO_Sat_Eff$month = factor(HO_Sat_Eff$month,
+                          labels = months_miss)
+
 HO_Sat_Eff = HO_Sat_Eff[HO_Sat_Eff$Sat &gt; 0 &amp; HO_Sat_Eff$Eff &gt;0,]
+# Removing all the missing Values of satisfaction and efficay
+
 r_Sat_Eff = round(cor(HO_Sat_Eff$Sat,HO_Sat_Eff$Eff, use = &quot;complete.obs&quot;), digits = 2)
+
+
 HO_Sat_Eff_plot = ggplot(HO_Sat_Eff, aes(x=Eff,y= Sat)) + 
   geom_smooth(method = lm, size = 0.5) +
   theme_minimal()+
   coord_cartesian(xlim = c(1,5), ylim = c(1,5))+
   scale_fill_brewer(palette = &quot;Blues&quot;)+
-  labs(x=&quot;Efficacy in Home Office&quot;,y = &quot;Satisfaction with Home Office&quot;, caption = paste0(&quot;Mean correlation over all months was .&quot;, 100*r_Sat_Eff), title = &quot;Relationship between efficacy in and satisfaction with Home Office&quot;, subtitle = &quot;Over all months&quot;)
+  labs(x=&quot;Efficacy in Home Office&quot;,y = &quot;Satisfaction with Home Office&quot;, caption = paste0(&quot;Mean correlation over all months was .&quot;, 100*r_Sat_Eff), title = &quot;Relationship between efficacy in and satisfaction with Home Office&quot;, subtitle = &quot;Over all months&quot;)+
+  font_colour
 
 HO_Sat_Eff_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/efficacy%20-1.png" width="100%" /></p>
-<pre class="r"><code>HO_Sat_Eff$Equip_T3 = factor(HO_Sat_Eff$T3_HO3, levels = 0:2, labels = c(&quot;Missing&quot;,&quot;Insufficient&quot;, &quot;Sufficient&quot;))
-
-
-HO_Sat_Equip= dplyr::filter(HO_Sat_Eff,month == &quot;April&quot;,Equip_T3 != &quot;Missing&quot; ) %&gt;% 
-  dplyr::group_by(Equip_T3) %&gt;%
-  dplyr::summarise(Sat_mean = mean(Sat),Sat_sd= sd(Sat), .groups = &#39;drop&#39;)
-
-#insufficient, sufficient
-HO_Equip = plyr::count(HO_Sat_Eff[HO_Sat_Eff$month == &quot;April&quot;,], vars = &quot;Equip_T3&quot;)[2:3,2]</code></pre>
 </div>
 <div id="additional-information-8" class="section level3 unnumbered">
 <h3>Additional Information</h3>
@@ -1100,16 +1203,44 @@ HO_Sat_Eff_plot</code></pre>
 <h2><span class="header-section-number">6.4</span> Sufficient Equipment</h2>
 <div id="plot-7" class="section level3 unnumbered">
 <h3>Plot</h3>
-<pre class="r"><code>r_Sat_Equip = round(cor(filter(HO_Sat_Eff,month == &quot;April&quot;,Equip_T3 != &quot;Missing&quot; )$Sat, filter(HO_Sat_Eff,month == &quot;April&quot;,Equip_T3 != &quot;Missing&quot; )$T3_HO3),digits = 2)*100
+<pre class="r"><code>HO_Sat_Eff$Equip_T3 = factor(HO_Sat_Eff$T3_HO3, levels = 0:2, labels = c(&quot;Missing&quot;,&quot;Insufficient&quot;, &quot;Sufficient&quot;))
+# creating a new factor 
+
+
+HO_Sat_Equip= 
+  dplyr::filter(HO_Sat_Eff,month == &quot;April&quot;,Equip_T3 != &quot;Missing&quot; ) %&gt;% 
+  # Filtering the dataframe to only use the rows, where month == &quot;April&quot; and information about the Equipment is not &quot;Missing&quot; 
+  
+  dplyr::group_by(Equip_T3) %&gt;%
+  # Grouping this filtered dataframe by the levels of Equip_T3, being Sufficient and Insufficient
+  
+  dplyr::summarise(Sat_mean = mean(Sat),Sat_sd= sd(Sat))
+  # Applying multipe functions to the filtered and grouped dataset, namely mean to create Sat_Mean and sd to create Sat_sd
+
+
+#insufficient, sufficient
+
+HO_Equip = plyr::count(HO_Sat_Eff[HO_Sat_Eff$month == &quot;April&quot;,], vars = &quot;Equip_T3&quot;)[2:3,2]
+# Counting, how many people indicated sufficient and insufficient equipment
+
+r_Sat_Equip = round(
+  cor(
+    filter(HO_Sat_Eff,month == &quot;April&quot;,Equip_T3 != &quot;Missing&quot; )$Sat, 
+    filter(HO_Sat_Eff,month == &quot;April&quot;,Equip_T3 != &quot;Missing&quot; )$T3_HO3),
+  digits = 2)*100
+# Correlating satisfaction and equipment for the subtitle below
+
 
 HO_Sat_Equip_plot = ggplot(HO_Sat_Equip, aes(y= Sat_mean, x = Equip_T3, fill =Equip_T3))+
                     geom_bar(stat = &quot;identity&quot;)+
-                    geom_errorbar(aes(ymin = Sat_mean - Sat_sd , ymax = Sat_mean + Sat_sd, width = 0.2),position = position_dodge(width = 0.1))+
+                    geom_errorbar(aes(ymin = Sat_mean - Sat_sd , ymax = Sat_mean + Sat_sd, width = 0.2))+
                     theme_minimal()+
                     theme(legend.position=&quot;none&quot;,  panel.grid.major.x = element_blank())+
+  #panel.grid.major.x = element_blak() removes vertical lines from the plot 
                     coord_cartesian(ylim = c(1,5))+
                     scale_fill_manual(values = c(&quot;#6baed6&quot;, &quot;#08519c&quot;))+
-                    labs(x=&quot;Availability of technical equipment\n at home&quot;,y = &quot;Satisfaction with Home Office&quot;, caption = paste0(&quot;Point-biserial correlation was .&quot;, r_Sat_Equip,&quot;. Errorbars\n represent one SD above and below the mean.&quot;), title = &quot;Relationship between \nequipment for and satisfaction \nwith Home Office&quot;, subtitle = &quot;In April&quot;)
+                    labs(x=&quot;Availability of technical equipment\n at home&quot;,y = &quot;Satisfaction with Home Office&quot;, caption = paste0(&quot;Point-biserial correlation was .&quot;, r_Sat_Equip,&quot;. Errorbars\n represent one SD above and below the mean.&quot;), title = &quot;Relationship between \nequipment for and satisfaction \nwith Home Office&quot;, subtitle = &quot;In April&quot;)+
+  font_colour
 
 HO_Sat_Equip_plot</code></pre>
 <p><img src="HomeOffice_files/figure-html/equipment-1.png" width="288" style="float:left; padding:10px" />  <br />
