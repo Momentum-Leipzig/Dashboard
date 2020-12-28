@@ -35,11 +35,16 @@ output: html_document
 <div class="grid-container">
   
   <div id = "Img Zacher" class = "grid-pic">
-  
+  <img src="images/HZ_Headshot.jpg" >
   </div>
   
   <div id = "CV Zacher" class = "grid-text">
   <h3>Hannes Zacher, Ph.D.</h3>
+  Hannes Zacher is a Full Professor of Work and Organizational Psychology at the Institute of Psychology – Wilhelm Wundt, Leipzig University, Germany. He earned his Ph.D. from the University of Giessen in 2009 and subsequently worked in academic positions in Australia and the Netherlands. <br>
+<br>
+  In his research program, he investigates aging at work and career development, occupational health and well-being, as well as proactive and adaptive employee behavior. Across these research agendas, he employs multiple methodologies, including longitudinal surveys, experience sampling studies, and experiments. <br> 
+  <br>
+  His research is well supported through competitive grants and industry funding, including current projects on the role of work for the development of civilization diseases (Volkswagen Foundation) and on idle time at work (German Research Foundation). He has published over 130 articles in peer-reviewed journals, such as Journal of Organizational Behavior, European Journal of Work and Organizational Psychology, and American Psychologist. He also serves on a number of national and international journal editorial boards.
   </div>
   
   <div id = "Img Weigelt" class = "grid-pic">
