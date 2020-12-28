@@ -1,9 +1,0 @@
----
-title: "Links"
-output: html_document
----
-
-### COVID-19 Links
-
-[Robert Koch Institute](https://www.rki.de/EN/Home/homepage_node.html) Example Text.
-
