@@ -51,7 +51,7 @@ output: html_document
   </div>
   
   <div id = "Img Rudolph" class = "grid-pic">
-   <img src="images/CWR_Headshot.png" >
+   <img src="images/Headshot_CWR.png" >
   </div>
 
   
