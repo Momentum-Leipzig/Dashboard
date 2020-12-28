@@ -4,7 +4,7 @@
 <body>
 
 <p>Copyright &copy; 2020 Universität Leipzig. All rights reserved. </p>
-
+<p>For correspondence regarding this page, please refer to <a href = "mailto:richard.janzen@studserv.uni-leipzig.de">Melina Posch</a>
 </body>
 </html>
 

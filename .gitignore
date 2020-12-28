@@ -86,3 +86,6 @@ vignettes/*.pdf
 ##############
 *.sav
 *.csv
+
+# Desktop files #
+desktop.ini
