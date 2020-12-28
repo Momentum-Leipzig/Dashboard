@@ -388,6 +388,13 @@ div.tocify {
 <!-- "after body" is referencing what should stand in the end of the page. I created a .txt file with some HTML-Code, indicating the copyright of the page and who is responsible for this particular site (in this case, me) -->
 <!-- "bibliography" takes the references.bib I created with Citavi and creates a bibliography (oh surprise) of the citations used in the text -->
 <!-- "csl: apa.csl" makes the citation apa-compatible (using the mentioned .csl file) -->
+<style type="text/css">
+  a:link {
+    color: #3182bd;
+    background-color: transparent;
+    text-decoration: none;
+  }
+</style>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
 <p>With the increasing digitalization of work, the idea of <strong>working from home</strong> gained more and more traction. For some, it’s a convenience in the face of unnecessary commuting to work (e.g. when you’re a programmer, who doesn’t need to come into work every day while working on a software), for others it can be a crucial part in balancing out work and family demands. It surely has its advantages and disadvantages, both for the worker and for the company, but having it as a possibility increases flexibility and adaptability.</p>
@@ -555,7 +562,7 @@ HO_Perc_plot = ggplot(HO_Perc_rel, aes(x=month, y = mean_perc)) +
   font_colour
 
 HO_Perc_plot</code></pre>
-<p><img src="HomeOffice_files/figure-html/Percentage over Time-1.png" width="100%" /></p>
+<p><img src="HomeOffice_files/figure-html/Percentage%20over%20Time-1.png" width="100%" /></p>
 <p> </p>
 <pre class="r"><code>HO_Perc_long = gather(HO_Perc, month, percentage)
 HO_Perc_long$month = factor(HO_Perc_long$month, levels = names(HO_Perc), labels = months_miss)
@@ -594,7 +601,7 @@ HO_Perc_dens = ggplot(HO_Perc_long, aes(percentage, y=..density.., fill = month,
   font_colour
 
 HO_Perc_dens</code></pre>
-<p><img src="HomeOffice_files/figure-html/distributions over Time-1.gif" width="50%" /><img src="HomeOffice_files/figure-html/distributions over Time-2.png" width="50%" /></p>
+<p><img src="HomeOffice_files/figure-html/distributions%20over%20Time-1.gif" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time-2.png" width="50%" /></p>
 <p> <br />
  </p>
 </div>
@@ -666,7 +673,7 @@ HO_Pos_post = ggplot(HO_Pos_T3, aes(x=&quot;&quot;, y= post, fill = labels)) +
 
 HO_Pos_post</code></pre>
 <div class="figure">
-<img src="HomeOffice_files/figure-html/Possibility to work from home-1.png" alt="Allowed to work from home" width="50%" /><img src="HomeOffice_files/figure-html/Possibility to work from home-2.png" alt="Allowed to work from home" width="50%" />
+<img src="HomeOffice_files/figure-html/Possibility%20to%20work%20from%20home-1.png" alt="Allowed to work from home" width="50%" /><img src="HomeOffice_files/figure-html/Possibility%20to%20work%20from%20home-2.png" alt="Allowed to work from home" width="50%" />
 <p class="caption">
 Allowed to work from home
 </p>
@@ -741,7 +748,7 @@ HO_Perm_plot = ggplot(HO_Perm_rel, aes(x=month, y = perm)) +
   font_colour
 
 HO_Perm_plot</code></pre>
-<p><img src="HomeOffice_files/figure-html/Permission over Time-1.png" width="100%" /></p>
+<p><img src="HomeOffice_files/figure-html/Permission%20over%20Time-1.png" width="100%" /></p>
 <p> <br />
  </p>
 </div>
@@ -807,7 +814,7 @@ HO_loc_plot = ggplot(HO_loc_prop_long, aes(x=percentage, y = month)) +
   
 
 HO_loc_plot</code></pre>
-<p><img src="HomeOffice_files/figure-html/Location of work-1.png" width="100%" /></p>
+<p><img src="HomeOffice_files/figure-html/Location%20of%20work-1.png" width="100%" /></p>
 <p> <br />
  </p>
 </div>
@@ -1101,7 +1108,7 @@ HO_Sat_care_plot = ggplot(HO_Sat_means, aes(x=month, y = means)) +
   font_colour
 
 HO_Sat_care_plot</code></pre>
-<p><img src="HomeOffice_files/figure-html/Satisfaction parenting-1.png" width="100%" /></p>
+<p><img src="HomeOffice_files/figure-html/Satisfaction%20parenting-1.png" width="100%" /></p>
 <p> <br />
  </p>
 </div>
@@ -1182,7 +1189,7 @@ HO_Sat_Eff_plot = ggplot(HO_Sat_Eff, aes(x=Eff,y= Sat)) +
   font_colour
 
 HO_Sat_Eff_plot</code></pre>
-<p><img src="HomeOffice_files/figure-html/efficacy -1.png" width="100%" /></p>
+<p><img src="HomeOffice_files/figure-html/efficacy%20-1.png" width="100%" /></p>
 </div>
 <div id="additional-information-8" class="section level3 unnumbered">
 <h3>Additional Information</h3>
