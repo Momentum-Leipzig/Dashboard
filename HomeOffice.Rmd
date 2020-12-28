@@ -8,9 +8,9 @@ output:
     number_sections: true
     toc_depth: 1
     include:
-      after_body: _footer_Richard.txt
-bibliography: references.bib
-csl: apa.csl    
+      after_body: footer/_footer_Richard.txt
+bibliography: footer/references.bib
+csl: footer/apa.csl    
 ---
 <!-- "after body" is referencing what should stand in the end of the page. I created a .txt file with some HTML-Code, indicating the copyright of the page and who is responsible for this particular site (in this case, me) -->
 <!-- "bibliography" takes the references.bib I created with Citavi and creates a bibliography (oh surprise) of the citations used in the text -->
