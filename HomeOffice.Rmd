@@ -16,7 +16,7 @@ csl: footer/apa.csl
 <!-- "bibliography" takes the references.bib I created with Citavi and creates a bibliography (oh surprise) of the citations used in the text -->
 <!-- "csl: apa.csl" makes the citation apa-compatible (using the mentioned .csl file) -->
 <style type="text/css">
-  a:link {
+  a {
     color: #3182bd;
     background-color: transparent;
     text-decoration: none;
