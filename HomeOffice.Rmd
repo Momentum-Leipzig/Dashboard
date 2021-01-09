@@ -35,10 +35,10 @@ library(gganimate)
 
 options(scipen = 999)
 data_HO = read.csv("data/data_Homeoffice.csv")
-months_compl = c("April", "May", "June", "July", "August", "September", "October", "November") 
+months_compl = c("April", "May", "June", "July", "August", "September", "October", "November", "December") 
 #For plots where the data for june is extrapolated
 
-months_miss = c("April", "May", "July", "August", "September", "October", "November") 
+months_miss = c("April", "May", "July", "August", "September", "October", "November", "December") 
 #For operations where only the observed data is used, see e.g. "Distributions over Time"
 
 font_colour = theme(text = element_text(colour = "#3e3f3a")) 
@@ -133,7 +133,7 @@ The following graphs show the __average proportion of time__ spent in Home Offic
 ```{r include=TRUE, fig.show='hold', out.width = c('50%','50%'), fig.cap= "Percentage of time worked from home in December 2019", cache.whatever= list(mean_HO_T1, density_HO_T1)}
 ## For details on the code for the plots, please change to the "Plots"-Tab and unfold the code there. ##
 
-#cache.whatever inside the chunk options tells the chunk, that it has to be invalidated, as soon as one of these variables change. Otherwise, changing the plots in the chunk above doesn't invalidate this chunk and the lastly cached version will be displayes.
+#cache.whatever inside the chunk options tells the chunk, that it has to be invalidated, as soon as one of these variables change. Otherwise, changing the plots in the chunk above doesn't invalidate this chunk and the lastly cached version will be displayed.
 
 
 mean_HO_T1
@@ -144,7 +144,7 @@ density_HO_T1
 
 As can be seen, before the COVID-19 Crisis hit, __work from home was rather sparse__. Only `r length(na.omit(data_HO[data_HO$T1_home_office>0,3]))` of the `r length(na.omit(data_HO$T1_home_office))` participants, who answered this question, had indicated that they worked from home at all (equaling `r round((length(na.omit(data_HO[data_HO$T1_home_office>0,2]))/length(na.omit(data_HO$T1_home_office)))*100,digits = 2)`%)  
   
-<!-- To end the tabset from above without starting a new level 1 header, the following line of code is needed. .unnumbered is equivalent to {-} and .toc-ignore lets the toc not include this header. This is necessary, since we told the toc to include all level 1 headers, so otherwise there would be an ugly space in the toc, leading to this point in the page -->
+<!-- To end the tabset from above without starting a new level 1 header, the following line of code is needed. .unnumbered is equivalent to {-} and .toc-ignore makes the toc not include this header. This is necessary, since we told the toc to include all level 1 headers, so otherwise there would be an ugly space in the toc, leading to this point in the page -->
 # {.unnumbered .toc-ignore}
 
 ## Development over Time {.tabset .tabset-fade}
@@ -166,7 +166,8 @@ HO_Perc_rel = data.frame(
     mean(HO_Perc$T7_HO6, na.rm = T),
     mean(HO_Perc$T8_HO6, na.rm = T),
     mean(HO_Perc$T9_HO6, na.rm = T),
-    mean(HO_Perc$T10_HO6, na.rm = T)
+    mean(HO_Perc$T10_HO6, na.rm = T),
+    mean(HO_Perc$T11_HO6, na.rm = T)
   ),
   sd_perc = c(
     sd(HO_Perc$T3_HO6, na.rm = T),
@@ -176,6 +177,7 @@ HO_Perc_rel = data.frame(
     sd(HO_Perc$T7_HO6, na.rm = T),
     sd(HO_Perc$T8_HO6, na.rm = T),
     sd(HO_Perc$T9_HO6, na.rm = T),
+    sd(HO_Perc$T11_HO6, na.rm = T),
     sd(HO_Perc$T10_HO6, na.rm = T)
   )
 ) 
@@ -191,12 +193,14 @@ HO_Perc_rel$missing = c(NA,
                         NA,
                         NA,
                         NA,
+                        NA,
                         NA) 
 #Extrapolating the missing value in June to make a separate connecting line between May and July in the graph
 HO_Perc_rel$mis_sd = c(NA, 
                        HO_Perc_rel[2,3],
                        mean(c(HO_Perc_rel[2,3],HO_Perc_rel[4,3])),
                        HO_Perc_rel[4,3],
+                       NA,
                        NA,
                        NA,
                        NA,
@@ -422,7 +426,8 @@ HO_Perm_rel = data.frame(
            (length(which(HO_Perm$T7_HO4 == 2))/length(which((HO_Perm$T7_HO4 != "NA")))),
            (length(which(HO_Perm$T8_HO4 == 2))/length(which((HO_Perm$T8_HO4 != "NA")))),
            (length(which(HO_Perm$T9_HO4 == 2))/length(which((HO_Perm$T9_HO4 != "NA")))),
-           (length(which(HO_Perm$T10_HO4 == 2))/length(which((HO_Perm$T10_HO4 != "NA"))))
+           (length(which(HO_Perm$T10_HO4 == 2))/length(which((HO_Perm$T10_HO4 != "NA")))),
+           (length(which(HO_Perm$T11_HO4 == 2))/length(which((HO_Perm$T11_HO4 != "NA"))))
     
             )*100, digits = 2),
   
@@ -434,6 +439,7 @@ HO_Perm_rel$missing = c(NA,
                         HO_Perm_rel[2,1],
                         mean(c(HO_Perm_rel[2,1],HO_Perm_rel[4,1])),
                         HO_Perm_rel[4,1],
+                        NA,
                         NA,
                         NA,
                         NA,
@@ -501,7 +507,8 @@ HO_loc_prop <- data.frame(
     August = plyr::count(df = HO_loc, vars = "T7_HO18")[2:5,2]/length(which(HO_loc$T7_HO18 > 0)),
     September = plyr::count(df = HO_loc, vars = "T8_HO18")[2:5,2]/length(which(HO_loc$T8_HO18 > 0)),
     October = plyr::count(df = HO_loc, vars = "T9_HO18")[2:5,2]/length(which(HO_loc$T9_HO18 > 0)),
-    November = plyr::count(df = HO_loc, vars = "T10_HO18")[2:5,2]/length(which(HO_loc$T10_HO18 > 0))
+    November = plyr::count(df = HO_loc, vars = "T10_HO18")[2:5,2]/length(which(HO_loc$T10_HO18 > 0)),
+    December = plyr::count(df = HO_loc, vars = "T11_HO18")[2:5,2]/length(which(HO_loc$T11_HO18 > 0))
     )
 # this one is a bit complicated :D I wanted to have the proportions of people woking from the respective places.
 # plyr::count(df = HO_loc, vars = "T3_HO18") counts the frequency of every value inside a vector and returns a tibble with two columns (Value and Frequency) per variable. in this case, there are 6 "Values", being 0,1,2,3,6 and NA.
@@ -567,6 +574,7 @@ HO_Isol$T7mean = rowMeans(HO_Isol[,grep("T7_HO1", names(HO_Isol), value = T)])
 HO_Isol$T8mean = rowMeans(HO_Isol[,grep("T8_HO1", names(HO_Isol), value = T)])
 HO_Isol$T9mean = rowMeans(HO_Isol[,grep("T9_HO1", names(HO_Isol), value = T)])
 HO_Isol$T10mean = rowMeans(HO_Isol[,grep("T10_HO1", names(HO_Isol), value = T)])
+HO_Isol$T11mean = rowMeans(HO_Isol[,grep("T11_HO1", names(HO_Isol), value = T)])
 # Compiling the respective individual means of Isolation at every datapoint (dyplr might have given an easyer way)
 
 HO_Isol_means = data.frame(
@@ -579,13 +587,15 @@ HO_Isol_means = data.frame(
     mean(HO_Isol$T7mean, na.rm = T),
     mean(HO_Isol$T8mean, na.rm = T),
     mean(HO_Isol$T9mean, na.rm = T),
-    mean(HO_Isol$T10mean, na.rm = T)
+    mean(HO_Isol$T10mean, na.rm = T),
+    mean(HO_Isol$T11mean, na.rm = T)
   ),
   missing = c(
     NA,
     mean(HO_Isol$T4mean, na.rm = T),
     mean(c(mean(HO_Isol$T4mean, na.rm = T),mean(HO_Isol$T6mean, na.rm = T))),
     mean(HO_Isol$T6mean, na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -599,13 +609,15 @@ HO_Isol_means = data.frame(
     sd(HO_Isol$T7mean, na.rm = T),
     sd(HO_Isol$T8mean, na.rm = T),
     sd(HO_Isol$T9mean, na.rm = T),
-    sd(HO_Isol$T10mean, na.rm = T)
+    sd(HO_Isol$T10mean, na.rm = T),
+    sd(HO_Isol$T11mean, na.rm = T)
   ),
   sd_missing = c(
     NA,
     sd(HO_Isol$T4mean, na.rm = T),
     mean(sd(c(HO_Isol$T4mean, na.rm = T), sd(HO_Isol$T6mean, na.rm = T))),
     sd(HO_Isol$T6mean, na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -633,13 +645,14 @@ HO_Isol_plot
 HO_Isol =  cbind(HO_Isol, HO_Perc)
 #adding percentage of time worked in Home Office for Correlation seen in the text below
 mean_r = round(mean(c(
-cor(HO_Isol[,"T3mean"], HO_Isol[,"T3_HO6"], use = "complete.obs"),
-cor(HO_Isol[,"T4mean"], HO_Isol[,"T4_HO6"], use = "complete.obs"),
-cor(HO_Isol[,"T6mean"], HO_Isol[,"T6_HO6"], use = "complete.obs"),
-cor(HO_Isol[,"T7mean"], HO_Isol[,"T7_HO6"], use = "complete.obs"),
-cor(HO_Isol[,"T8mean"], HO_Isol[,"T8_HO6"], use = "complete.obs"),
-cor(HO_Isol[,"T9mean"], HO_Isol[,"T9_HO6"], use = "complete.obs"),
-cor(HO_Isol[,"T10mean"], HO_Isol[,"T10_HO6"], use = "complete.obs")
+  cor(HO_Isol[,"T3mean"], HO_Isol[,"T3_HO6"], use = "complete.obs"),
+  cor(HO_Isol[,"T4mean"], HO_Isol[,"T4_HO6"], use = "complete.obs"),
+  cor(HO_Isol[,"T6mean"], HO_Isol[,"T6_HO6"], use = "complete.obs"),
+  cor(HO_Isol[,"T7mean"], HO_Isol[,"T7_HO6"], use = "complete.obs"),
+  cor(HO_Isol[,"T8mean"], HO_Isol[,"T8_HO6"], use = "complete.obs"),
+  cor(HO_Isol[,"T9mean"], HO_Isol[,"T9_HO6"], use = "complete.obs"),
+  cor(HO_Isol[,"T10mean"], HO_Isol[,"T10_HO6"], use = "complete.obs"),
+  cor(HO_Isol[,"T11mean"], HO_Isol[,"T11_HO6"], use = "complete.obs")
 )), digits = 2)
 ```
   
@@ -699,7 +712,8 @@ HO_Sat_means = data.frame(
     mean(HO_Sat[HO_Sat$T7_HO31>0,"T7_HO31"], na.rm = T),
     mean(HO_Sat[HO_Sat$T8_HO31>0,"T8_HO31"], na.rm = T),
     mean(HO_Sat[HO_Sat$T9_HO31>0,"T9_HO31"], na.rm = T),
-    mean(HO_Sat[HO_Sat$T10_HO31>0,"T10_HO31"], na.rm = T)
+    mean(HO_Sat[HO_Sat$T10_HO31>0,"T10_HO31"], na.rm = T),
+    mean(HO_Sat[HO_Sat$T11_HO31>0,"T11_HO31"], na.rm = T)
     ),
   sd = c(
     sd(HO_Sat[HO_Sat$T3_HO31>0,"T3_HO31"], na.rm = T),
@@ -709,7 +723,8 @@ HO_Sat_means = data.frame(
     sd(HO_Sat[HO_Sat$T7_HO31>0,"T7_HO31"], na.rm = T),
     sd(HO_Sat[HO_Sat$T8_HO31>0,"T8_HO31"], na.rm = T),
     sd(HO_Sat[HO_Sat$T9_HO31>0,"T9_HO31"], na.rm = T),
-    sd(HO_Sat[HO_Sat$T10_HO31>0,"T10_HO31"], na.rm = T)
+    sd(HO_Sat[HO_Sat$T10_HO31>0,"T10_HO31"], na.rm = T),
+    sd(HO_Sat[HO_Sat$T11_HO31>0,"T11_HO31"], na.rm = T)
   ),
   missing = c(
      NA,
@@ -719,13 +734,15 @@ HO_Sat_means = data.frame(
     NA,
     NA,
     NA,
-   NA
+    NA,
+    NA
   ),
   mis_sd = c(
      NA,
     sd(HO_Sat[HO_Sat$T4_HO31>0,"T4_HO31"], na.rm = T),
     mean(c(sd(HO_Sat[HO_Sat$T4_HO31>0,"T4_HO31"], na.rm = T),sd(HO_Sat[HO_Sat$T6_HO31>0,"T6_HO31"], na.rm = T))),
     sd(HO_Sat[HO_Sat$T6_HO31>0,"T6_HO31"], na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -780,7 +797,8 @@ HO_Sat_means = HO_Sat_means %>%
     mean(HO_Sat[(HO_Sat$T7_covid11 == 3 & HO_Sat$T7_HO31>0), "T7_HO31"], na.rm = T),
     mean(HO_Sat[(HO_Sat$T8_covid11 == 3 & HO_Sat$T8_HO31>0), "T8_HO31"], na.rm = T),
     mean(HO_Sat[(HO_Sat$T9_covid11 == 3 & HO_Sat$T9_HO31>0), "T9_HO31"], na.rm = T),
-    mean(HO_Sat[(HO_Sat$T10_covid11 == 3 & HO_Sat$T10_HO31>0), "T10_HO31"], na.rm = T)
+    mean(HO_Sat[(HO_Sat$T10_covid11 == 3 & HO_Sat$T10_HO31>0), "T10_HO31"], na.rm = T),
+    mean(HO_Sat[(HO_Sat$T11_covid11 == 3 & HO_Sat$T11_HO31>0), "T11_HO31"], na.rm = T)
   ))%>%
   mutate(means_care_partner =  c(
     mean(HO_Sat[(HO_Sat$T3_covid11 == 4 & HO_Sat$T3_HO31>0), "T3_HO31"], na.rm = T),
@@ -790,13 +808,15 @@ HO_Sat_means = HO_Sat_means %>%
     mean(HO_Sat[(HO_Sat$T7_covid11 == 4 & HO_Sat$T7_HO31>0), "T7_HO31"], na.rm = T),
     mean(HO_Sat[(HO_Sat$T8_covid11 == 4 & HO_Sat$T8_HO31>0), "T8_HO31"], na.rm = T),
     mean(HO_Sat[(HO_Sat$T9_covid11 == 4 & HO_Sat$T9_HO31>0), "T9_HO31"], na.rm = T),
-    mean(HO_Sat[(HO_Sat$T10_covid11 == 4 & HO_Sat$T10_HO31>0), "T10_HO31"], na.rm = T)
+    mean(HO_Sat[(HO_Sat$T10_covid11 == 4 & HO_Sat$T10_HO31>0), "T10_HO31"], na.rm = T),
+    mean(HO_Sat[(HO_Sat$T11_covid11 == 4 & HO_Sat$T11_HO31>0), "T11_HO31"], na.rm = T)
   ))%>%
   mutate(missing_self = c(
     NA,
      mean(HO_Sat[(HO_Sat$T4_covid11 == 3 & HO_Sat$T4_HO31>0), "T4_HO31"], na.rm = T),
     mean(c( mean(HO_Sat[(HO_Sat$T4_covid11 == 3 & HO_Sat$T4_HO31>0), "T4_HO31"], na.rm = T),mean(HO_Sat[(HO_Sat$T6_covid11 == 3 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T))),
     mean(HO_Sat[(HO_Sat$T6_covid11 == 3 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -807,6 +827,7 @@ HO_Sat_means = HO_Sat_means %>%
     mean(HO_Sat[(HO_Sat$T4_covid11 == 4 & HO_Sat$T4_HO31>0), "T4_HO31"], na.rm = T),
     mean(c( mean(HO_Sat[(HO_Sat$T4_covid11 == 4 & HO_Sat$T4_HO31>0), "T4_HO31"], na.rm = T),mean(HO_Sat[(HO_Sat$T6_covid11 == 4 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T))),
     mean(HO_Sat[(HO_Sat$T6_covid11 == 4 & HO_Sat$T6_HO31>0), "T6_HO31"], na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -905,6 +926,7 @@ HO_Sat_Eff =   reshape(
 # table(HO_Sat$T8_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==5, "Sat"])
 # table(HO_Sat$T9_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==6, "Sat"])
 # table(HO_Sat$T10_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==7, "Sat"])
+# table(HO_Sat$T11_HO31 == HO_Sat_Eff[HO_Sat_Eff$month==8, "Sat"])
 # 
 # table(HO_Sat$T3_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==1, "Eff"])
 # table(HO_Sat$T4_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==2, "Eff"])
@@ -913,6 +935,7 @@ HO_Sat_Eff =   reshape(
 # table(HO_Sat$T8_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==5, "Eff"])
 # table(HO_Sat$T9_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==6, "Eff"])
 # table(HO_Sat$T10_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==7, "Eff"])
+# table(HO_Sat$T11_HO32 == HO_Sat_Eff[HO_Sat_Eff$month==8, "Eff"])
 
 HO_Sat_Eff$month = factor(HO_Sat_Eff$month,
                           labels = months_miss)
@@ -1030,7 +1053,7 @@ HO_Sat_Equip_plot
 HO_Sat_Equip_plot
 ```
 
-Similar to the workspace itself, having the __right equipment__ for working at home can be important for the __satisfaction__ experienced. What kind of equipment is needed can vary from job to job. For some, a simple laptop and a steady internet-connection could be enough (although granted, not always available), while others might need strong hardware, specific software, or special devices. So we just asked our participants in general __whether or not they had sufficient technical equipment__ at home, as to not assume what that should include. The barplot on the right shows the results for April.  
+Similar to the workspace itself, having the __right equipment__ for working at home can be important for the __satisfaction__ experienced. What kind of equipment is needed can vary from job to job. For some, a simple laptop and a steady internet-connection could be enough (although granted, not always available), while others might need strong hardware, specific software, or special devices. So we just asked our participants in general __whether or not they had sufficient technical equipment__ at home, as to not assume what that should include. The barplot on the left shows the results for April.  
 In general, `r HO_Equip[2]` out of `r sum(HO_Equip)` (= `r round(HO_Equip[2]*100/sum(HO_Equip), digits = 2)`%) participants indicated in April to have sufficient equipment when working from home. So, while __most people__ seemed to have the __right equipment__ at home, for the __rest__ the __insufficiency__ was associated with __lower satisfaction__. Again, statistical significance and causal analysis pending.
   
   ***
