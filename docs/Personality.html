@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Personality</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Momentum</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="team.html">Research Team</a>
+</li>
+<li>
+  <a href="HomeOffice.html">Home Office</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Personality</h1>
+
+</div>
+
+
+<style type="text/css">
+  a {
+    color: #3182bd;
+    background-color: transparent;
+    text-decoration: none;
+  }
+</style>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+</div>
+<div id="personality-in-december" class="section level1">
+<h1><span class="header-section-number">2</span> Personality in December</h1>
+<div id="big-five" class="section level2 tabset tabset-fade">
+<h2><span class="header-section-number">2.1</span> Big Five</h2>
+<div id="extraversion" class="section level3 unnumbered">
+<h3>Extraversion</h3>
+<pre class="r"><code>density_EX_T1 = ggplot(data_pers, aes(T1_extraversion))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_extraversion, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
+  labs(x=&quot;Extraversion Score&quot;, y = &quot;Amount of participants&quot;)+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_EX_T1</code></pre>
+<p><img src="Personality_files/figure-html/density%20Extrav%20-1.png" width="672" /></p>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</p>
+</div>
+<div id="agreeableness" class="section level3 unnumbered">
+<h3>Agreeableness</h3>
+<pre class="r"><code>density_AG_T1 = ggplot(data_pers, aes(T1_agreeableness))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_agreeableness, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
+  labs(x=&quot;Agreeableness Score&quot;, y = &quot;Amount of participants&quot;)+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_AG_T1</code></pre>
+<p><img src="Personality_files/figure-html/density%20Agr%20-1.png" width="672" /></p>
+</div>
+<div id="openness" class="section level3 unnumbered">
+<h3>Openness</h3>
+<pre class="r"><code>density_OP_T1 = ggplot(data_pers, aes(T1_openness))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_openness, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
+  labs(x=&quot;Openness Score&quot;, y = &quot;Amount of participants&quot;)+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_OP_T1</code></pre>
+<p><img src="Personality_files/figure-html/density%20Open%20-1.png" width="672" /></p>
+</div>
+<div id="conscientiousness" class="section level3 unnumbered">
+<h3>Conscientiousness</h3>
+<pre class="r"><code>density_CO_T1 = ggplot(data_pers, aes(T1_conscientiousness))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_conscientiousness, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
+  labs(x=&quot;Conscientiousness Score&quot;, y = &quot;Amount of participants&quot;)+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_CO_T1</code></pre>
+<p><img src="Personality_files/figure-html/density%20Consc%20-1.png" width="672" /></p>
+</div>
+<div id="emotional-stability" class="section level3 unnumbered">
+<h3>Emotional Stability</h3>
+<pre class="r"><code>density_ES_T1 = ggplot(data_pers, aes(T1_emostab))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_emostab, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
+  labs(x=&quot;Emotional Stability Score&quot;, y = &quot;Amount of participants&quot;)+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_ES_T1</code></pre>
+<p><img src="Personality_files/figure-html/density%20EmStab%20-1.png" width="672" /></p>
+</div>
+</div>
+<div id="mindfulness---trait" class="section level2 tabset tabset-fade">
+<h2><span class="header-section-number">2.2</span> Mindfulness - Trait</h2>
+<div id="awareness" class="section level3 unnumbered">
+<h3>Awareness</h3>
+<pre class="r"><code>density_MAw_T1 = ggplot(data_pers, aes(T1_mindTr_aw))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_mindTr_aw, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
+  labs(x=&quot;Mindfulness: Awareness Score&quot;, y = &quot;Amount of participants&quot;)+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_MAw_T1</code></pre>
+<p><img src="Personality_files/figure-html/density%20Aware%20-1.png" width="672" /></p>
+</div>
+<div id="acceptance" class="section level3 unnumbered">
+<h3>Acceptance</h3>
+<pre class="r"><code>density_MAcc_T1 = ggplot(data_pers, aes(T1_mindTr_acc))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_mindTr_acc, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
+  labs(x=&quot;Mindfulness: Acceptance Score&quot;, y = &quot;Amount of participants&quot;)+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_MAcc_T1</code></pre>
+<p><img src="Personality_files/figure-html/density%20Accept%20-1.png" width="672" /></p>
+</div>
+</div>
+<div id="proactive-personality" class="section level2">
+<h2><span class="header-section-number">2.3</span> Proactive Personality</h2>
+<pre class="r"><code>density_proact_T1 = ggplot(data_pers, aes(T1_proact_pers))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_proact_pers, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
+  labs(x=&quot;Proactive Personality Score&quot;, y = &quot;Amount of participants&quot;)+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_proact_T1</code></pre>
+<p><img src="Personality_files/figure-html/density%20ProPers%20-1.png" width="672" /></p>
+</div>
+<div id="core-self-evaluations" class="section level2">
+<h2><span class="header-section-number">2.4</span> Core Self Evaluations</h2>
+<pre class="r"><code>density_CSE_T1 = ggplot(data_pers, aes(T1_CSE))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_CSE, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
+  labs(x=&quot;Core Self Evaluations Score&quot;, y = &quot;Amount of participants&quot;)+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_CSE_T1</code></pre>
+<p><img src="Personality_files/figure-html/density%20CSE%20-1.png" width="672" /></p>
+<p>Further Ideas: Change over Time Life Satisfaction depending on Personality traits and mindfulness PTG over Time</p>
+</div>
+</div>
+<div id="header-1" class="section level1 tabset tabset-fade">
+<h1><span class="header-section-number">3</span> Header 1</h1>
+<div id="plot" class="section level2 unnumbered">
+<h2>Plot</h2>
+</div>
+<div id="more-information" class="section level2 unnumbered">
+<h2>More Information</h2>
+</div>
+</div>
+<div id="section" class="section level1 unnumbered toc-ignore">
+<h1></h1>
+<div id="header-2" class="section level2">
+<h2><span class="header-section-number">3.1</span> Header 2</h2>
+</div>
+</div>
+<div id="header-1-1" class="section level1">
+<h1><span class="header-section-number">4</span> Header 1</h1>
+</div>
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Copyright &copy; 2020 Universität Leipzig. All rights reserved. </p>
+<p>For correspondence regarding this page, please refer to <a href = "mailto:richard.janzen@studserv.uni-leipzig.de">Richard Janzen</a>
+</body>
+</html>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

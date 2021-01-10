@@ -1,0 +1,248 @@
+---
+title: "Personality"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: true
+    toc_depth: 1
+    include:
+      after_body: footer/_footer_Richard.txt
+bibliography: footer/references.bib
+csl: footer/apa.csl
+---
+<style type="text/css">
+  a {
+    color: #3182bd;
+    background-color: transparent;
+    text-decoration: none;
+  }
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
+library(ggplot2)
+library(plyr)
+library(dplyr)
+library(plotly)
+library(tidyr)
+library(hrbrthemes)
+library(gganimate)
+
+options(scipen = 999)
+data_pers = read.csv("data/data_Personality.csv")
+
+months_PTG = c("May", "June", "July", "August", "September", "October", "November", "December")
+
+months_Pers = c("December", "June")
+months_Mind = c("December", "March", "June")
+# Use this in case there is a month that systematically misses the data needed
+
+font_colour = theme(text = element_text(colour = "#3e3f3a")) 
+# Standard font colour of the text as indicated by the theme. Add to any gg plot to make all text in it the same colour as the "normal" body-text. MAY OVERRIDE POTENTIAL INTENDED FONTCOLOURS IN INDIVIDUAL PLOTS 
+
+# Get the colours of the brewer-colorscale from https://colorbrewer2.org/#type=sequential&scheme=Blues&n=5
+
+```
+
+
+# Introduction  
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+
+# Personality in December 
+
+## Big Five {.tabset .tabset-fade}
+
+### Extraversion {-}
+
+```{r density Extrav , include=TRUE, fig.show='hold'}
+
+density_EX_T1 = ggplot(data_pers, aes(T1_extraversion))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_extraversion, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
+  labs(x="Extraversion Score", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_EX_T1
+```
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.  
+
+### Agreeableness {-}
+```{r density Agr , include=TRUE, fig.show='hold'}
+
+density_AG_T1 = ggplot(data_pers, aes(T1_agreeableness))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_agreeableness, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
+  labs(x="Agreeableness Score", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_AG_T1
+```
+
+### Openness {-}
+
+```{r density Open , include=TRUE, fig.show='hold'}
+
+density_OP_T1 = ggplot(data_pers, aes(T1_openness))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_openness, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
+  labs(x="Openness Score", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_OP_T1
+```
+
+### Conscientiousness {-}
+
+```{r density Consc , include=TRUE, fig.show='hold'}
+
+density_CO_T1 = ggplot(data_pers, aes(T1_conscientiousness))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_conscientiousness, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
+  labs(x="Conscientiousness Score", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_CO_T1
+```
+
+### Emotional Stability {-}
+
+```{r density EmStab , include=TRUE, fig.show='hold'}
+
+density_ES_T1 = ggplot(data_pers, aes(T1_emostab))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_emostab, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
+  labs(x="Emotional Stability Score", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_ES_T1
+```
+
+
+## Mindfulness - Trait {.tabset .tabset-fade}
+
+### Awareness {-}
+
+```{r density Aware , include=TRUE, fig.show='hold'}
+
+density_MAw_T1 = ggplot(data_pers, aes(T1_mindTr_aw))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_mindTr_aw, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
+  labs(x="Mindfulness: Awareness Score", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_MAw_T1
+```
+
+### Acceptance {-}
+
+```{r density Accept , include=TRUE, fig.show='hold'}
+
+density_MAcc_T1 = ggplot(data_pers, aes(T1_mindTr_acc))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_mindTr_acc, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
+  labs(x="Mindfulness: Acceptance Score", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_MAcc_T1
+```
+
+## Proactive Personality
+```{r density ProPers , include=TRUE, fig.show='hold'}
+
+density_proact_T1 = ggplot(data_pers, aes(T1_proact_pers))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_proact_pers, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
+  labs(x="Proactive Personality Score", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_proact_T1
+```
+
+## Core Self Evaluations
+```{r density CSE , include=TRUE, fig.show='hold'}
+
+density_CSE_T1 = ggplot(data_pers, aes(T1_CSE))+
+  theme_classic()+
+  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_vline(aes(xintercept=mean(T1_CSE, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
+  labs(x="Core Self Evaluations Score", y = "Amount of participants")+
+  scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
+  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
+  scale_y_continuous(breaks=seq(0, 400, 50))+
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+density_CSE_T1
+```
+
+
+Further Ideas: 
+Change over Time
+Life Satisfaction depending on Personality traits and mindfulness
+PTG over Time
+
+# Header 1 {.tabset .tabset-fade}
+
+## Plot {-}
+
+```{r one wide figure, include = TRUE, out.width='100%', fig.height=3.5}
+
+
+```
+
+## More Information {-} 
+
+```{r one wide figure 2, include = TRUE, out.width='100%', fig.height=3.5}
+
+
+```
+
+# {.unnumbered .toc-ignore}
+
+## Header 2
+
+# Header 1
