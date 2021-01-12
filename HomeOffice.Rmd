@@ -231,7 +231,7 @@ HO_Perc_plot
   
 &nbsp;  
 
-```{r distributions over Time, fig.show= 'hold', out.width=c('50%','50%')}
+```{r distributions over Time, fig.show= 'hold', out.width=c('50%','50%'),cache.whatever= HO_Perc_plot}
 
 HO_Perc_long = gather(HO_Perc, month, percentage)
 HO_Perc_long$month = factor(HO_Perc_long$month, levels = names(HO_Perc), labels = months_miss)
