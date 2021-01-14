@@ -683,7 +683,7 @@ Investigating a smaller subset of participants, the ones who spent most of their
   
 # Satisfaction with Home Office 
 
-## Overall Development over Time {.tabset .tabset-fold}   
+## Overall Development over Time {.tabset .tabset-fade}   
 
 ### Plot {-}  
 
@@ -781,7 +781,7 @@ HO_Sat_plot
 Satisfaction was __consistently above the average of 3__, indicating that most people were __rather happy__ with their overall experience in Home Office.   
 Now that in and of itself is good news. Even though the all-encompassing situation was rather grim, people apparently were more or less happy with their work from home. The interesting point now is to find out, __what caused__ this satisfaction, so that we can learn how to improve the experience for others.
   
-## Child Care {.tabset .tabset-fold}  
+## Child Care {.tabset .tabset-fade}  
 
 ### Plot {-}
 
@@ -884,7 +884,7 @@ HO_Sat_care_plot
 
 Surprisingly, whether or not one had to care for their children at home had seemingly __no effect__ on the overall satisfaction with Home Office. At least, there is no indication for a main effect. Further down the way, a more complex investigation into corollaries and moderators might, however, uncover clearer effects.  
   
-## Efficacy {.tabset .tabset-fold}  
+## Efficacy {.tabset .tabset-fade}  
 
 ### Plot {-}  
 
