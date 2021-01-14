@@ -515,6 +515,7 @@ density_MAw_T1</code></pre>
 
 density_MAcc_T1</code></pre>
 <p><img src="Personality_files/figure-html/density%20Accept%20-1.png" width="672" /></p>
+<hr />
 </div>
 </div>
 <div id="proactive-personality" class="section level2">
@@ -532,6 +533,7 @@ density_MAcc_T1</code></pre>
 
 density_proact_T1</code></pre>
 <p><img src="Personality_files/figure-html/density%20ProPers%20-1.png" width="672" /></p>
+<hr />
 </div>
 <div id="core-self-evaluations" class="section level2">
 <h2><span class="header-section-number">2.4</span> Core Self Evaluations</h2>
@@ -541,18 +543,82 @@ density_proact_T1</code></pre>
   geom_vline(aes(xintercept=mean(T1_CSE, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
   labs(x=&quot;Core Self Evaluations Score&quot;, y = &quot;Amount of participants&quot;)+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
-  # Indicating the scale size and labels; seq to be read like: &quot;Make a sequence from 0 to 100, going in steps of 10
   scale_y_continuous(breaks=seq(0, 400, 50))+
   theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
   font_colour
 
 density_CSE_T1</code></pre>
 <p><img src="Personality_files/figure-html/density%20CSE%20-1.png" width="672" /></p>
+<hr />
+</div>
+</div>
+<div id="change-over-time" class="section level1">
+<h1><span class="header-section-number">3</span> Change over Time</h1>
+<div id="big-five-1" class="section level2 tabset tabset-fade">
+<h2><span class="header-section-number">3.1</span> Big Five</h2>
+<div id="extraversion-1" class="section level3 unnumbered">
+<h3>Extraversion</h3>
+<pre class="r"><code>pers_long =   reshape(
+  
+  data_pers[,c(2:16,17,19,20,22)], 
+ 
+  varying = list(grep(&quot;extraversion&quot;, names(data_pers), value = T), 
+                 grep(&quot;agreeableness&quot;, names(data_pers), value = T),
+                 grep(&quot;conscientiousness&quot;, names(data_pers), value = T),
+                 grep(&quot;openness&quot;, names(data_pers), value = T),
+                 grep(&quot;emostab&quot;, names(data_pers), value = T),
+                 grep(&quot;CSE&quot;, names(data_pers), value = T),
+                 grep(&quot;proact&quot;, names(data_pers), value = T),
+                 c(&quot;T1_mind_aware&quot;,&quot;T5_mind_aware&quot;),
+                 c(&quot;T1_mind_accept&quot;,&quot;T5_mind_accept&quot;)
+                 ), 
+  
+  v.names = c(&quot;Extra&quot;, &quot;Aggree&quot;,&quot;Consc&quot;,&quot;Open&quot;,&quot;Emot&quot;,&quot;CSE&quot;,&quot;Proact&quot;,&quot;Mind_Aw&quot;,&quot;Mind_Ac&quot;),
+ 
+  direction = &quot;long&quot;, 
+ 
+  timevar = &quot;month&quot;, 
+
+  idvar = &quot;ID&quot; 
+)               
+
+pers_long$month = factor(pers_long$month, labels = months_Pers, levels = c(1,2))
+
+pers_long_sd = select(pers_long, month:Mind_Ac ) %&gt;% group_by(month) %&gt;% summarise_all(funs(mean(.,na.rm=T),sd(.,na.rm = T)))
+
+options(repr.plot.width = 3, repr.plot.height = 5)
+extra_change = ggplot(pers_long_sd, aes(x=month, y = Extra_mean)) + 
+  geom_line(aes(group=1, color = &quot;#3182bd&quot;), col= &quot;#3182bd&quot;, size = 1.5)+
+  geom_point(col= &quot;#3182bd&quot;, size = 3)+
+  geom_errorbar(aes(ymin=Extra_mean-Extra_sd, ymax=Extra_mean+Extra_sd), width=.1,position=position_dodge(0.05), col = &quot;#3182bd&quot;) +
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Mean Extraversion&quot;)+
+  font_colour
+options(repr.plot.width = 3, repr.plot.height = 5)
+extra_change
+
+options(repr.plot.width = 5.4, repr.plot.height = 5)
+extra_change_dens = ggplot(pers_long, aes(Extra, y=..density.., fill = month, color = month)) +
+  theme_classic()+
+  theme(legend.title = element_blank())+
+  geom_density(alpha = .1)+
+  labs(x=&quot;Extraversion&quot;, y = &quot;Density&quot;, legend = NULL)+
+  scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), &#39;%&#39;)) +
+  scale_fill_manual(values = c(&quot;#6baed6&quot;,&quot;#74c476&quot;)) +
+  scale_color_manual(values = c(&quot;#3182bd&quot;, &quot;#31a354&quot;)) +
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+options(repr.plot.width = 5.4, repr.plot.height = 5)
+extra_change_dens</code></pre>
+<p><img src="Personality_files/figure-html/change%20extr-1.png" width="672" /><img src="Personality_files/figure-html/change%20extr-2.png" width="672" /></p>
 <p>Further Ideas: Change over Time Life Satisfaction depending on Personality traits and mindfulness PTG over Time</p>
 </div>
 </div>
+</div>
 <div id="header-1" class="section level1 tabset tabset-fade">
-<h1><span class="header-section-number">3</span> Header 1</h1>
+<h1><span class="header-section-number">4</span> Header 1</h1>
 <div id="plot" class="section level2 unnumbered">
 <h2>Plot</h2>
 </div>
@@ -563,11 +629,11 @@ density_CSE_T1</code></pre>
 <div id="section" class="section level1 unnumbered toc-ignore">
 <h1></h1>
 <div id="header-2" class="section level2">
-<h2><span class="header-section-number">3.1</span> Header 2</h2>
+<h2><span class="header-section-number">4.1</span> Header 2</h2>
 </div>
 </div>
 <div id="header-1-1" class="section level1">
-<h1><span class="header-section-number">4</span> Header 1</h1>
+<h1><span class="header-section-number">5</span> Header 1</h1>
 </div>
 
 

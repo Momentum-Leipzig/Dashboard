@@ -31,6 +31,7 @@ library(tidyr)
 library(hrbrthemes)
 library(gganimate)
 
+
 options(scipen = 999)
 data_pers = read.csv("data/data_Personality.csv")
 
@@ -38,7 +39,7 @@ months_PTG = c("May", "June", "July", "August", "September", "October", "Novembe
 
 months_Pers = c("December", "June")
 months_Mind = c("December", "March", "June")
-# Use this in case there is a month that systematically misses the data needed
+
 
 font_colour = theme(text = element_text(colour = "#3e3f3a")) 
 # Standard font colour of the text as indicated by the theme. Add to any gg plot to make all text in it the same colour as the "normal" body-text. MAY OVERRIDE POTENTIAL INTENDED FONTCOLOURS IN INDIVIDUAL PLOTS 
@@ -57,7 +58,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula 
 
 ### Extraversion {-}
 
-```{r density Extrav , include=TRUE, fig.show='hold'}
+```{r density Extrav , include=TRUE, fig.height=4}
 
 density_EX_T1 = ggplot(data_pers, aes(T1_extraversion))+
   theme_classic()+
@@ -76,7 +77,7 @@ density_EX_T1
 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.  
 
 ### Agreeableness {-}
-```{r density Agr , include=TRUE, fig.show='hold'}
+```{r density Agr , include=TRUE, fig.height=4}
 
 density_AG_T1 = ggplot(data_pers, aes(T1_agreeableness))+
   theme_classic()+
@@ -94,7 +95,7 @@ density_AG_T1
 
 ### Openness {-}
 
-```{r density Open , include=TRUE, fig.show='hold'}
+```{r density Open , include=TRUE, fig.height=4}
 
 density_OP_T1 = ggplot(data_pers, aes(T1_openness))+
   theme_classic()+
@@ -112,7 +113,7 @@ density_OP_T1
 
 ### Conscientiousness {-}
 
-```{r density Consc , include=TRUE, fig.show='hold'}
+```{r density Consc , include=TRUE, fig.height=4}
 
 density_CO_T1 = ggplot(data_pers, aes(T1_conscientiousness))+
   theme_classic()+
@@ -130,7 +131,7 @@ density_CO_T1
 
 ### Emotional Stability {-}
 
-```{r density EmStab , include=TRUE, fig.show='hold'}
+```{r density EmStab , include=TRUE, fig.height=4}
 
 density_ES_T1 = ggplot(data_pers, aes(T1_emostab))+
   theme_classic()+
@@ -151,7 +152,7 @@ density_ES_T1
 
 ### Awareness {-}
 
-```{r density Aware , include=TRUE, fig.show='hold'}
+```{r density Aware , include=TRUE, fig.height=4}
 
 density_MAw_T1 = ggplot(data_pers, aes(T1_mindTr_aw))+
   theme_classic()+
@@ -169,7 +170,7 @@ density_MAw_T1
 
 ### Acceptance {-}
 
-```{r density Accept , include=TRUE, fig.show='hold'}
+```{r density Accept , include=TRUE, fig.height=4}
 
 density_MAcc_T1 = ggplot(data_pers, aes(T1_mindTr_acc))+
   theme_classic()+
@@ -185,8 +186,11 @@ density_MAcc_T1 = ggplot(data_pers, aes(T1_mindTr_acc))+
 density_MAcc_T1
 ```
 
+  
+---  
+
 ## Proactive Personality
-```{r density ProPers , include=TRUE, fig.show='hold'}
+```{r density ProPers , include=TRUE, fig.height=4}
 
 density_proact_T1 = ggplot(data_pers, aes(T1_proact_pers))+
   theme_classic()+
@@ -202,8 +206,11 @@ density_proact_T1 = ggplot(data_pers, aes(T1_proact_pers))+
 density_proact_T1
 ```
 
+  
+---  
+  
 ## Core Self Evaluations
-```{r density CSE , include=TRUE, fig.show='hold'}
+```{r density CSE , include=TRUE, fig.height=4}
 
 density_CSE_T1 = ggplot(data_pers, aes(T1_CSE))+
   theme_classic()+
@@ -211,13 +218,81 @@ density_CSE_T1 = ggplot(data_pers, aes(T1_CSE))+
   geom_vline(aes(xintercept=mean(T1_CSE, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
   labs(x="Core Self Evaluations Score", y = "Amount of participants")+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
-  # Indicating the scale size and labels; seq to be read like: "Make a sequence from 0 to 100, going in steps of 10
   scale_y_continuous(breaks=seq(0, 400, 50))+
   theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
   font_colour
 
 density_CSE_T1
 ```
+
+  
+---  
+  
+
+# Change over Time
+  
+  
+## Big Five {.tabset .tabset-fade} 
+
+### Extraversion {-}
+
+```{r change extr, include=TRUE, fig.show='hold'}
+pers_long =   reshape(
+  
+  data_pers[,c(2:16,17,19,20,22)], 
+ 
+  varying = list(grep("extraversion", names(data_pers), value = T), 
+                 grep("agreeableness", names(data_pers), value = T),
+                 grep("conscientiousness", names(data_pers), value = T),
+                 grep("openness", names(data_pers), value = T),
+                 grep("emostab", names(data_pers), value = T),
+                 grep("CSE", names(data_pers), value = T),
+                 grep("proact", names(data_pers), value = T),
+                 c("T1_mind_aware","T5_mind_aware"),
+                 c("T1_mind_accept","T5_mind_accept")
+                 ), 
+  
+  v.names = c("Extra", "Aggree","Consc","Open","Emot","CSE","Proact","Mind_Aw","Mind_Ac"),
+ 
+  direction = "long", 
+ 
+  timevar = "month", 
+
+  idvar = "ID" 
+)               
+
+pers_long$month = factor(pers_long$month, labels = months_Pers, levels = c(1,2))
+
+pers_long_sd = select(pers_long, month:Mind_Ac ) %>% group_by(month) %>% summarise_all(funs(mean(.,na.rm=T),sd(.,na.rm = T)))
+
+
+extra_change = ggplot(pers_long_sd, aes(x=month, y = Extra_mean)) + 
+  geom_line(aes(group=1, color = "#3182bd"), col= "#3182bd", size = 1.5)+
+  geom_point(col= "#3182bd", size = 3)+
+  geom_errorbar(aes(ymin=Extra_mean-Extra_sd, ymax=Extra_mean+Extra_sd), width=.1,position=position_dodge(0.05), col = "#3182bd") +
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Mean Extraversion")+
+  font_colour
+
+extra_change
+
+
+extra_change_dens = ggplot(pers_long, aes(Extra, y=..density.., fill = month, color = month)) +
+  theme_classic()+
+  theme(legend.title = element_blank())+
+  geom_density(alpha = .1)+
+  labs(x="Extraversion", y = "Density", legend = NULL)+
+  scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), '%')) +
+  scale_fill_manual(values = c("#6baed6","#74c476")) +
+  scale_color_manual(values = c("#3182bd", "#31a354")) +
+  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+  font_colour
+
+extra_change_dens
+```
+
 
 
 Further Ideas: 
