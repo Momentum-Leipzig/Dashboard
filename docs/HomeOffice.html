@@ -510,7 +510,8 @@ HO_Perc_rel = data.frame(
     mean(HO_Perc$T8_HO6, na.rm = T),
     mean(HO_Perc$T9_HO6, na.rm = T),
     mean(HO_Perc$T10_HO6, na.rm = T),
-    mean(HO_Perc$T11_HO6, na.rm = T)
+    mean(HO_Perc$T11_HO6, na.rm = T),
+    mean(HO_Perc$T12_HO6, na.rm = T)
   ),
   sd_perc = c(
     sd(HO_Perc$T3_HO6, na.rm = T),
@@ -520,8 +521,9 @@ HO_Perc_rel = data.frame(
     sd(HO_Perc$T7_HO6, na.rm = T),
     sd(HO_Perc$T8_HO6, na.rm = T),
     sd(HO_Perc$T9_HO6, na.rm = T),
+    sd(HO_Perc$T10_HO6, na.rm = T),
     sd(HO_Perc$T11_HO6, na.rm = T),
-    sd(HO_Perc$T10_HO6, na.rm = T)
+    sd(HO_Perc$T12_HO6, na.rm = T)
   )
 ) 
 # Data-Frame with the means and standard deviations of the percentages of time Worked in Home Office, Long Format (Because of the many NAs, ggplots stat = &quot;mean&quot; could have shown errrors)
@@ -537,12 +539,14 @@ HO_Perc_rel$missing = c(NA,
                         NA,
                         NA,
                         NA,
+                        NA,
                         NA) 
 #Extrapolating the missing value in June to make a separate connecting line between May and July in the graph
 HO_Perc_rel$mis_sd = c(NA, 
                        HO_Perc_rel[2,3],
                        mean(c(HO_Perc_rel[2,3],HO_Perc_rel[4,3])),
                        HO_Perc_rel[4,3],
+                       NA,
                        NA,
                        NA,
                        NA,
@@ -721,7 +725,8 @@ HO_Perm_rel = data.frame(
            (length(which(HO_Perm$T8_HO4 == 2))/length(which((HO_Perm$T8_HO4 != &quot;NA&quot;)))),
            (length(which(HO_Perm$T9_HO4 == 2))/length(which((HO_Perm$T9_HO4 != &quot;NA&quot;)))),
            (length(which(HO_Perm$T10_HO4 == 2))/length(which((HO_Perm$T10_HO4 != &quot;NA&quot;)))),
-           (length(which(HO_Perm$T11_HO4 == 2))/length(which((HO_Perm$T11_HO4 != &quot;NA&quot;))))
+           (length(which(HO_Perm$T11_HO4 == 2))/length(which((HO_Perm$T11_HO4 != &quot;NA&quot;)))),
+           (length(which(HO_Perm$T12_HO4 == 2))/length(which((HO_Perm$T12_HO4 != &quot;NA&quot;))))
     
             )*100, digits = 2),
   
@@ -733,6 +738,7 @@ HO_Perm_rel$missing = c(NA,
                         HO_Perm_rel[2,1],
                         mean(c(HO_Perm_rel[2,1],HO_Perm_rel[4,1])),
                         HO_Perm_rel[4,1],
+                        NA,
                         NA,
                         NA,
                         NA,
@@ -795,7 +801,8 @@ HO_loc_prop &lt;- data.frame(
     September = plyr::count(df = HO_loc, vars = &quot;T8_HO18&quot;)[2:5,2]/length(which(HO_loc$T8_HO18 &gt; 0)),
     October = plyr::count(df = HO_loc, vars = &quot;T9_HO18&quot;)[2:5,2]/length(which(HO_loc$T9_HO18 &gt; 0)),
     November = plyr::count(df = HO_loc, vars = &quot;T10_HO18&quot;)[2:5,2]/length(which(HO_loc$T10_HO18 &gt; 0)),
-    December = plyr::count(df = HO_loc, vars = &quot;T11_HO18&quot;)[2:5,2]/length(which(HO_loc$T11_HO18 &gt; 0))
+    December = plyr::count(df = HO_loc, vars = &quot;T11_HO18&quot;)[2:5,2]/length(which(HO_loc$T11_HO18 &gt; 0)),
+    January = plyr::count(df = HO_loc, vars = &quot;T12_HO18&quot;)[2:5,2]/length(which(HO_loc$T12_HO18 &gt; 0))
     )
 # this one is a bit complicated :D I wanted to have the proportions of people woking from the respective places.
 # plyr::count(df = HO_loc, vars = &quot;T3_HO18&quot;) counts the frequency of every value inside a vector and returns a tibble with two columns (Value and Frequency) per variable. in this case, there are 6 &quot;Values&quot;, being 0,1,2,3,6 and NA.
@@ -854,6 +861,7 @@ HO_Isol$T8mean = rowMeans(HO_Isol[,grep(&quot;T8_HO1&quot;, names(HO_Isol), valu
 HO_Isol$T9mean = rowMeans(HO_Isol[,grep(&quot;T9_HO1&quot;, names(HO_Isol), value = T)])
 HO_Isol$T10mean = rowMeans(HO_Isol[,grep(&quot;T10_HO1&quot;, names(HO_Isol), value = T)])
 HO_Isol$T11mean = rowMeans(HO_Isol[,grep(&quot;T11_HO1&quot;, names(HO_Isol), value = T)])
+HO_Isol$T12mean = rowMeans(HO_Isol[,grep(&quot;T12_HO1&quot;, names(HO_Isol), value = T)])
 # Compiling the respective individual means of Isolation at every datapoint (dyplr might have given an easyer way)
 
 HO_Isol_means = data.frame(
@@ -867,13 +875,15 @@ HO_Isol_means = data.frame(
     mean(HO_Isol$T8mean, na.rm = T),
     mean(HO_Isol$T9mean, na.rm = T),
     mean(HO_Isol$T10mean, na.rm = T),
-    mean(HO_Isol$T11mean, na.rm = T)
+    mean(HO_Isol$T11mean, na.rm = T),
+    mean(HO_Isol$T12mean, na.rm = T)
   ),
   missing = c(
     NA,
     mean(HO_Isol$T4mean, na.rm = T),
     mean(c(mean(HO_Isol$T4mean, na.rm = T),mean(HO_Isol$T6mean, na.rm = T))),
     mean(HO_Isol$T6mean, na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -889,13 +899,15 @@ HO_Isol_means = data.frame(
     sd(HO_Isol$T8mean, na.rm = T),
     sd(HO_Isol$T9mean, na.rm = T),
     sd(HO_Isol$T10mean, na.rm = T),
-    sd(HO_Isol$T11mean, na.rm = T)
+    sd(HO_Isol$T11mean, na.rm = T),
+    sd(HO_Isol$T12mean, na.rm = T)
   ),
   sd_missing = c(
     NA,
     sd(HO_Isol$T4mean, na.rm = T),
     mean(sd(c(HO_Isol$T4mean, na.rm = T), sd(HO_Isol$T6mean, na.rm = T))),
     sd(HO_Isol$T6mean, na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -931,7 +943,8 @@ mean_r = round(mean(c(
   cor(HO_Isol[,&quot;T8mean&quot;], HO_Isol[,&quot;T8_HO6&quot;], use = &quot;complete.obs&quot;),
   cor(HO_Isol[,&quot;T9mean&quot;], HO_Isol[,&quot;T9_HO6&quot;], use = &quot;complete.obs&quot;),
   cor(HO_Isol[,&quot;T10mean&quot;], HO_Isol[,&quot;T10_HO6&quot;], use = &quot;complete.obs&quot;),
-  cor(HO_Isol[,&quot;T11mean&quot;], HO_Isol[,&quot;T11_HO6&quot;], use = &quot;complete.obs&quot;)
+  cor(HO_Isol[,&quot;T11mean&quot;], HO_Isol[,&quot;T11_HO6&quot;], use = &quot;complete.obs&quot;),
+  cor(HO_Isol[,&quot;T12mean&quot;], HO_Isol[,&quot;T12_HO6&quot;], use = &quot;complete.obs&quot;)
 )), digits = 2)</code></pre>
 <p> <br />
  </p>
@@ -964,7 +977,7 @@ Investigating a smaller subset of participants, the ones who spent most of their
 # HO32 = Efficacy
 # HO3 = Equipment (1=No, 2=Yes)
 # covid11 = Childcare (2 = Emergency Care, 3 = I cared at home, 4 = My Partner cared at home, 5 = other family members/friends, 6 = other)
-Sat_variables = c(grep(&quot;_HO3&quot;,names(data_HO), value = T),grep(&quot;_covid11&quot;,names(data_HO), value = T), &quot;ID&quot;)
+Sat_variables = c(grep(&quot;_HO3&quot;,names(data_HO), value = T),grep(&quot;_covid11&quot;,names(data_HO), value = T), &quot;ID&quot;) 
 HO_Sat =  data_HO[,Sat_variables]
 HO_Sat = HO_Sat[,-which(names(HO_Sat) %in% grep(&quot;_HO30&quot;,names(HO_Sat), value = T))]
 # since grep(&quot;_HO3&quot;,names(data_HO), value = T) returns all the names with _H03 in them, and we don&#39;t need HO30, this line above removes all the Tx_HO30 from the dataframe
@@ -982,7 +995,8 @@ HO_Sat_means = data.frame(
     mean(HO_Sat[HO_Sat$T8_HO31&gt;0,&quot;T8_HO31&quot;], na.rm = T),
     mean(HO_Sat[HO_Sat$T9_HO31&gt;0,&quot;T9_HO31&quot;], na.rm = T),
     mean(HO_Sat[HO_Sat$T10_HO31&gt;0,&quot;T10_HO31&quot;], na.rm = T),
-    mean(HO_Sat[HO_Sat$T11_HO31&gt;0,&quot;T11_HO31&quot;], na.rm = T)
+    mean(HO_Sat[HO_Sat$T11_HO31&gt;0,&quot;T11_HO31&quot;], na.rm = T),
+    mean(HO_Sat[HO_Sat$T12_HO31&gt;0,&quot;T12_HO31&quot;], na.rm = T)
     ),
   sd = c(
     sd(HO_Sat[HO_Sat$T3_HO31&gt;0,&quot;T3_HO31&quot;], na.rm = T),
@@ -993,13 +1007,15 @@ HO_Sat_means = data.frame(
     sd(HO_Sat[HO_Sat$T8_HO31&gt;0,&quot;T8_HO31&quot;], na.rm = T),
     sd(HO_Sat[HO_Sat$T9_HO31&gt;0,&quot;T9_HO31&quot;], na.rm = T),
     sd(HO_Sat[HO_Sat$T10_HO31&gt;0,&quot;T10_HO31&quot;], na.rm = T),
-    sd(HO_Sat[HO_Sat$T11_HO31&gt;0,&quot;T11_HO31&quot;], na.rm = T)
+    sd(HO_Sat[HO_Sat$T11_HO31&gt;0,&quot;T11_HO31&quot;], na.rm = T),
+    sd(HO_Sat[HO_Sat$T12_HO31&gt;0,&quot;T12_HO31&quot;], na.rm = T)
   ),
   missing = c(
-     NA,
-   mean(HO_Sat[HO_Sat$T4_HO31&gt;0,&quot;T4_HO31&quot;], na.rm = T),
+    NA,
+    mean(HO_Sat[HO_Sat$T4_HO31&gt;0,&quot;T4_HO31&quot;], na.rm = T),
     mean(c(mean(HO_Sat[HO_Sat$T4_HO31&gt;0,&quot;T4_HO31&quot;], na.rm = T),mean(HO_Sat[HO_Sat$T6_HO31&gt;0,&quot;T6_HO31&quot;], na.rm = T))),
     mean(HO_Sat[HO_Sat$T6_HO31&gt;0,&quot;T6_HO31&quot;], na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -1011,6 +1027,7 @@ HO_Sat_means = data.frame(
     sd(HO_Sat[HO_Sat$T4_HO31&gt;0,&quot;T4_HO31&quot;], na.rm = T),
     mean(c(sd(HO_Sat[HO_Sat$T4_HO31&gt;0,&quot;T4_HO31&quot;], na.rm = T),sd(HO_Sat[HO_Sat$T6_HO31&gt;0,&quot;T6_HO31&quot;], na.rm = T))),
     sd(HO_Sat[HO_Sat$T6_HO31&gt;0,&quot;T6_HO31&quot;], na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -1060,7 +1077,8 @@ HO_Sat_means = HO_Sat_means %&gt;%
     mean(HO_Sat[(HO_Sat$T8_covid11 == 3 &amp; HO_Sat$T8_HO31&gt;0), &quot;T8_HO31&quot;], na.rm = T),
     mean(HO_Sat[(HO_Sat$T9_covid11 == 3 &amp; HO_Sat$T9_HO31&gt;0), &quot;T9_HO31&quot;], na.rm = T),
     mean(HO_Sat[(HO_Sat$T10_covid11 == 3 &amp; HO_Sat$T10_HO31&gt;0), &quot;T10_HO31&quot;], na.rm = T),
-    mean(HO_Sat[(HO_Sat$T11_covid11 == 3 &amp; HO_Sat$T11_HO31&gt;0), &quot;T11_HO31&quot;], na.rm = T)
+    mean(HO_Sat[(HO_Sat$T11_covid11 == 3 &amp; HO_Sat$T11_HO31&gt;0), &quot;T11_HO31&quot;], na.rm = T),
+    mean(HO_Sat[(HO_Sat$T12_covid11 == 3 &amp; HO_Sat$T12_HO31&gt;0), &quot;T12_HO31&quot;], na.rm = T)
   ))%&gt;%
   mutate(means_care_partner =  c(
     mean(HO_Sat[(HO_Sat$T3_covid11 == 4 &amp; HO_Sat$T3_HO31&gt;0), &quot;T3_HO31&quot;], na.rm = T),
@@ -1071,13 +1089,15 @@ HO_Sat_means = HO_Sat_means %&gt;%
     mean(HO_Sat[(HO_Sat$T8_covid11 == 4 &amp; HO_Sat$T8_HO31&gt;0), &quot;T8_HO31&quot;], na.rm = T),
     mean(HO_Sat[(HO_Sat$T9_covid11 == 4 &amp; HO_Sat$T9_HO31&gt;0), &quot;T9_HO31&quot;], na.rm = T),
     mean(HO_Sat[(HO_Sat$T10_covid11 == 4 &amp; HO_Sat$T10_HO31&gt;0), &quot;T10_HO31&quot;], na.rm = T),
-    mean(HO_Sat[(HO_Sat$T11_covid11 == 4 &amp; HO_Sat$T11_HO31&gt;0), &quot;T11_HO31&quot;], na.rm = T)
+    mean(HO_Sat[(HO_Sat$T11_covid11 == 4 &amp; HO_Sat$T11_HO31&gt;0), &quot;T11_HO31&quot;], na.rm = T),
+    mean(HO_Sat[(HO_Sat$T12_covid11 == 4 &amp; HO_Sat$T12_HO31&gt;0), &quot;T12_HO31&quot;], na.rm = T)
   ))%&gt;%
   mutate(missing_self = c(
     NA,
      mean(HO_Sat[(HO_Sat$T4_covid11 == 3 &amp; HO_Sat$T4_HO31&gt;0), &quot;T4_HO31&quot;], na.rm = T),
     mean(c( mean(HO_Sat[(HO_Sat$T4_covid11 == 3 &amp; HO_Sat$T4_HO31&gt;0), &quot;T4_HO31&quot;], na.rm = T),mean(HO_Sat[(HO_Sat$T6_covid11 == 3 &amp; HO_Sat$T6_HO31&gt;0), &quot;T6_HO31&quot;], na.rm = T))),
     mean(HO_Sat[(HO_Sat$T6_covid11 == 3 &amp; HO_Sat$T6_HO31&gt;0), &quot;T6_HO31&quot;], na.rm = T),
+    NA,
     NA,
     NA,
     NA,
@@ -1089,6 +1109,7 @@ HO_Sat_means = HO_Sat_means %&gt;%
     mean(HO_Sat[(HO_Sat$T4_covid11 == 4 &amp; HO_Sat$T4_HO31&gt;0), &quot;T4_HO31&quot;], na.rm = T),
     mean(c( mean(HO_Sat[(HO_Sat$T4_covid11 == 4 &amp; HO_Sat$T4_HO31&gt;0), &quot;T4_HO31&quot;], na.rm = T),mean(HO_Sat[(HO_Sat$T6_covid11 == 4 &amp; HO_Sat$T6_HO31&gt;0), &quot;T6_HO31&quot;], na.rm = T))),
     mean(HO_Sat[(HO_Sat$T6_covid11 == 4 &amp; HO_Sat$T6_HO31&gt;0), &quot;T6_HO31&quot;], na.rm = T),
+    NA,
     NA,
     NA,
     NA,
