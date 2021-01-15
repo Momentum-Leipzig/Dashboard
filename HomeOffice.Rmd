@@ -35,6 +35,7 @@ library(gganimate)
 
 options(scipen = 999)
 data_HO = read.csv("data/data_Homeoffice.csv")
+data_HO = distinct(data_HO, ID, .keep_all = T)
 months_compl = c("April", "May", "June", "July", "August", "September", "October", "November", "December", "January") 
 #For plots where the data for june is extrapolated
 
@@ -708,7 +709,7 @@ Investigating a smaller subset of participants, the ones who spent most of their
 # HO32 = Efficacy
 # HO3 = Equipment (1=No, 2=Yes)
 # covid11 = Childcare (2 = Emergency Care, 3 = I cared at home, 4 = My Partner cared at home, 5 = other family members/friends, 6 = other)
-Sat_variables = c(grep("_HO3",names(data_HO), value = T),grep("_covid11",names(data_HO), value = T), "ID")
+Sat_variables = c(grep("_HO3",names(data_HO), value = T),grep("_covid11",names(data_HO), value = T), "ID") 
 HO_Sat =  data_HO[,Sat_variables]
 HO_Sat = HO_Sat[,-which(names(HO_Sat) %in% grep("_HO30",names(HO_Sat), value = T))]
 # since grep("_HO3",names(data_HO), value = T) returns all the names with _H03 in them, and we don't need HO30, this line above removes all the Tx_HO30 from the dataframe
@@ -917,7 +918,7 @@ Surprisingly, whether or not one had to care for their children at home had seem
 # Using the reshape function for long format now
 HO_Sat_Eff =   reshape(
   
-  distinct(HO_Sat[,!(names(HO_Sat) %in% c("T4_HO3","T6_HO3", grep( "_covid11",names(HO_Sat), value = T)))],ID, .keep_all = T), 
+  HO_Sat[,!(names(HO_Sat) %in% c("T4_HO3","T6_HO3", grep( "_covid11",names(HO_Sat), value = T)))], 
   # Excluding the not needed variables from the dataframe, namely the childcare variables and the equipment variables for T4 and T6
   
   varying = list(grep( "_HO31", names(HO_Sat), value = T), grep("_HO32", names(HO_Sat), value = T)), 
