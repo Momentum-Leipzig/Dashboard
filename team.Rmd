@@ -85,10 +85,15 @@ output: html_document
   </div>
   
   <div id = "Img Posch" class = "grid-pic">
+  <img src="images/MP_Headshot.jpg" >
   </div>
   
   <div id = "CV Posch" class = "grid-text">
   <h3>Melina Posch, B.Sc.</h3>
+  Melina Posch is a research assistant at the Chair for Work and Organizational Psychology at Leipzig University. She studied psychology at Griffith University, Australia and Leipzig University, Germany, where she received her BSc in 2019 and is currently studying a for master’s degree in psychology.  <br>
+ <br>
+Her research interests include occupational health and well-being, job design and idle time at work. She has a keen interest in computational data analysis and programming as well as research transparency.
+  
   </div>
   
   <div id = "Img Janzen" class = "grid-pic">
