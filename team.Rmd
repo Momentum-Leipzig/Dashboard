@@ -63,11 +63,16 @@ output: html_document
   </div>
   
   <div id = "Img Weigelt" class = "grid-pic">
- 
+  <img src="images/OW_Headshot.jpg" >
   </div>
   
   <div id = "CV Weigelt" class = "grid-text">
   <h3>Oliver Weigelt, Ph.D.</h3>
+  Oliver Weigelt is a postdoctoral research fellow at the Chair for Work and Organizational Psychology at Leipzig University. He works within the Momentum program funded by Volkswagen Stiftung on the role of work in the development of civilization diseases. Before moving to Leipzig University in 2020 he held postdoctoral positions at the University of Rostock and the University of Hagen. He earned his Ph.D. at the University of Hagen and graduated at Chemnitz University of Technology. <br>
+<br>
+His research interests include occupational stress and recovery, proactive work behavior, counterproductive work behavior, and affect at work. Oliver has a focus on experience sampling methodology and is interested in temporal issues, such as the circaseptan cycle and day-of-week effects (e.g., the Blue-Monday-effect).<br>
+<br>
+Oliver has published in peer-reviewed journals such as Journal of Occupational Health Psychology, Journal of Occupational and Organizational Psychology, Personnel Psychology, Journal of Organizational Behavior, and Journal of Management. He has received academic awards both for innovative research (e.g., German Society of Psychology) and for constructive reviewing (e.g., Human Relations). He serves as  a reviewer for numerous academic journals and for research funders. His research is covered in several media outlets and he serves as an interview partner on work and well-being regularly. He engages as a mentor for Masters and Ph.D. students and is commited to integrate research and education throughout all projects.
   </div>
   
   <div id = "Img Rudolph" class = "grid-pic">
