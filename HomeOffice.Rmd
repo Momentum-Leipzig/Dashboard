@@ -131,7 +131,7 @@ In December of 2019, when the coronavirus was just one of many news stories from
 ___"What percentage of Your worktime do You work from home (Home Office)?"___  
 The following graphs show the __average proportion of time__ spent in Home Office and how the percentages were __distributed__ back then.  
 
-```{r include=TRUE, fig.show='hold', out.width = c('50%','50%'), fig.cap= "Percentage of time worked from home in December 2019", cache.whatever= list(mean_HO_T1, density_HO_T1)}
+```{r Percent-HO2, include=TRUE, fig.show='hold', out.width = c('50%','50%'), fig.cap= "Percentage of time worked from home in December 2019", cache.whatever= density_HO_T1}
 ## For details on the code for the plots, please change to the "Plots"-Tab and unfold the code there. ##
 
 #cache.whatever inside the chunk options tells the chunk, that it has to be invalidated, as soon as one of these variables change. Otherwise, changing the plots in the chunk above doesn't invalidate this chunk and the lastly cached version will be displayed.
