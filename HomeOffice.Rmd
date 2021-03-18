@@ -152,64 +152,54 @@ As can be seen, before the COVID-19 Crisis hit, __work from home was rather spar
 
 ### Plots {-}
 
-```{r Percentage over Time, include = TRUE, out.width='100%', fig.height=3.5}
+```{r Percentage over Time, include = TRUE, out.width='100%', fig.height=3.5, cache.whatever= months_miss}
 #HO6
 HO_Perc = data_HO[,grep(names(data_HO), pattern = "_HO6", value = T)]
 # grep searches for patterns in a given Vector (in this case, the pattern "_HO6" in names(data_HO)). This allows easy finding of the same variable over different time points 
 
 HO_Perc_rel = data.frame(
-  month = as.factor(months_compl),
-  mean_perc = c(
-    mean(HO_Perc$T3_HO6, na.rm = T),
-    mean(HO_Perc$T4_HO6, na.rm = T),
+  matrix(
     NA,
-    mean(HO_Perc$T6_HO6, na.rm = T),
-    mean(HO_Perc$T7_HO6, na.rm = T),
-    mean(HO_Perc$T8_HO6, na.rm = T),
-    mean(HO_Perc$T9_HO6, na.rm = T),
-    mean(HO_Perc$T10_HO6, na.rm = T),
-    mean(HO_Perc$T11_HO6, na.rm = T),
-    mean(HO_Perc$T12_HO6, na.rm = T)
-  ),
-  sd_perc = c(
-    sd(HO_Perc$T3_HO6, na.rm = T),
-    sd(HO_Perc$T4_HO6, na.rm = T),
-    NA,
-    sd(HO_Perc$T6_HO6, na.rm = T),
-    sd(HO_Perc$T7_HO6, na.rm = T),
-    sd(HO_Perc$T8_HO6, na.rm = T),
-    sd(HO_Perc$T9_HO6, na.rm = T),
-    sd(HO_Perc$T10_HO6, na.rm = T),
-    sd(HO_Perc$T11_HO6, na.rm = T),
-    sd(HO_Perc$T12_HO6, na.rm = T)
+    nrow = length(months_compl),
+    ncol = 5,
+    dimnames = list(c(),c("month","mean_perc", "sd_perc", "missing", "mis_sd"))
   )
-) 
-# Data-Frame with the means and standard deviations of the percentages of time Worked in Home Office, Long Format (Because of the many NAs, ggplots stat = "mean" could have shown errrors)
-# Usually Colmeans would have maybe done the trick, but we don't have the data for every month, and need an NA, so that we can fill that with in the plot
+)
+HO_Perc_rel$month = as.factor(months_compl)
 
-# For every new wave, that is entered, this new TX_HOY needs to be added in these dataframes and NAs in the "Missing" cols
+for (i in 1:length(months_compl)) {
+  #means
+  if (HO_Perc_rel[i,1] %in% months_miss) {
+    HO_Perc_rel[i,2] = mean(HO_Perc[,paste0("T",i+2,"_HO6")], na.rm = T)
+  } 
+  
+  #sds
+  if (HO_Perc_rel[i,1] %in% months_miss) {
+    HO_Perc_rel[i,3] = sd(HO_Perc[,paste0("T",i+2,"_HO6")], na.rm = T)
+  } 
+}
 
-HO_Perc_rel$missing = c(NA, 
-                        HO_Perc_rel[2,2],
-                        mean(c(HO_Perc_rel[2,2],HO_Perc_rel[4,2])),
-                        HO_Perc_rel[4,2],
-                        NA,
-                        NA,
-                        NA,
-                        NA,
-                        NA,
-                        NA) 
-#Extrapolating the missing value in June to make a separate connecting line between May and July in the graph
-HO_Perc_rel$mis_sd = c(NA, 
-                       HO_Perc_rel[2,3],
-                       mean(c(HO_Perc_rel[2,3],HO_Perc_rel[4,3])),
-                       HO_Perc_rel[4,3],
-                       NA,
-                       NA,
-                       NA,
-                       NA,
-                       NA,
-                       NA)
+
+for (i in 1:length(months_compl)) {
+  #missing mean
+  if (HO_Perc_rel[i,1] %in% c("May","July")) {
+    HO_Perc_rel[i,4] = HO_Perc_rel[i,2]
+    
+  } else if (HO_Perc_rel[i,1] == "June"){
+    HO_Perc_rel[i,4] = mean(c(HO_Perc_rel[i-1,2],HO_Perc_rel[i+1,2]))
+    
+  } 
+  
+  #missing sd
+  if (HO_Perc_rel[i,1] %in% c("May","July")) {
+    HO_Perc_rel[i,5] = HO_Perc_rel[i,3]
+    
+  } else if (HO_Perc_rel[i,1] == "June"){
+    HO_Perc_rel[i,5] = mean(c(HO_Perc_rel[i-1,3],HO_Perc_rel[i+1,3]))
+    
+  } 
+}
+
 
 HO_Perc_plot = ggplot(HO_Perc_rel, aes(x=month, y = mean_perc)) + 
   geom_line(aes(group=1), col= "#3182bd", size = 1.5)+
@@ -230,6 +220,61 @@ HO_Perc_plot = ggplot(HO_Perc_rel, aes(x=month, y = mean_perc)) +
 HO_Perc_plot
 
 
+## Old way of calculating the Means/SDs and extrapolating their missing value in between.
+## New code with for- and if-constructions should calculate all the required data by itself, but as a safety, we leave this old code here
+# HO_Perc_rel = data.frame(
+#   month = as.factor(months_compl),
+#   mean_perc = c(
+#     mean(HO_Perc$T3_HO6, na.rm = T),
+#     mean(HO_Perc$T4_HO6, na.rm = T),
+#     NA,
+#     mean(HO_Perc$T6_HO6, na.rm = T),
+#     mean(HO_Perc$T7_HO6, na.rm = T),
+#     mean(HO_Perc$T8_HO6, na.rm = T),
+#     mean(HO_Perc$T9_HO6, na.rm = T),
+#     mean(HO_Perc$T10_HO6, na.rm = T),
+#     mean(HO_Perc$T11_HO6, na.rm = T),
+#     mean(HO_Perc$T12_HO6, na.rm = T)
+#   ),
+#   sd_perc = c(
+#     sd(HO_Perc$T3_HO6, na.rm = T),
+#     sd(HO_Perc$T4_HO6, na.rm = T),
+#     NA,
+#     sd(HO_Perc$T6_HO6, na.rm = T),
+#     sd(HO_Perc$T7_HO6, na.rm = T),
+#     sd(HO_Perc$T8_HO6, na.rm = T),
+#     sd(HO_Perc$T9_HO6, na.rm = T),
+#     sd(HO_Perc$T10_HO6, na.rm = T),
+#     sd(HO_Perc$T11_HO6, na.rm = T),
+#     sd(HO_Perc$T12_HO6, na.rm = T)
+#   )
+# ) 
+# # Data-Frame with the means and standard deviations of the percentages of time Worked in Home Office, Long Format (Because of the many NAs, ggplots stat = "mean" could have shown errrors)
+# # Usually Colmeans would have maybe done the trick, but we don't have the data for every month, and need an NA, so that we can fill that with in the plot
+# 
+# # For every new wave, that is entered, this new TX_HOY needs to be added in these dataframes and NAs in the "Missing" cols
+# 
+# HO_Perc_rel$missing = c(NA, 
+#                         HO_Perc_rel[2,2],
+#                         mean(c(HO_Perc_rel[2,2],HO_Perc_rel[4,2])),
+#                         HO_Perc_rel[4,2],
+#                         NA,
+#                         NA,
+#                         NA,
+#                         NA,
+#                         NA,
+#                         NA) 
+# #Extrapolating the missing value in June to make a separate connecting line between May and July in the graph
+# HO_Perc_rel$mis_sd = c(NA, 
+#                        HO_Perc_rel[2,3],
+#                        mean(c(HO_Perc_rel[2,3],HO_Perc_rel[4,3])),
+#                        HO_Perc_rel[4,3],
+#                        NA,
+#                        NA,
+#                        NA,
+#                        NA,
+#                        NA,
+#                        NA)
 ```
   
 
@@ -422,36 +467,36 @@ HO_Pos_post
 ### Plot {-}  
 ```{r Permission over Time, include = TRUE, out.width = '100%', fig.height= 3}
 HO_Perm = data_HO[,c("ID",grep("_HO4",names(data_HO), value = T))]
+
+
 HO_Perm_rel = data.frame(
-  perm = round(c(
-           (length(which(HO_Perm$T3_HO4 == 2))/length(which((HO_Perm$T3_HO4 != "NA")))),
-           (length(which(HO_Perm$T4_HO4 == 2))/length(which((HO_Perm$T4_HO4 != "NA")))),
-           NA,
-           (length(which(HO_Perm$T6_HO4 == 2))/length(which((HO_Perm$T6_HO4 != "NA")))),
-           (length(which(HO_Perm$T7_HO4 == 2))/length(which((HO_Perm$T7_HO4 != "NA")))),
-           (length(which(HO_Perm$T8_HO4 == 2))/length(which((HO_Perm$T8_HO4 != "NA")))),
-           (length(which(HO_Perm$T9_HO4 == 2))/length(which((HO_Perm$T9_HO4 != "NA")))),
-           (length(which(HO_Perm$T10_HO4 == 2))/length(which((HO_Perm$T10_HO4 != "NA")))),
-           (length(which(HO_Perm$T11_HO4 == 2))/length(which((HO_Perm$T11_HO4 != "NA")))),
-           (length(which(HO_Perm$T12_HO4 == 2))/length(which((HO_Perm$T12_HO4 != "NA"))))
-    
-            )*100, digits = 2),
-  
-  month = as.factor(months_compl)
+  matrix(
+    NA,
+    nrow = length(months_compl),
+    ncol = 3,
+    dimnames = list(c(),c("month","perm", "missing"))
+  )
 )
-# (length(which(HO_Perm$T3_HO4 == 2)) returns the length of the vector of rows, where T3_HO4 is 2 (i.e. those who had permission to work from home). the second term in the division indicates the total amount of responses in the respective month. Rounding all of this after multiplying by 100 for percentages
+HO_Perm_rel$month = as.factor(months_compl)
 
-HO_Perm_rel$missing = c(NA,
-                        HO_Perm_rel[2,1],
-                        mean(c(HO_Perm_rel[2,1],HO_Perm_rel[4,1])),
-                        HO_Perm_rel[4,1],
-                        NA,
-                        NA,
-                        NA,
-                        NA,
-                        NA,
-                        NA)
+for (i in 1:length(months_compl)) {
+  #means
+  if (HO_Perm_rel[i,1] %in% months_miss) {
+    HO_Perm_rel[i,2] = round(prop.table(table(HO_Perm[,paste0("T",i+2,"_HO4")]))[2]*100, digits = 2)
+  } 
+}
 
+
+for (i in 1:length(months_compl)) {
+  #missing mean
+  if (HO_Perm_rel[i,1] %in% c("May","July")) {
+    HO_Perm_rel[i,3] = HO_Perm_rel[i,2]
+    
+  } else if (HO_Perm_rel[i,1] == "June"){
+    HO_Perm_rel[i,3] = mean(c(HO_Perm_rel[i-1,2],HO_Perm_rel[i+1,2]))
+    
+  } 
+}
 
 
 HO_Perm_plot = ggplot(HO_Perm_rel, aes(x=month, y = perm)) + 
@@ -467,6 +512,38 @@ HO_Perm_plot = ggplot(HO_Perm_rel, aes(x=month, y = perm)) +
   font_colour
 
 HO_Perm_plot
+
+
+# HO_Perm_rel = data.frame(
+#   month = as.factor(months_compl),
+#   perm = round(c(
+#            (length(which(HO_Perm$T3_HO4 == 2))/length(which((HO_Perm$T3_HO4 != "NA")))),
+#            (length(which(HO_Perm$T4_HO4 == 2))/length(which((HO_Perm$T4_HO4 != "NA")))),
+#            NA,
+#            (length(which(HO_Perm$T6_HO4 == 2))/length(which((HO_Perm$T6_HO4 != "NA")))),
+#            (length(which(HO_Perm$T7_HO4 == 2))/length(which((HO_Perm$T7_HO4 != "NA")))),
+#            (length(which(HO_Perm$T8_HO4 == 2))/length(which((HO_Perm$T8_HO4 != "NA")))),
+#            (length(which(HO_Perm$T9_HO4 == 2))/length(which((HO_Perm$T9_HO4 != "NA")))),
+#            (length(which(HO_Perm$T10_HO4 == 2))/length(which((HO_Perm$T10_HO4 != "NA")))),
+#            (length(which(HO_Perm$T11_HO4 == 2))/length(which((HO_Perm$T11_HO4 != "NA")))),
+#            (length(which(HO_Perm$T12_HO4 == 2))/length(which((HO_Perm$T12_HO4 != "NA"))))
+#     
+#             )*100, digits = 2)
+# )
+# 
+# # (length(which(HO_Perm$T3_HO4 == 2)) returns the length of the vector of rows, where T3_HO4 is 2 (i.e. those who had permission to work from home). the second term in the division indicates the total amount of responses in the respective month. Rounding all of this after multiplying by 100 for percentages
+# 
+# HO_Perm_rel$missing = c(NA,
+#                         HO_Perm_rel[2,2],
+#                         mean(c(HO_Perm_rel[2,2],HO_Perm_rel[4,2])),
+#                         HO_Perm_rel[4,2],
+#                         NA,
+#                         NA,
+#                         NA,
+#                         NA,
+#                         NA,
+#                         NA)
+
 ```
   
 &nbsp;  
@@ -506,26 +583,28 @@ Comparable to the first section of this website, the __possibility__ to work fro
 
 HO_loc = data_HO[,grep("_HO18",names(data_HO), value = T )]
 
-HO_loc_prop <- data.frame(
-    location = c("Own Room","Designated Spot","Changing","Other"),
-    April = plyr::count(df = HO_loc, vars = "T3_HO18")[2:5,2]/length(which(HO_loc$T3_HO18 > 0)),
-    May = plyr::count(df = HO_loc, vars = "T4_HO18")[2:5,2]/length(which(HO_loc$T4_HO18 > 0)),
-    July = plyr::count(df = HO_loc, vars = "T6_HO18")[2:5,2]/length(which(HO_loc$T6_HO18 > 0)),
-    August = plyr::count(df = HO_loc, vars = "T7_HO18")[2:5,2]/length(which(HO_loc$T7_HO18 > 0)),
-    September = plyr::count(df = HO_loc, vars = "T8_HO18")[2:5,2]/length(which(HO_loc$T8_HO18 > 0)),
-    October = plyr::count(df = HO_loc, vars = "T9_HO18")[2:5,2]/length(which(HO_loc$T9_HO18 > 0)),
-    November = plyr::count(df = HO_loc, vars = "T10_HO18")[2:5,2]/length(which(HO_loc$T10_HO18 > 0)),
-    December = plyr::count(df = HO_loc, vars = "T11_HO18")[2:5,2]/length(which(HO_loc$T11_HO18 > 0)),
-    January = plyr::count(df = HO_loc, vars = "T12_HO18")[2:5,2]/length(which(HO_loc$T12_HO18 > 0))
-    )
-# this one is a bit complicated :D I wanted to have the proportions of people woking from the respective places.
-# plyr::count(df = HO_loc, vars = "T3_HO18") counts the frequency of every value inside a vector and returns a tibble with two columns (Value and Frequency) per variable. in this case, there are 6 "Values", being 0,1,2,3,6 and NA.
-# by adding [2:5,2] we say that we want only the frequencies (second column) of 1,2,3 and 6 (rows 2:5), since these are the ones that are interesting for us. (see avove)
-# length(which(HO_loc$T3_HO18 > 0)) returns the total of valid responses
+HO_loc_prop = data.frame(
+  matrix(
+    NA,
+    ncol = length(months_miss)+1,
+    nrow = 4,
+    dimnames = list(c(),c("location", months_miss))
+  )
+)
+
+HO_loc_prop$location = as.factor(c("Own Room","Designated Spot","Changing","Other"))
+
+for (i in 1:(length(months_miss))) {
+  HO_loc_prop[,i+1] = prop.table(table(HO_loc[HO_loc[,i] >0,i]))
+}
+
+
+
 
 HO_loc_prop_long = gather(HO_loc_prop, month, percentage, -location)
 HO_loc_prop_long$month = factor(HO_loc_prop_long$month, levels = rev(months_miss), labels = rev(months_miss))
 # here we use rev(), so that the plot returns the months from oldest to most recent
+
 HO_loc_prop_long$location_rev = factor(HO_loc_prop_long$location, levels = rev(c("Own Room","Designated Spot","Changing","Other")))
 # for better order
 
@@ -542,6 +621,25 @@ HO_loc_plot = ggplot(HO_loc_prop_long, aes(x=percentage, y = month)) +
   
 
 HO_loc_plot
+
+
+# HO_loc_prop <- data.frame(
+#     location = c("Own Room","Designated Spot","Changing","Other"),
+#     April = plyr::count(df = HO_loc, vars = "T3_HO18")[2:5,2]/length(which(HO_loc$T3_HO18 > 0)),
+#     May = plyr::count(df = HO_loc, vars = "T4_HO18")[2:5,2]/length(which(HO_loc$T4_HO18 > 0)),
+#     July = plyr::count(df = HO_loc, vars = "T6_HO18")[2:5,2]/length(which(HO_loc$T6_HO18 > 0)),
+#     August = plyr::count(df = HO_loc, vars = "T7_HO18")[2:5,2]/length(which(HO_loc$T7_HO18 > 0)),
+#     September = plyr::count(df = HO_loc, vars = "T8_HO18")[2:5,2]/length(which(HO_loc$T8_HO18 > 0)),
+#     October = plyr::count(df = HO_loc, vars = "T9_HO18")[2:5,2]/length(which(HO_loc$T9_HO18 > 0)),
+#     November = plyr::count(df = HO_loc, vars = "T10_HO18")[2:5,2]/length(which(HO_loc$T10_HO18 > 0)),
+#     December = plyr::count(df = HO_loc, vars = "T11_HO18")[2:5,2]/length(which(HO_loc$T11_HO18 > 0)),
+#     January = plyr::count(df = HO_loc, vars = "T12_HO18")[2:5,2]/length(which(HO_loc$T12_HO18 > 0))
+#     )
+# # this one is a bit complicated :D I wanted to have the proportions of people woking from the respective places.
+# # plyr::count(df = HO_loc, vars = "T3_HO18") counts the frequency of every value inside a vector and returns a tibble with two columns (Value and Frequency) per variable. in this case, there are 6 "Values", being 0,1,2,3,6 and NA.
+# # by adding [2:5,2] we say that we want only the frequencies (second column) of 1,2,3 and 6 (rows 2:5), since these are the ones that are interesting for us. (see avove)
+# # length(which(HO_loc$T3_HO18 > 0)) returns the total of valid responses
+
 ```
   
 &nbsp;  
@@ -575,69 +673,59 @@ HO_Isol_Vars = c(grep("_HO13", names(data_HO), value = T), grep("_HO14", names(d
 
 
 HO_Isol = data_HO[, c("ID", HO_Isol_Vars)]
-HO_Isol$T3mean = rowMeans(HO_Isol[,grep("T3_HO1", names(HO_Isol), value = T)])
-HO_Isol$T4mean = rowMeans(HO_Isol[,grep("T4_HO1", names(HO_Isol), value = T)])
-HO_Isol$T6mean = rowMeans(HO_Isol[,grep("T6_HO1", names(HO_Isol), value = T)])
-HO_Isol$T7mean = rowMeans(HO_Isol[,grep("T7_HO1", names(HO_Isol), value = T)])
-HO_Isol$T8mean = rowMeans(HO_Isol[,grep("T8_HO1", names(HO_Isol), value = T)])
-HO_Isol$T9mean = rowMeans(HO_Isol[,grep("T9_HO1", names(HO_Isol), value = T)])
-HO_Isol$T10mean = rowMeans(HO_Isol[,grep("T10_HO1", names(HO_Isol), value = T)])
-HO_Isol$T11mean = rowMeans(HO_Isol[,grep("T11_HO1", names(HO_Isol), value = T)])
-HO_Isol$T12mean = rowMeans(HO_Isol[,grep("T12_HO1", names(HO_Isol), value = T)])
-# Compiling the respective individual means of Isolation at every datapoint (dyplr might have given an easyer way)
+# compiling individual means
+for (i in 1:length(months_miss)) {
+  if (i %in% c(1,2)) {
+    HO_Isol[,paste0("T",i+2,"mean")] = rowMeans(HO_Isol[,grep(paste0("T",i+2,"_HO1"), names(HO_Isol), value = T)])
+  } else {
+    HO_Isol[,paste0("T",i+3,"mean")] = rowMeans(HO_Isol[,grep(paste0("T",i+3,"_HO1"), names(HO_Isol), value = T)])
+  }
+}
+
 
 HO_Isol_means = data.frame(
-  month = as.factor(months_compl),
-  means = c(
-    mean(HO_Isol$T3mean, na.rm = T),
-    mean(HO_Isol$T4mean, na.rm = T),
+  matrix(
     NA,
-    mean(HO_Isol$T6mean, na.rm = T),
-    mean(HO_Isol$T7mean, na.rm = T),
-    mean(HO_Isol$T8mean, na.rm = T),
-    mean(HO_Isol$T9mean, na.rm = T),
-    mean(HO_Isol$T10mean, na.rm = T),
-    mean(HO_Isol$T11mean, na.rm = T),
-    mean(HO_Isol$T12mean, na.rm = T)
-  ),
-  missing = c(
-    NA,
-    mean(HO_Isol$T4mean, na.rm = T),
-    mean(c(mean(HO_Isol$T4mean, na.rm = T),mean(HO_Isol$T6mean, na.rm = T))),
-    mean(HO_Isol$T6mean, na.rm = T),
-    NA,
-    NA,
-    NA,
-    NA,
-    NA,
-    NA
-  ),
-  sd = c(
-    sd(HO_Isol$T3mean, na.rm = T),
-    sd(HO_Isol$T4mean, na.rm = T),
-    NA,
-    sd(HO_Isol$T6mean, na.rm = T),
-    sd(HO_Isol$T7mean, na.rm = T),
-    sd(HO_Isol$T8mean, na.rm = T),
-    sd(HO_Isol$T9mean, na.rm = T),
-    sd(HO_Isol$T10mean, na.rm = T),
-    sd(HO_Isol$T11mean, na.rm = T),
-    sd(HO_Isol$T12mean, na.rm = T)
-  ),
-  sd_missing = c(
-    NA,
-    sd(HO_Isol$T4mean, na.rm = T),
-    mean(sd(c(HO_Isol$T4mean, na.rm = T), sd(HO_Isol$T6mean, na.rm = T))),
-    sd(HO_Isol$T6mean, na.rm = T),
-    NA,
-    NA,
-    NA,
-    NA,
-    NA,
-    NA
+    ncol = 5,
+    nrow = length(months_compl),
+    dimnames = list(c(),c("month","means","sd","missing","sd_missing"))
   )
-    
 )
+
+HO_Isol_means$month = as.factor(months_compl)
+
+for (i in 1:length(months_compl)) {
+  #means
+  if (HO_Isol_means[i,1] %in% months_miss) {
+    HO_Isol_means[i,2] = mean(HO_Isol[,paste0("T",i+2,"mean")], na.rm = T)
+  } 
+  
+  #sds
+  if (HO_Isol_means[i,1] %in% months_miss) {
+    HO_Isol_means[i,3] = sd(HO_Isol[,paste0("T",i+2,"mean")], na.rm = T)
+  } 
+}
+
+
+for (i in 1:length(months_compl)) {
+  #missing mean
+  if (HO_Isol_means[i,1] %in% c("May","July")) {
+    HO_Isol_means[i,4] = HO_Isol_means[i,2]
+    
+  } else if (HO_Isol_means[i,1] == "June"){
+    HO_Isol_means[i,4] = mean(c(HO_Isol_means[i-1,2],HO_Isol_means[i+1,2]))
+    
+  } 
+  
+  #missing sd
+  if (HO_Isol_means[i,1] %in% c("May","July")) {
+    HO_Isol_means[i,5] = HO_Isol_means[i,3]
+    
+  } else if (HO_Isol_means[i,1] == "June"){
+    HO_Isol_means[i,5] = mean(c(HO_Isol_means[i-1,3],HO_Isol_means[i+1,3]))
+    
+  } 
+}
 
 
 HO_Isol_plot = ggplot(HO_Isol_means, aes(x=month, y = means)) + 
@@ -657,17 +745,98 @@ HO_Isol_plot
 
 HO_Isol =  cbind(HO_Isol, HO_Perc)
 #adding percentage of time worked in Home Office for Correlation seen in the text below
-mean_r = round(mean(c(
-  cor(HO_Isol[,"T3mean"], HO_Isol[,"T3_HO6"], use = "complete.obs"),
-  cor(HO_Isol[,"T4mean"], HO_Isol[,"T4_HO6"], use = "complete.obs"),
-  cor(HO_Isol[,"T6mean"], HO_Isol[,"T6_HO6"], use = "complete.obs"),
-  cor(HO_Isol[,"T7mean"], HO_Isol[,"T7_HO6"], use = "complete.obs"),
-  cor(HO_Isol[,"T8mean"], HO_Isol[,"T8_HO6"], use = "complete.obs"),
-  cor(HO_Isol[,"T9mean"], HO_Isol[,"T9_HO6"], use = "complete.obs"),
-  cor(HO_Isol[,"T10mean"], HO_Isol[,"T10_HO6"], use = "complete.obs"),
-  cor(HO_Isol[,"T11mean"], HO_Isol[,"T11_HO6"], use = "complete.obs"),
-  cor(HO_Isol[,"T12mean"], HO_Isol[,"T12_HO6"], use = "complete.obs")
-)), digits = 2)
+HO_Isol_Perc_Cor = c(1:length(months_miss))
+HO_Isol_Perc_Cor[] = NA
+
+for (i in 1:length(months_miss)) {
+  if (i < 3) {
+    HO_Isol_Perc_Cor[i] = cor(HO_Isol[,paste0("T",i+2,"mean")], HO_Isol[,paste0("T",i+2,"_HO6")], use = "complete.obs")
+  } else {
+    HO_Isol_Perc_Cor[i] = cor(HO_Isol[,paste0("T",i+3,"mean")], HO_Isol[,paste0("T",i+3,"_HO6")], use = "complete.obs")
+  }
+  
+}
+mean_r =round(mean(HO_Isol_Perc_Cor), digits = 2)
+
+
+
+# HO_Isol$T3mean = rowMeans(HO_Isol[,grep("T3_HO1", names(HO_Isol), value = T)])
+# HO_Isol$T4mean = rowMeans(HO_Isol[,grep("T4_HO1", names(HO_Isol), value = T)])
+# HO_Isol$T6mean = rowMeans(HO_Isol[,grep("T6_HO1", names(HO_Isol), value = T)])
+# HO_Isol$T7mean = rowMeans(HO_Isol[,grep("T7_HO1", names(HO_Isol), value = T)])
+# HO_Isol$T8mean = rowMeans(HO_Isol[,grep("T8_HO1", names(HO_Isol), value = T)])
+# HO_Isol$T9mean = rowMeans(HO_Isol[,grep("T9_HO1", names(HO_Isol), value = T)])
+# HO_Isol$T10mean = rowMeans(HO_Isol[,grep("T10_HO1", names(HO_Isol), value = T)])
+# HO_Isol$T11mean = rowMeans(HO_Isol[,grep("T11_HO1", names(HO_Isol), value = T)])
+# HO_Isol$T12mean = rowMeans(HO_Isol[,grep("T12_HO1", names(HO_Isol), value = T)])
+# # Compiling the respective individual means of Isolation at every datapoint (dyplr might have given an easyer way)
+
+# HO_Isol_means = data.frame(
+#   month = as.factor(months_compl),
+#   means = c(
+#     mean(HO_Isol$T3mean, na.rm = T),
+#     mean(HO_Isol$T4mean, na.rm = T),
+#     NA,
+#     mean(HO_Isol$T6mean, na.rm = T),
+#     mean(HO_Isol$T7mean, na.rm = T),
+#     mean(HO_Isol$T8mean, na.rm = T),
+#     mean(HO_Isol$T9mean, na.rm = T),
+#     mean(HO_Isol$T10mean, na.rm = T),
+#     mean(HO_Isol$T11mean, na.rm = T),
+#     mean(HO_Isol$T12mean, na.rm = T)
+#   ),
+#   missing = c(
+#     NA,
+#     mean(HO_Isol$T4mean, na.rm = T),
+#     mean(c(mean(HO_Isol$T4mean, na.rm = T),mean(HO_Isol$T6mean, na.rm = T))),
+#     mean(HO_Isol$T6mean, na.rm = T),
+#     NA,
+#     NA,
+#     NA,
+#     NA,
+#     NA,
+#     NA
+#   ),
+#   sd = c(
+#     sd(HO_Isol$T3mean, na.rm = T),
+#     sd(HO_Isol$T4mean, na.rm = T),
+#     NA,
+#     sd(HO_Isol$T6mean, na.rm = T),
+#     sd(HO_Isol$T7mean, na.rm = T),
+#     sd(HO_Isol$T8mean, na.rm = T),
+#     sd(HO_Isol$T9mean, na.rm = T),
+#     sd(HO_Isol$T10mean, na.rm = T),
+#     sd(HO_Isol$T11mean, na.rm = T),
+#     sd(HO_Isol$T12mean, na.rm = T)
+#   ),
+#   sd_missing = c(
+#     NA,
+#     sd(HO_Isol$T4mean, na.rm = T),
+#     mean(c(sd(HO_Isol$T4mean, na.rm = T), sd(HO_Isol$T6mean, na.rm = T))),
+#     sd(HO_Isol$T6mean, na.rm = T),
+#     NA,
+#     NA,
+#     NA,
+#     NA,
+#     NA,
+#     NA
+#   )
+#     
+# )
+# 
+
+# mean_r = round(mean(c(
+#   cor(HO_Isol[,"T3mean"], HO_Isol[,"T3_HO6"], use = "complete.obs"),
+#   cor(HO_Isol[,"T4mean"], HO_Isol[,"T4_HO6"], use = "complete.obs"),
+#   cor(HO_Isol[,"T6mean"], HO_Isol[,"T6_HO6"], use = "complete.obs"),
+#   cor(HO_Isol[,"T7mean"], HO_Isol[,"T7_HO6"], use = "complete.obs"),
+#   cor(HO_Isol[,"T8mean"], HO_Isol[,"T8_HO6"], use = "complete.obs"),
+#   cor(HO_Isol[,"T9mean"], HO_Isol[,"T9_HO6"], use = "complete.obs"),
+#   cor(HO_Isol[,"T10mean"], HO_Isol[,"T10_HO6"], use = "complete.obs"),
+#   cor(HO_Isol[,"T11mean"], HO_Isol[,"T11_HO6"], use = "complete.obs"),
+#   cor(HO_Isol[,"T12mean"], HO_Isol[,"T12_HO6"], use = "complete.obs")
+# )), digits = 2)
+
 ```
   
 &nbsp;  
