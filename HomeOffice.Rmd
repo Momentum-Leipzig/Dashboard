@@ -32,6 +32,7 @@ library(plotly)
 library(tidyr)
 library(hrbrthemes)
 library(gganimate)
+library(magick)
 
 options(scipen = 999)
 data_HO = read.csv("data/data_Homeoffice.csv")
@@ -306,7 +307,7 @@ HO_Perc_ani = ggplot(HO_Perc_long, aes(percentage)) +
   ease_aes('cubic-in-out')
 # for nicer transitioning
 
-animate(HO_Perc_ani, renderer = gifski_renderer())
+animate(HO_Perc_ani, renderer = magick_renderer(), duration = length(months_compl), fps = 10)
 
 HO_Perc_dens = ggplot(HO_Perc_long, aes(percentage, y=..density.., fill = month, color = month)) +
   theme_classic()+
@@ -345,7 +346,7 @@ Notably and expectedly, the mean __time spent in Home Office grew__ as the pande
 ```{r distributions over Time 2, fig.show= 'hold', out.width=c('50%','50%'), cache.whatever= HO_Perc_dens}
 ## For details on the code for the plots, please change to the "Plots"-Tab and unfold the code there. ##
 
-animate(HO_Perc_ani, renderer = gifski_renderer())
+animate(HO_Perc_ani, renderer = magick_renderer(), duration = length(months_compl), fps = 10)
 HO_Perc_dens
 
 ```
