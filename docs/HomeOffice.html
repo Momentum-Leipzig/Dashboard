@@ -488,8 +488,9 @@ Percentage of time worked from home in December 2019
 <div id="plots" class="section level3 unnumbered">
 <h3 class="unnumbered">Plots</h3>
 <pre class="r"><code>#HO6
-HO_Perc = data_HO[,grep(names(data_HO), pattern = &quot;_HO6&quot;, value = T)]
+HO_Perc = select(data_HO,ends_with(&quot;_HO6&quot;))
 # grep searches for patterns in a given Vector (in this case, the pattern &quot;_HO6&quot; in names(data_HO)). This allows easy finding of the same variable over different time points 
+
 
 HO_Perc_rel = data.frame(
   matrix(
@@ -646,8 +647,45 @@ HO_Perc_dens = ggplot(HO_Perc_long, aes(percentage, y=..density.., fill = month,
   theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
   font_colour
 
-HO_Perc_dens</code></pre>
-<p><img src="HomeOffice_files/figure-html/distributions%20over%20Time-1.gif" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time-3.png" width="50%" /></p>
+HO_Perc_dens
+
+HO_Perc2 = select(data_HO, ID, ends_with(&quot;_HO6&quot;))
+HO_Perc2 = add_column(HO_Perc2, T5_HO6 = NA, .before = &quot;T6_HO6&quot;)
+HO_Perc2$T5_HO6 = as.numeric(HO_Perc2$T5_HO6)
+
+HO_Perc_long2 = reshape(
+  HO_Perc2,
+  varying = grep(&quot;HO6&quot;, names(HO_Perc2), value = T),
+  v.names = &quot;Percentage&quot;,
+  idvar = &quot;ID&quot;,
+  direction = &quot;long&quot;,
+  timevar = &quot;month&quot;
+  
+)
+
+HO_Perc_long2$month = factor(HO_Perc_long2$month, labels = months_compl)
+
+HO_perc_violplot = ggplot(HO_Perc_long2, aes(month,Percentage)) +
+  geom_violin(trim = T,col= &quot;#6baed6&quot; ) +
+  geom_jitter(width = 0.05, size = 0.05,col= &quot;#3182bd&quot;, alpha = 0.3) +
+  
+  geom_line(aes(group = 1), stat = &quot;summary&quot;, fun = mean, col= &quot;#3182bd&quot;, size = 1)+
+  geom_point(col= &quot;#3182bd&quot;, size = 2.5, stat = &quot;summary&quot;, fun = mean)+
+  
+  geom_line(aes(group = 1), stat = &quot;summary&quot;, fun = median, col= &quot;#6baed6&quot;, size = 1, linetype = 4)+
+  geom_point(col= &quot;#6baed6&quot;, size = 2.5, stat = &quot;summary&quot;, fun = median, shape = 18)+
+  # for the points at every month
+    # only half a SD around the mean, because the whole SD would have filled the whole scale
+  coord_cartesian(ylim = c(0,100))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_compl, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), &quot;%&quot;), name = &quot;Percentage of a week worked from home&quot;)+
+  labs(caption = &quot;Note: Data was missing for June. Upper line represents means, lower line represents medians&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  font_colour
+
+HO_perc_violplot</code></pre>
+<p><img src="HomeOffice_files/figure-html/distributions%20over%20Time-1.gif" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time-3.png" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time-4.png" width="100%" /></p>
 <p> <br />
  </p>
 </div>
@@ -663,8 +701,9 @@ HO_Perc_plot</code></pre>
 <pre class="r"><code>## For details on the code for the plots, please change to the &quot;Plots&quot;-Tab and unfold the code there. ##
 
 animate(HO_Perc_ani, renderer = magick_renderer(), duration = length(months_compl), fps = 10)
-HO_Perc_dens</code></pre>
-<p><img src="HomeOffice_files/figure-html/distributions%20over%20Time%202-1.gif" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time%202-3.png" width="50%" /></p>
+HO_Perc_dens
+HO_perc_violplot</code></pre>
+<p><img src="HomeOffice_files/figure-html/distributions%20over%20Time%202-1.gif" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time%202-3.png" width="50%" /><img src="HomeOffice_files/figure-html/distributions%20over%20Time%202-4.png" width="100%" /></p>
 <p>Looking at these distributions it grows clear that the increased percentage worked from home was mainly driven by the outer right part of the distribution, i.e. the people who <strong>worked from home entirely</strong>, while the rest continued working fully at their regular workplace.</p>
 <p>Moreover, the decrease over time seems to be attributed to the workers, who returned from their Home Offices, while the <strong>middle</strong> of the distribution remained largely <strong>unchanged</strong>. Note that the steep increase in October was partially due to a resampling of new participants in order to compensate for the gradual dropout.</p>
 <hr />
