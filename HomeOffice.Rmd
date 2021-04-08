@@ -39,10 +39,10 @@ library(patchwork)
 options(scipen = 999)
 data_HO = read.csv("data/data_Homeoffice.csv")
 data_HO = distinct(data_HO, ID, .keep_all = T)
-months_compl = c("April '20", "May '20", "June '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20", "January '21", "February '21", "March '21") 
+months_compl = c("April '20", "May '20", "June '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20", "January '21", "February '21", "March '21", "April '21") 
 #For plots where the data for june is extrapolated
 
-months_miss = c("April '20", "May '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20", "January '21", "February '21", "March '21") 
+months_miss = c("April '20", "May '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20", "January '21", "February '21", "March '21", "April '21") 
 #For operations where only the observed data is used, see e.g. "Distributions over Time"
 
 font_colour = theme(text = element_text(colour = "#3e3f3a")) 
@@ -508,7 +508,7 @@ HO_Pos_post
 
 ## Permission over Time {.tabset .tabset-fade}
 ### Plot {-}  
-```{r Permission over Time, include = TRUE, out.width = '100%', fig.height= 3}
+```{r Permission over Time, include = TRUE, out.width = '100%', fig.height= 3,cache.whatever=months_compl}
 HO_Perm = data_HO[,c("ID",grep("_HO4",names(data_HO), value = T))]
 
 
@@ -919,7 +919,7 @@ Investigating a smaller subset of participants, the ones who spent most of their
 &nbsp;  
 &nbsp;  
   
-```{r Satisfaction, include=TRUE, out.width='100%', fig.height=3.5}
+```{r Satisfaction, include=TRUE, out.width='100%', fig.height=3.5, cache.whatecer= months_miss}
 # HO31 = Satisfaction 
 # HO32 = Efficacy
 # HO3 = Equipment (1=No, 2=Yes)
@@ -1064,7 +1064,7 @@ Now that in and of itself is good news. Even though the all-encompassing situati
 
 ### Plot {-}
 
-```{r Satisfaction parenting, include= TRUE, out.width='100%', fig.height=3.5}
+```{r Satisfaction parenting, include= TRUE, out.width='100%', fig.height=3.5, cache.whatecer= months_miss}
 
 # Here we use the syntax of dplyr. We add a column with the means of "satisfaction" by group (Childcare provided by oneself, covid11 == 3, or by the partner, covid11 == 4) by using the "mutate" function: creating a vector called means_care_..., filling it with the conditional means, and adding it to the existing dataframe.
 
@@ -1218,7 +1218,7 @@ Surprisingly, whether or not one had to care for their children at home had seem
 &nbsp;  
 &nbsp;
   
-```{r efficacy , include= TRUE, fig.height=3.5, out.width='100%' }
+```{r efficacy , include= TRUE, fig.height=3.5, out.width='100%', cache.whatecer= months_miss }
 
 # Using the reshape function for long format now
 HO_Sat_Eff =   reshape(
