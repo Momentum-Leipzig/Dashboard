@@ -30,16 +30,30 @@ library(plotly)
 library(tidyr)
 library(hrbrthemes)
 library(gganimate)
+library(inauguration)
 
 
 options(scipen = 999)
 data_pers = read.csv("data/data_Personality.csv")
 
-months_PTG = c("May", "June", "July", "August", "September", "October", "November", "December")
+months_PTG = c("May '20", "June '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20",
+               "January '21", "February '21", "March '21", "April '21")
 
-months_Pers = c("December", "June")
-months_Mind = c("December", "March", "June")
+months_lifesat = c("December '19",
+  "March '20","April '20","May '20", "June '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20",
+               "January '21", "February '21", "March '21", "April '21")
 
+months_Pers = c("December '19", "June '20", "March '21")
+months_CSE_Proact = c("December '19", "June '20", "April '21")
+months_Mind = c("December '19", "March '20", "June '20")
+
+# Colours
+Extra_col = inauguration("inauguration_2021_bernie")[1]
+Agree_col = inauguration("inauguration_2021_bernie")[2]
+Open_col = inauguration("inauguration_2021_bernie")[3]
+Consc_col = inauguration("inauguration_2021_bernie")[4]
+Emot_col = inauguration("inauguration_2021_bernie")[5]
+Rest_col = "#3182bd"
 
 font_colour = theme(text = element_text(colour = "#3e3f3a")) 
 # Standard font colour of the text as indicated by the theme. Add to any gg plot to make all text in it the same colour as the "normal" body-text. MAY OVERRIDE POTENTIAL INTENDED FONTCOLOURS IN INDIVIDUAL PLOTS 
@@ -62,7 +76,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula 
 
 density_EX_T1 = ggplot(data_pers, aes(T1_extraversion))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Extra_col, fill = Extra_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_extraversion, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
   labs(x="Extraversion Score", y = "Amount of participants")+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -81,7 +95,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula 
 
 density_AG_T1 = ggplot(data_pers, aes(T1_agreeableness))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Agree_col, fill = Agree_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_agreeableness, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
   labs(x="Agreeableness Score", y = "Amount of participants")+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -99,7 +113,7 @@ density_AG_T1
 
 density_OP_T1 = ggplot(data_pers, aes(T1_openness))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Open_col, fill = Open_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_openness, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
   labs(x="Openness Score", y = "Amount of participants")+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -117,7 +131,7 @@ density_OP_T1
 
 density_CO_T1 = ggplot(data_pers, aes(T1_conscientiousness))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Consc_col, fill =Consc_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_conscientiousness, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
   labs(x="Conscientiousness Score", y = "Amount of participants")+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -135,7 +149,7 @@ density_CO_T1
 
 density_ES_T1 = ggplot(data_pers, aes(T1_emostab))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col="#3182bd", fill = "#6baed6", alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Emot_col, fill = Emot_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_emostab, na.rm=T)), linetype="dashed", size= 0.5)+ #Line representing the mean
   labs(x="Emotional Stability Score", y = "Amount of participants")+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -236,23 +250,25 @@ density_CSE_T1
 
 ### Extraversion {-}
 
-```{r change extr, include=TRUE, fig.show='hold'}
-pers_long =   reshape(
+```{r change extr, include=TRUE}
+big5_long =   reshape(
   
-  data_pers[,c(2:16,17,19,20,22)], 
+  select(data_pers, ID, 
+         ends_with("extraversion"),
+         ends_with("agreeableness"),
+         ends_with("conscientiousness"),
+         ends_with("openness"),
+         ends_with("emostab")
+         ), 
  
   varying = list(grep("extraversion", names(data_pers), value = T), 
                  grep("agreeableness", names(data_pers), value = T),
                  grep("conscientiousness", names(data_pers), value = T),
                  grep("openness", names(data_pers), value = T),
-                 grep("emostab", names(data_pers), value = T),
-                 grep("CSE", names(data_pers), value = T),
-                 grep("proact", names(data_pers), value = T),
-                 c("T1_mind_aware","T5_mind_aware"),
-                 c("T1_mind_accept","T5_mind_accept")
-                 ), 
+                 grep("emostab", names(data_pers), value = T)
+                 ),
   
-  v.names = c("Extra", "Aggree","Consc","Open","Emot","CSE","Proact","Mind_Aw","Mind_Ac"),
+  v.names = c("Extra", "Aggree","Consc","Open","Emot"),
  
   direction = "long", 
  
@@ -261,44 +277,579 @@ pers_long =   reshape(
   idvar = "ID" 
 )               
 
-pers_long$month = factor(pers_long$month, labels = months_Pers, levels = c(1,2))
-
-pers_long_sd = select(pers_long, month:Mind_Ac ) %>% group_by(month) %>% summarise_all(funs(mean(.,na.rm=T),sd(.,na.rm = T)))
+big5_long$month = factor(big5_long$month, labels = months_Pers, levels = c(1,2,3))
 
 
-extra_change = ggplot(pers_long_sd, aes(x=month, y = Extra_mean)) + 
-  geom_line(aes(group=1, color = "#3182bd"), col= "#3182bd", size = 1.5)+
-  geom_point(col= "#3182bd", size = 3)+
-  geom_errorbar(aes(ymin=Extra_mean-Extra_sd, ymax=Extra_mean+Extra_sd), width=.1,position=position_dodge(0.05), col = "#3182bd") +
+extra_change = ggplot(big5_long, aes(x=month, y = Extra)) +
+  geom_violin(trim = T,col= Extra_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Extra_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Extra_col), col= Extra_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Extra_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Extra_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
   coord_cartesian(ylim = c(1,7))+
   theme_minimal()+
   scale_x_discrete(limits = months_Pers, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Mean Extraversion")+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Extraversion")+
   font_colour
 
 extra_change
 
+```
 
-extra_change_dens = ggplot(pers_long, aes(Extra, y=..density.., fill = month, color = month)) +
-  theme_classic()+
-  theme(legend.title = element_blank())+
-  geom_density(alpha = .1)+
-  labs(x="Extraversion", y = "Density", legend = NULL)+
-  scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), '%')) +
-  scale_fill_manual(values = c("#6baed6","#74c476")) +
-  scale_color_manual(values = c("#3182bd", "#31a354")) +
-  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+### Agreeableness {-}
+
+```{r change agree, include=TRUE, fig.show='hold'}
+agree_change = ggplot(big5_long, aes(x=month, y = Aggree)) +
+  geom_violin(trim = T,col= Agree_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Agree_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Agree_col), col= Agree_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Agree_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Agree_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Agreableness")+
   font_colour
 
-extra_change_dens
+agree_change
+```
+
+### Openness {-}
+
+```{r change open, include=TRUE, fig.show='hold'}
+open_change = ggplot(big5_long, aes(x=month, y = Open)) +
+  geom_violin(trim = T,col= Open_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Open_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Open_col), col= Open_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Open_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Open_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Openness")+
+  font_colour
+
+open_change
 ```
 
 
+### Conscientiousness {-}
+
+```{r change consc, include=TRUE, fig.show='hold'}
+consc_change = ggplot(big5_long, aes(x=month, y = Consc)) +
+  geom_violin(trim = T,col= Consc_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Consc_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Consc_col), col= Consc_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Consc_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Consc_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Conscientiousness")+
+  font_colour
+
+extra_change
+```
+
+
+### Emotional Stability {-}
+
+```{r change emot, include=TRUE, fig.show='hold'}
+emot_change = ggplot(big5_long, aes(x=month, y = Emot)) +
+  geom_violin(trim = T,col= Emot_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Emot_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Emot_col), col= Emot_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Emot_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Emot_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Emotional Stability")+
+  font_colour
+
+emot_change
+```
+
+## Mindfulness - Trait {.tabset .tabset-fade}
+
+### Awareness {-}
+```{r change aware, include=TRUE}
+Mind_long =   reshape(
+
+  select(data_pers, ID,
+         ends_with("_mind_aware"),
+         ends_with("_mind_accept")
+         ),
+
+  varying = list(c("T1_mind_aware","T2_mind_aware","T5_mind_aware"),
+                 c("T1_mind_accept","T2_mind_accept","T5_mind_accept")
+                 ),
+
+  v.names = c("Mind_Aw","Mind_Ac"),
+
+  direction = "long",
+
+  timevar = "month",
+
+  idvar = "ID"
+)
+
+Mind_long$month = factor(Mind_long$month, labels = months_Mind)
+
+aware_change = ggplot(Mind_long, aes(x=month, y = Mind_Aw)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Mind, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Mindfulness: Awareness")+
+  font_colour
+
+aware_change
+```
+
+### Acceptance {-}
+```{r change acc, include=TRUE}
+
+accept_change = ggplot(Mind_long, aes(x=month, y = Mind_Ac)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Mind, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Mindfulness: Acceptance")+
+  font_colour
+
+accept_change
+```
+
+## Proactive Personality
+```{r change proact, include=TRUE}
+CES_Proact_long =   reshape(
+
+  select(data_pers, ID,
+         ends_with("proact_pers"),
+         ends_with("CSE")
+         ),
+
+  varying =  list(grep("CSE", names(data_pers), value = T),
+                 grep("proact", names(data_pers), value = T)
+                 ),
+
+  v.names = c("CSE","Proact"),
+
+  direction = "long",
+
+  timevar = "month",
+
+  idvar = "ID"
+)
+
+CES_Proact_long$month = factor(CES_Proact_long$month, labels = months_CSE_Proact)
+
+proact_change = ggplot(CES_Proact_long, aes(x=month, y = Proact)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_CSE_Proact, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Proactive Personality")+
+  font_colour
+
+proact_change
+```
+
+## Core Self Evaluations
+```{r change CSE, include=TRUE}
+
+CSE_change = ggplot(CES_Proact_long, aes(x=month, y = CSE)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_CSE_Proact, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Core Self Evaluations")+
+  font_colour
+
+CSE_change
+```
 
 Further Ideas: 
-Change over Time
 Life Satisfaction depending on Personality traits and mindfulness
 PTG over Time
+
+
+
+# Life Satisfaction depending on Traits
+## Big Five {.tabset .tabset-fade} 
+
+### Extraversion {-}
+
+```{r change extr, include=TRUE}
+
+lifesat_long = reshape(
+  select(data_pers, 
+         ID, 
+         T1_extraversion,
+         T1_agreeableness,
+         T1_conscientiousness,
+         T1_openness,
+         T1_emostab,
+         T1_CSE,
+         T1_proact_pers,
+         T1_mind_aware,
+         T1_mind_accept,
+         ends_with("life_sat")
+         ),
+
+  varying =  grep("life", names(data_pers), value = T),
+
+  v.names = "Life_Sat",
+
+  direction = "long",
+
+  timevar = "month",
+
+  idvar = "ID"
+  
+)
+
+lifesat_long$month = factor(lifesat_long$month, labels = months_lifesat)
+
+pers_higlow = data_pers %>% dplyr::summarise_at(
+  vars(
+    T1_extraversion,
+    T1_agreeableness,
+    T1_conscientiousness,
+    T1_openness,
+    T1_emostab,
+    T1_CSE,
+    T1_proact_pers,
+    T1_mind_aware,
+    T1_mind_accept
+    ), 
+  list(high =~ mean(.x, na.rm = T) + sd(.x, na.rm = T), 
+       low =~ mean(.x, na.rm = T) - sd(.x, na.rm = T)))
+
+## Making new grouping Variables
+lifesat_long =lifesat_long %>% mutate(
+    Extraversion = case_when(
+      T1_extraversion >= pers_higlow$T1_extraversion_high & !is.na(T1_extraversion) ~ "high",
+      T1_extraversion <= pers_higlow$T1_extraversion_low & !is.na(T1_extraversion) ~ "low",
+      T1_extraversion < pers_higlow$T1_extraversion_high & T1_extraversion > pers_higlow$T1_extraversion_low & !is.na(T1_extraversion) ~ "average"
+    ),
+    
+    Agreeableness = case_when(
+      T1_agreeableness >= pers_higlow$T1_agreeableness_high ~ "high",
+      T1_agreeableness <= pers_higlow$T1_agreeableness_low  ~ "low",
+      T1_agreeableness < pers_higlow$T1_agreeableness_high & T1_agreeableness > pers_higlow$T1_agreeableness_low ~ "average"
+    ),
+    
+    Openness = case_when(
+      T1_openness >= pers_higlow$T1_openness_high ~ "high",
+      T1_openness <= pers_higlow$T1_openness_low ~ "low",
+      T1_openness < pers_higlow$T1_openness_high & T1_openness > pers_higlow$T1_openness_low ~ "average"
+    ),
+    
+    Conscientiousness = case_when(
+      T1_conscientiousness >= pers_higlow$T1_conscientiousness_high ~ "high",
+      T1_conscientiousness <= pers_higlow$T1_conscientiousness_low ~ "low",
+      T1_conscientiousness < pers_higlow$T1_conscientiousness_high & T1_conscientiousness > pers_higlow$T1_conscientiousness_low ~ "average"
+    ),
+    
+    Stability = case_when(
+      T1_emostab >= pers_higlow$T1_emostab_high ~ "high",
+      T1_emostab <= pers_higlow$T1_emostab_low ~ "low",
+      T1_emostab < pers_higlow$T1_emostab_high & T1_emostab > pers_higlow$T1_emostab_low ~ "average"
+    ),
+    
+    Mind_Aware = case_when(
+      T1_mind_aware >= pers_higlow$T1_mind_aware_high ~ "high",
+      T1_mind_aware <= pers_higlow$T1_mind_aware_low ~ "low",
+      T1_mind_aware < pers_higlow$T1_mind_aware_high & T1_mind_aware > pers_higlow$T1_mind_aware_low ~ "average"
+    ),
+    
+    Mind_Accept = case_when(
+      T1_mind_accept >= pers_higlow$T1_mind_accept_high ~ "high",
+      T1_mind_accept <= pers_higlow$T1_mind_accept_low ~ "low",
+      T1_mind_accept < pers_higlow$T1_mind_accept_high & T1_mind_accept > pers_higlow$T1_mind_accept_low ~ "average"
+    ),
+    
+    CSE = case_when(
+      T1_CSE >= pers_higlow$T1_CSE_high ~ "high",
+      T1_CSE <= pers_higlow$T1_CSE_low ~ "low",
+      T1_CSE < pers_higlow$T1_CSE_high & T1_CSE > pers_higlow$T1_CSE_low ~ "average"
+    ),
+    
+    Proact_Pers = case_when(
+      T1_proact_pers >= pers_higlow$T1_proact_pers_high ~ "high",
+      T1_proact_pers <= pers_higlow$T1_proact_pers_low ~ "low",
+      T1_proact_pers < pers_higlow$T1_proact_pers_high & T1_proact_pers > pers_higlow$T1_proact_pers_low ~ "average"
+    ),
+    
+    
+)
+
+lifesat_long[13:21] =  lapply(select(lifesat_long, Extraversion:Proact_Pers),factor, levels =c("low", "average", "high") , labels =c("low", "average", "high"))
+
+table(lifesat_long[lifesat_long$Agreeableness == "low","T1_agreeableness"])
+
+
+#continue with graphs!
+extra_change = ggplot(big5_long, aes(x=month, y = Extra)) +
+  geom_violin(trim = T,col= Extra_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Extra_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Extra_col), col= Extra_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Extra_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Extra_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Extraversion")+
+  font_colour
+
+extra_change
+
+```
+
+### Agreeableness {-}
+
+```{r change agree, include=TRUE, fig.show='hold'}
+agree_change = ggplot(big5_long, aes(x=month, y = Aggree)) +
+  geom_violin(trim = T,col= Agree_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Agree_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Agree_col), col= Agree_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Agree_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Agree_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Agreableness")+
+  font_colour
+
+agree_change
+```
+
+### Openness {-}
+
+```{r change open, include=TRUE, fig.show='hold'}
+open_change = ggplot(big5_long, aes(x=month, y = Open)) +
+  geom_violin(trim = T,col= Open_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Open_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Open_col), col= Open_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Open_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Open_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Openness")+
+  font_colour
+
+open_change
+```
+
+
+### Conscientiousness {-}
+
+```{r change consc, include=TRUE, fig.show='hold'}
+consc_change = ggplot(big5_long, aes(x=month, y = Consc)) +
+  geom_violin(trim = T,col= Consc_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Consc_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Consc_col), col= Consc_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Consc_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Consc_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Conscientiousness")+
+  font_colour
+
+extra_change
+```
+
+
+### Emotional Stability {-}
+
+```{r change emot, include=TRUE, fig.show='hold'}
+emot_change = ggplot(big5_long, aes(x=month, y = Emot)) +
+  geom_violin(trim = T,col= Emot_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Emot_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Emot_col), col= Emot_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Emot_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Emot_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Emotional Stability")+
+  font_colour
+
+emot_change
+```
+
+## Mindfulness - Trait {.tabset .tabset-fade}
+
+### Awareness {-}
+```{r change aware, include=TRUE}
+Mind_long =   reshape(
+
+  select(data_pers, ID,
+         ends_with("_mind_aware"),
+         ends_with("_mind_accept")
+         ),
+
+  varying = list(c("T1_mind_aware","T2_mind_aware","T5_mind_aware"),
+                 c("T1_mind_accept","T2_mind_accept","T5_mind_accept")
+                 ),
+
+  v.names = c("Mind_Aw","Mind_Ac"),
+
+  direction = "long",
+
+  timevar = "month",
+
+  idvar = "ID"
+)
+
+Mind_long$month = factor(Mind_long$month, labels = months_Mind)
+
+aware_change = ggplot(Mind_long, aes(x=month, y = Mind_Aw)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Mind, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Mindfulness: Awareness")+
+  font_colour
+
+aware_change
+```
+
+### Acceptance {-}
+```{r change acc, include=TRUE}
+
+accept_change = ggplot(Mind_long, aes(x=month, y = Mind_Ac)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Mind, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Mindfulness: Acceptance")+
+  font_colour
+
+accept_change
+```
+
+## Proactive Personality
+```{r change proact, include=TRUE}
+CES_Proact_long =   reshape(
+
+  select(data_pers, ID,
+         ends_with("proact_pers"),
+         ends_with("CSE")
+         ),
+
+  varying =  list(grep("CSE", names(data_pers), value = T),
+                 grep("proact", names(data_pers), value = T)
+                 ),
+
+  v.names = c("CSE","Proact"),
+
+  direction = "long",
+
+  timevar = "month",
+
+  idvar = "ID"
+)
+
+CES_Proact_long$month = factor(CES_Proact_long$month, labels = months_CSE_Proact)
+
+proact_change = ggplot(CES_Proact_long, aes(x=month, y = Proact)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_CSE_Proact, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Proactive Personality")+
+  font_colour
+
+proact_change
+```
+
+## Core Self Evaluations
+```{r change CSE, include=TRUE}
+
+CSE_change = ggplot(CES_Proact_long, aes(x=month, y = CSE)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_CSE_Proact, name ="" )+
+  scale_y_continuous(breaks = seq(1,7,1), name = "Core Self Evaluations")+
+  font_colour
+
+CSE_change
+```
+
 
 # Header 1 {.tabset .tabset-fade}
 

@@ -13,12 +13,22 @@
 
 <title>Personality</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,12 +37,16 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -45,32 +59,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -80,10 +69,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -100,40 +85,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 61px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h2 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h3 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h4 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h5 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h6 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -161,7 +119,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -173,7 +131,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -184,10 +142,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -199,7 +170,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -328,13 +298,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -368,11 +338,11 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
 </ul>
@@ -392,19 +362,19 @@ div.tocify {
     text-decoration: none;
   }
 </style>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
+<div id="introduction" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
 </div>
-<div id="personality-in-december" class="section level1">
-<h1><span class="header-section-number">2</span> Personality in December</h1>
-<div id="big-five" class="section level2 tabset tabset-fade">
-<h2><span class="header-section-number">2.1</span> Big Five</h2>
+<div id="personality-in-december" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Personality in December</h1>
+<div id="big-five" class="section level2 tabset tabset-fade" number="2.1">
+<h2 class="tabset tabset-fade" number="2.1"><span class="header-section-number">2.1</span> Big Five</h2>
 <div id="extraversion" class="section level3 unnumbered">
-<h3>Extraversion</h3>
+<h3 class="unnumbered">Extraversion</h3>
 <pre class="r"><code>density_EX_T1 = ggplot(data_pers, aes(T1_extraversion))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Extra_col, fill = Extra_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_extraversion, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
   labs(x=&quot;Extraversion Score&quot;, y = &quot;Amount of participants&quot;)+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -418,10 +388,10 @@ density_EX_T1</code></pre>
 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</p>
 </div>
 <div id="agreeableness" class="section level3 unnumbered">
-<h3>Agreeableness</h3>
+<h3 class="unnumbered">Agreeableness</h3>
 <pre class="r"><code>density_AG_T1 = ggplot(data_pers, aes(T1_agreeableness))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Agree_col, fill = Agree_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_agreeableness, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
   labs(x=&quot;Agreeableness Score&quot;, y = &quot;Amount of participants&quot;)+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -434,10 +404,10 @@ density_AG_T1</code></pre>
 <p><img src="Personality_files/figure-html/density%20Agr%20-1.png" width="672" /></p>
 </div>
 <div id="openness" class="section level3 unnumbered">
-<h3>Openness</h3>
+<h3 class="unnumbered">Openness</h3>
 <pre class="r"><code>density_OP_T1 = ggplot(data_pers, aes(T1_openness))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Open_col, fill = Open_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_openness, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
   labs(x=&quot;Openness Score&quot;, y = &quot;Amount of participants&quot;)+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -450,10 +420,10 @@ density_OP_T1</code></pre>
 <p><img src="Personality_files/figure-html/density%20Open%20-1.png" width="672" /></p>
 </div>
 <div id="conscientiousness" class="section level3 unnumbered">
-<h3>Conscientiousness</h3>
+<h3 class="unnumbered">Conscientiousness</h3>
 <pre class="r"><code>density_CO_T1 = ggplot(data_pers, aes(T1_conscientiousness))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Consc_col, fill =Consc_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_conscientiousness, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
   labs(x=&quot;Conscientiousness Score&quot;, y = &quot;Amount of participants&quot;)+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -466,10 +436,10 @@ density_CO_T1</code></pre>
 <p><img src="Personality_files/figure-html/density%20Consc%20-1.png" width="672" /></p>
 </div>
 <div id="emotional-stability" class="section level3 unnumbered">
-<h3>Emotional Stability</h3>
+<h3 class="unnumbered">Emotional Stability</h3>
 <pre class="r"><code>density_ES_T1 = ggplot(data_pers, aes(T1_emostab))+
   theme_classic()+
-  geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
+  geom_histogram(binwidth=0.5,col=Emot_col, fill = Emot_col, alpha = .4)+
   geom_vline(aes(xintercept=mean(T1_emostab, na.rm=T)), linetype=&quot;dashed&quot;, size= 0.5)+ #Line representing the mean
   labs(x=&quot;Emotional Stability Score&quot;, y = &quot;Amount of participants&quot;)+
   scale_x_continuous(breaks = seq(0,7,0.5), labels = seq(0,7,0.5)) +
@@ -482,10 +452,10 @@ density_ES_T1</code></pre>
 <p><img src="Personality_files/figure-html/density%20EmStab%20-1.png" width="672" /></p>
 </div>
 </div>
-<div id="mindfulness---trait" class="section level2 tabset tabset-fade">
-<h2><span class="header-section-number">2.2</span> Mindfulness - Trait</h2>
+<div id="mindfulness---trait" class="section level2 tabset tabset-fade" number="2.2">
+<h2 class="tabset tabset-fade" number="2.2"><span class="header-section-number">2.2</span> Mindfulness - Trait</h2>
 <div id="awareness" class="section level3 unnumbered">
-<h3>Awareness</h3>
+<h3 class="unnumbered">Awareness</h3>
 <pre class="r"><code>density_MAw_T1 = ggplot(data_pers, aes(T1_mindTr_aw))+
   theme_classic()+
   geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
@@ -501,7 +471,7 @@ density_MAw_T1</code></pre>
 <p><img src="Personality_files/figure-html/density%20Aware%20-1.png" width="672" /></p>
 </div>
 <div id="acceptance" class="section level3 unnumbered">
-<h3>Acceptance</h3>
+<h3 class="unnumbered">Acceptance</h3>
 <pre class="r"><code>density_MAcc_T1 = ggplot(data_pers, aes(T1_mindTr_acc))+
   theme_classic()+
   geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
@@ -518,8 +488,8 @@ density_MAcc_T1</code></pre>
 <hr />
 </div>
 </div>
-<div id="proactive-personality" class="section level2">
-<h2><span class="header-section-number">2.3</span> Proactive Personality</h2>
+<div id="proactive-personality" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Proactive Personality</h2>
 <pre class="r"><code>density_proact_T1 = ggplot(data_pers, aes(T1_proact_pers))+
   theme_classic()+
   geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
@@ -535,8 +505,8 @@ density_proact_T1</code></pre>
 <p><img src="Personality_files/figure-html/density%20ProPers%20-1.png" width="672" /></p>
 <hr />
 </div>
-<div id="core-self-evaluations" class="section level2">
-<h2><span class="header-section-number">2.4</span> Core Self Evaluations</h2>
+<div id="core-self-evaluations" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> Core Self Evaluations</h2>
 <pre class="r"><code>density_CSE_T1 = ggplot(data_pers, aes(T1_CSE))+
   theme_classic()+
   geom_histogram(binwidth=0.5,col=&quot;#3182bd&quot;, fill = &quot;#6baed6&quot;, alpha = .4)+
@@ -552,28 +522,30 @@ density_CSE_T1</code></pre>
 <hr />
 </div>
 </div>
-<div id="change-over-time" class="section level1">
-<h1><span class="header-section-number">3</span> Change over Time</h1>
-<div id="big-five-1" class="section level2 tabset tabset-fade">
-<h2><span class="header-section-number">3.1</span> Big Five</h2>
+<div id="change-over-time" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Change over Time</h1>
+<div id="big-five-1" class="section level2 tabset tabset-fade" number="3.1">
+<h2 class="tabset tabset-fade" number="3.1"><span class="header-section-number">3.1</span> Big Five</h2>
 <div id="extraversion-1" class="section level3 unnumbered">
-<h3>Extraversion</h3>
-<pre class="r"><code>pers_long =   reshape(
+<h3 class="unnumbered">Extraversion</h3>
+<pre class="r"><code>big5_long =   reshape(
   
-  data_pers[,c(2:16,17,19,20,22)], 
+  select(data_pers, ID, 
+         ends_with(&quot;extraversion&quot;),
+         ends_with(&quot;agreeableness&quot;),
+         ends_with(&quot;conscientiousness&quot;),
+         ends_with(&quot;openness&quot;),
+         ends_with(&quot;emostab&quot;)
+         ), 
  
   varying = list(grep(&quot;extraversion&quot;, names(data_pers), value = T), 
                  grep(&quot;agreeableness&quot;, names(data_pers), value = T),
                  grep(&quot;conscientiousness&quot;, names(data_pers), value = T),
                  grep(&quot;openness&quot;, names(data_pers), value = T),
-                 grep(&quot;emostab&quot;, names(data_pers), value = T),
-                 grep(&quot;CSE&quot;, names(data_pers), value = T),
-                 grep(&quot;proact&quot;, names(data_pers), value = T),
-                 c(&quot;T1_mind_aware&quot;,&quot;T5_mind_aware&quot;),
-                 c(&quot;T1_mind_accept&quot;,&quot;T5_mind_accept&quot;)
-                 ), 
+                 grep(&quot;emostab&quot;, names(data_pers), value = T)
+                 ),
   
-  v.names = c(&quot;Extra&quot;, &quot;Aggree&quot;,&quot;Consc&quot;,&quot;Open&quot;,&quot;Emot&quot;,&quot;CSE&quot;,&quot;Proact&quot;,&quot;Mind_Aw&quot;,&quot;Mind_Ac&quot;),
+  v.names = c(&quot;Extra&quot;, &quot;Aggree&quot;,&quot;Consc&quot;,&quot;Open&quot;,&quot;Emot&quot;),
  
   direction = &quot;long&quot;, 
  
@@ -582,58 +554,274 @@ density_CSE_T1</code></pre>
   idvar = &quot;ID&quot; 
 )               
 
-pers_long$month = factor(pers_long$month, labels = months_Pers, levels = c(1,2))
+big5_long$month = factor(big5_long$month, labels = months_Pers, levels = c(1,2,3))
 
-pers_long_sd = select(pers_long, month:Mind_Ac ) %&gt;% group_by(month) %&gt;% summarise_all(funs(mean(.,na.rm=T),sd(.,na.rm = T)))
 
-options(repr.plot.width = 3, repr.plot.height = 5)
-extra_change = ggplot(pers_long_sd, aes(x=month, y = Extra_mean)) + 
-  geom_line(aes(group=1, color = &quot;#3182bd&quot;), col= &quot;#3182bd&quot;, size = 1.5)+
-  geom_point(col= &quot;#3182bd&quot;, size = 3)+
-  geom_errorbar(aes(ymin=Extra_mean-Extra_sd, ymax=Extra_mean+Extra_sd), width=.1,position=position_dodge(0.05), col = &quot;#3182bd&quot;) +
+extra_change = ggplot(big5_long, aes(x=month, y = Extra)) +
+  geom_violin(trim = T,col= Extra_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Extra_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Extra_col), col= Extra_col, size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(col= Extra_col, size = 3, stat = &quot;summary&quot;, fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Extra_col, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1)) +
+  
   coord_cartesian(ylim = c(1,7))+
   theme_minimal()+
   scale_x_discrete(limits = months_Pers, name =&quot;&quot; )+
-  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Mean Extraversion&quot;)+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Extraversion&quot;)+
   font_colour
-options(repr.plot.width = 3, repr.plot.height = 5)
-extra_change
 
-options(repr.plot.width = 5.4, repr.plot.height = 5)
-extra_change_dens = ggplot(pers_long, aes(Extra, y=..density.., fill = month, color = month)) +
-  theme_classic()+
-  theme(legend.title = element_blank())+
-  geom_density(alpha = .1)+
-  labs(x=&quot;Extraversion&quot;, y = &quot;Density&quot;, legend = NULL)+
-  scale_x_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), &#39;%&#39;)) +
-  scale_fill_manual(values = c(&quot;#6baed6&quot;,&quot;#74c476&quot;)) +
-  scale_color_manual(values = c(&quot;#3182bd&quot;, &quot;#31a354&quot;)) +
-  theme(axis.text=element_text(size=12), axis.title = element_text(size = 14)) +
+extra_change</code></pre>
+<p><img src="Personality_files/figure-html/change%20extr-1.png" width="672" /></p>
+<pre class="r"><code># big5_long =   reshape(
+#   
+#   select(data_pers, ID, 
+#          ends_with(&quot;extraversion&quot;),
+#          ends_with(&quot;agreeableness&quot;),
+#          ends_with(&quot;conscientiousness&quot;),
+#          ends_with(&quot;openness&quot;),
+#          ends_with(&quot;emostab&quot;)
+#          ), 
+#  
+#   varying = list(grep(&quot;extraversion&quot;, names(data_pers), value = T), 
+#                  grep(&quot;agreeableness&quot;, names(data_pers), value = T),
+#                  grep(&quot;conscientiousness&quot;, names(data_pers), value = T),
+#                  grep(&quot;openness&quot;, names(data_pers), value = T),
+#                  grep(&quot;emostab&quot;, names(data_pers), value = T),
+#                  grep(&quot;CSE&quot;, names(data_pers), value = T),
+#                  grep(&quot;proact&quot;, names(data_pers), value = T),
+#                  c(&quot;T1_mind_aware&quot;,&quot;T5_mind_aware&quot;),
+#                  c(&quot;T1_mind_accept&quot;,&quot;T5_mind_accept&quot;)
+#                  ), 
+#   
+#   v.names = c(&quot;Extra&quot;, &quot;Aggree&quot;,&quot;Consc&quot;,&quot;Open&quot;,&quot;Emot&quot;,&quot;CSE&quot;,&quot;Proact&quot;,&quot;Mind_Aw&quot;,&quot;Mind_Ac&quot;),
+#  
+#   direction = &quot;long&quot;, 
+#  
+#   timevar = &quot;month&quot;, 
+# 
+#   idvar = &quot;ID&quot; 
+# )</code></pre>
+</div>
+<div id="agreeableness-1" class="section level3 unnumbered">
+<h3 class="unnumbered">Agreeableness</h3>
+<pre class="r"><code>agree_change = ggplot(big5_long, aes(x=month, y = Aggree)) +
+  geom_violin(trim = T,col= Agree_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Agree_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Agree_col), col= Agree_col, size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(col= Agree_col, size = 3, stat = &quot;summary&quot;, fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Agree_col, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Agreableness&quot;)+
   font_colour
-options(repr.plot.width = 5.4, repr.plot.height = 5)
-extra_change_dens</code></pre>
-<p><img src="Personality_files/figure-html/change%20extr-1.png" width="672" /><img src="Personality_files/figure-html/change%20extr-2.png" width="672" /></p>
+
+agree_change</code></pre>
+<p><img src="Personality_files/figure-html/change%20agree-1.png" width="672" /></p>
+</div>
+<div id="openness-1" class="section level3 unnumbered">
+<h3 class="unnumbered">Openness</h3>
+<pre class="r"><code>open_change = ggplot(big5_long, aes(x=month, y = Open)) +
+  geom_violin(trim = T,col= Open_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Open_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Open_col), col= Open_col, size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(col= Open_col, size = 3, stat = &quot;summary&quot;, fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Open_col, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Openness&quot;)+
+  font_colour
+
+open_change</code></pre>
+<p><img src="Personality_files/figure-html/change%20open-1.png" width="672" /></p>
+</div>
+<div id="conscientiousness-1" class="section level3 unnumbered">
+<h3 class="unnumbered">Conscientiousness</h3>
+<pre class="r"><code>consc_change = ggplot(big5_long, aes(x=month, y = Consc)) +
+  geom_violin(trim = T,col= Consc_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Consc_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Consc_col), col= Consc_col, size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(col= Consc_col, size = 3, stat = &quot;summary&quot;, fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Consc_col, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Conscientiousness&quot;)+
+  font_colour
+
+extra_change</code></pre>
+<p><img src="Personality_files/figure-html/change%20consc-1.png" width="672" /></p>
+</div>
+<div id="emotional-stability-1" class="section level3 unnumbered">
+<h3 class="unnumbered">Emotional Stability</h3>
+<pre class="r"><code>emot_change = ggplot(big5_long, aes(x=month, y = Emot)) +
+  geom_violin(trim = T,col= Emot_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Emot_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Emot_col), col= Emot_col, size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(col= Emot_col, size = 3, stat = &quot;summary&quot;, fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col = Emot_col, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Pers, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Emotional Stability&quot;)+
+  font_colour
+
+emot_change</code></pre>
+<p><img src="Personality_files/figure-html/change%20emot-1.png" width="672" /></p>
+</div>
+</div>
+<div id="mindfulness---trait-1" class="section level2 tabset tabset-fade" number="3.2">
+<h2 class="tabset tabset-fade" number="3.2"><span class="header-section-number">3.2</span> Mindfulness - Trait</h2>
+<div id="awareness-1" class="section level3 unnumbered">
+<h3 class="unnumbered">Awareness</h3>
+<pre class="r"><code>Mind_long =   reshape(
+
+  select(data_pers, ID,
+         ends_with(&quot;_mind_aware&quot;),
+         ends_with(&quot;_mind_accept&quot;)
+         ),
+
+  varying = list(c(&quot;T1_mind_aware&quot;,&quot;T2_mind_aware&quot;,&quot;T5_mind_aware&quot;),
+                 c(&quot;T1_mind_accept&quot;,&quot;T2_mind_accept&quot;,&quot;T5_mind_accept&quot;)
+                 ),
+
+  v.names = c(&quot;Mind_Aw&quot;,&quot;Mind_Ac&quot;),
+
+  direction = &quot;long&quot;,
+
+  timevar = &quot;month&quot;,
+
+  idvar = &quot;ID&quot;
+)
+
+Mind_long$month = factor(Mind_long$month, labels = months_Mind)
+
+aware_change = ggplot(Mind_long, aes(x=month, y = Mind_Aw)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = &quot;summary&quot;, fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Mind, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Mindfulness: Awareness&quot;)+
+  font_colour
+
+aware_change</code></pre>
+<p><img src="Personality_files/figure-html/change%20aware-1.png" width="672" /></p>
+</div>
+<div id="acceptance-1" class="section level3 unnumbered">
+<h3 class="unnumbered">Acceptance</h3>
+<pre class="r"><code>accept_change = ggplot(Mind_long, aes(x=month, y = Mind_Ac)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = &quot;summary&quot;, fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_Mind, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Mindfulness: Acceptance&quot;)+
+  font_colour
+
+accept_change</code></pre>
+<p><img src="Personality_files/figure-html/change%20acc-1.png" width="672" /></p>
+</div>
+</div>
+<div id="proactive-personality-1" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> Proactive Personality</h2>
+<pre class="r"><code>CES_Proact_long =   reshape(
+
+  select(data_pers, ID,
+         ends_with(&quot;proact_pers&quot;),
+         ends_with(&quot;CSE&quot;)
+         ),
+
+  varying =  list(grep(&quot;CSE&quot;, names(data_pers), value = T),
+                 grep(&quot;proact&quot;, names(data_pers), value = T)
+                 ),
+
+  v.names = c(&quot;CSE&quot;,&quot;Proact&quot;),
+
+  direction = &quot;long&quot;,
+
+  timevar = &quot;month&quot;,
+
+  idvar = &quot;ID&quot;
+)
+
+CES_Proact_long$month = factor(CES_Proact_long$month, labels = months_CSE_Proact)
+
+proact_change = ggplot(CES_Proact_long, aes(x=month, y = Proact)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = &quot;summary&quot;, fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_CSE_Proact, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Proactive Personality&quot;)+
+  font_colour
+
+proact_change</code></pre>
+<p><img src="Personality_files/figure-html/change%20proact-1.png" width="672" /></p>
+</div>
+<div id="core-self-evaluations-1" class="section level2" number="3.4">
+<h2 number="3.4"><span class="header-section-number">3.4</span> Core Self Evaluations</h2>
+<pre class="r"><code>CSE_change = ggplot(CES_Proact_long, aes(x=month, y = CSE)) +
+  geom_violin(trim = T,col= Rest_col ) +
+  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+  
+  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(col= Rest_col, size = 3, stat = &quot;summary&quot;, fun = mean)+
+  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1)) +
+  
+  coord_cartesian(ylim = c(1,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_CSE_Proact, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(1,7,1), name = &quot;Core Self Evaluations&quot;)+
+  font_colour
+
+CSE_change</code></pre>
+<p><img src="Personality_files/figure-html/change%20CSE-1.png" width="672" /></p>
 <p>Further Ideas: Change over Time Life Satisfaction depending on Personality traits and mindfulness PTG over Time</p>
 </div>
 </div>
-</div>
-<div id="header-1" class="section level1 tabset tabset-fade">
-<h1><span class="header-section-number">4</span> Header 1</h1>
+<div id="header-1" class="section level1 tabset tabset-fade" number="4">
+<h1 class="tabset tabset-fade" number="4"><span class="header-section-number">4</span> Header 1</h1>
 <div id="plot" class="section level2 unnumbered">
-<h2>Plot</h2>
+<h2 class="unnumbered">Plot</h2>
 </div>
 <div id="more-information" class="section level2 unnumbered">
-<h2>More Information</h2>
+<h2 class="unnumbered">More Information</h2>
 </div>
 </div>
 <div id="section" class="section level1 unnumbered toc-ignore">
-<h1></h1>
-<div id="header-2" class="section level2">
-<h2><span class="header-section-number">4.1</span> Header 2</h2>
+<h1 class="unnumbered toc-ignore"></h1>
+<div id="header-2" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Header 2</h2>
 </div>
 </div>
-<div id="header-1-1" class="section level1">
-<h1><span class="header-section-number">5</span> Header 1</h1>
+<div id="header-1-1" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Header 1</h1>
 </div>
 
 
@@ -647,6 +835,9 @@ extra_change_dens</code></pre>
 </html>
 
 
+
+
+
 </div>
 </div>
 
@@ -656,7 +847,7 @@ extra_change_dens</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -674,7 +865,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
