@@ -33,6 +33,8 @@ library(tidyr)
 library(hrbrthemes)
 library(gganimate)
 library(magick)
+library(tibble)
+library(patchwork)
 
 options(scipen = 999)
 data_HO = read.csv("data/data_Homeoffice.csv")
@@ -155,8 +157,9 @@ As can be seen, before the COVID-19 Crisis hit, __work from home was rather spar
 
 ```{r Percentage over Time, include = TRUE, out.width='100%', fig.height=3.5, cache.whatever= months_miss}
 #HO6
-HO_Perc = data_HO[,grep(names(data_HO), pattern = "_HO6", value = T)]
+HO_Perc = select(data_HO,ends_with("_HO6"))
 # grep searches for patterns in a given Vector (in this case, the pattern "_HO6" in names(data_HO)). This allows easy finding of the same variable over different time points 
+
 
 HO_Perc_rel = data.frame(
   matrix(
@@ -283,7 +286,7 @@ HO_Perc_plot
   
 &nbsp;  
 
-```{r distributions over Time, fig.show= 'hold', out.width=c('50%','50%'),cache.whatever= HO_Perc_plot}
+```{r distributions over Time, fig.show= 'hold', out.width=c('100%','50%','50%'),cache.whatever= HO_Perc_plot}
 
 HO_Perc_long = gather(HO_Perc, month, percentage)
 HO_Perc_long$month = factor(HO_Perc_long$month, levels = names(HO_Perc), labels = months_miss)
@@ -323,6 +326,43 @@ HO_Perc_dens = ggplot(HO_Perc_long, aes(percentage, y=..density.., fill = month,
 
 HO_Perc_dens
 
+HO_Perc2 = select(data_HO, ID, ends_with("_HO6"))
+HO_Perc2 = add_column(HO_Perc2, T5_HO6 = NA, .before = "T6_HO6")
+HO_Perc2$T5_HO6 = as.numeric(HO_Perc2$T5_HO6)
+
+HO_Perc_long2 = reshape(
+  HO_Perc2,
+  varying = grep("HO6", names(HO_Perc2), value = T),
+  v.names = "Percentage",
+  idvar = "ID",
+  direction = "long",
+  timevar = "month"
+  
+)
+
+HO_Perc_long2$month = factor(HO_Perc_long2$month, labels = months_compl)
+
+HO_perc_violplot = ggplot(HO_Perc_long2, aes(month,Percentage)) +
+  geom_violin(trim = T,col= "#6baed6" ) +
+  geom_jitter(width = 0.05, size = 0.05,col= "#3182bd", alpha = 0.3) +
+  
+  geom_line(aes(group = 1), stat = "summary", fun = mean, col= "#3182bd", size = 1)+
+  geom_point(col= "#3182bd", size = 2.5, stat = "summary", fun = mean)+
+  
+  geom_line(aes(group = 1), stat = "summary", fun = median, col= "#6baed6", size = 1, linetype = 4)+
+  geom_point(col= "#6baed6", size = 2.5, stat = "summary", fun = median, shape = 18)+
+  # for the points at every month
+    # only half a SD around the mean, because the whole SD would have filled the whole scale
+  coord_cartesian(ylim = c(0,100))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_compl, name ="" )+
+  scale_y_continuous(breaks = seq(0,100,10), labels = paste0(seq(0,100,10), "%"), name = "Percentage of a week worked from home")+
+  labs(caption = "Note: Data was missing for June. Upper line represents means, lower line represents medians")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  font_colour
+
+HO_perc_violplot
+
 
 ```
 
@@ -344,11 +384,12 @@ HO_Perc_plot
   
 Notably and expectedly, the mean __time spent in Home Office grew__ as the pandemic unfolded. At its peak in __May__, the percentage was __three times as high as in December__. Furthermore, as infection rates dropped in the summer and some form of "new normality" emerged, working from home steadily declined. Remembering, however, how disproportionate the various rates were distributed in December, it would be interesting to look at how the __distribution changed over time__:
 
-```{r distributions over Time 2, fig.show= 'hold', out.width=c('50%','50%'), cache.whatever= HO_Perc_dens}
+```{r distributions over Time 2, fig.show= 'hold', out.width=c('100%','50%','50%'), cache.whatever= HO_Perc_dens}
 ## For details on the code for the plots, please change to the "Plots"-Tab and unfold the code there. ##
 
 animate(HO_Perc_ani, renderer = magick_renderer(), duration = length(months_compl), fps = 10)
 HO_Perc_dens
+HO_perc_violplot
 
 ```
 
