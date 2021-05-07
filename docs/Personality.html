@@ -573,35 +573,6 @@ extra_change = ggplot(big5_long, aes(x=month, y = Extra)) +
 
 extra_change</code></pre>
 <p><img src="Personality_files/figure-html/change%20extr-1.png" width="672" /></p>
-<pre class="r"><code># big5_long =   reshape(
-#   
-#   select(data_pers, ID, 
-#          ends_with(&quot;extraversion&quot;),
-#          ends_with(&quot;agreeableness&quot;),
-#          ends_with(&quot;conscientiousness&quot;),
-#          ends_with(&quot;openness&quot;),
-#          ends_with(&quot;emostab&quot;)
-#          ), 
-#  
-#   varying = list(grep(&quot;extraversion&quot;, names(data_pers), value = T), 
-#                  grep(&quot;agreeableness&quot;, names(data_pers), value = T),
-#                  grep(&quot;conscientiousness&quot;, names(data_pers), value = T),
-#                  grep(&quot;openness&quot;, names(data_pers), value = T),
-#                  grep(&quot;emostab&quot;, names(data_pers), value = T),
-#                  grep(&quot;CSE&quot;, names(data_pers), value = T),
-#                  grep(&quot;proact&quot;, names(data_pers), value = T),
-#                  c(&quot;T1_mind_aware&quot;,&quot;T5_mind_aware&quot;),
-#                  c(&quot;T1_mind_accept&quot;,&quot;T5_mind_accept&quot;)
-#                  ), 
-#   
-#   v.names = c(&quot;Extra&quot;, &quot;Aggree&quot;,&quot;Consc&quot;,&quot;Open&quot;,&quot;Emot&quot;,&quot;CSE&quot;,&quot;Proact&quot;,&quot;Mind_Aw&quot;,&quot;Mind_Ac&quot;),
-#  
-#   direction = &quot;long&quot;, 
-#  
-#   timevar = &quot;month&quot;, 
-# 
-#   idvar = &quot;ID&quot; 
-# )</code></pre>
 </div>
 <div id="agreeableness-1" class="section level3 unnumbered">
 <h3 class="unnumbered">Agreeableness</h3>
@@ -657,7 +628,7 @@ open_change</code></pre>
   scale_y_continuous(breaks = seq(1,7,1), name = &quot;Conscientiousness&quot;)+
   font_colour
 
-extra_change</code></pre>
+consc_change</code></pre>
 <p><img src="Personality_files/figure-html/change%20consc-1.png" width="672" /></p>
 </div>
 <div id="emotional-stability-1" class="section level3 unnumbered">
@@ -802,11 +773,318 @@ proact_change</code></pre>
 
 CSE_change</code></pre>
 <p><img src="Personality_files/figure-html/change%20CSE-1.png" width="672" /></p>
-<p>Further Ideas: Change over Time Life Satisfaction depending on Personality traits and mindfulness PTG over Time</p>
+<p>Further Ideas: Life Satisfaction depending on Personality traits and mindfulness PTG over Time</p>
 </div>
 </div>
-<div id="header-1" class="section level1 tabset tabset-fade" number="4">
-<h1 class="tabset tabset-fade" number="4"><span class="header-section-number">4</span> Header 1</h1>
+<div id="life-satisfaction-depending-on-traits" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Life Satisfaction depending on Traits</h1>
+<pre class="r"><code>lifesat_long = reshape(
+  select(data_pers, 
+         ID, 
+         T1_extraversion,
+         T1_agreeableness,
+         T1_conscientiousness,
+         T1_openness,
+         T1_emostab,
+         T1_CSE,
+         T1_proact_pers,
+         T1_mind_aware,
+         T1_mind_accept,
+         ends_with(&quot;life_sat&quot;)
+         ),
+
+  varying =  grep(&quot;life&quot;, names(data_pers), value = T),
+
+  v.names = &quot;Life_Sat&quot;,
+
+  direction = &quot;long&quot;,
+
+  timevar = &quot;month&quot;,
+
+  idvar = &quot;ID&quot;
+  
+)
+
+lifesat_long$month = factor(lifesat_long$month, labels = months_lifesat)
+
+pers_higlow = data_pers %&gt;% dplyr::summarise_at(
+  vars(
+    T1_extraversion,
+    T1_agreeableness,
+    T1_conscientiousness,
+    T1_openness,
+    T1_emostab,
+    T1_CSE,
+    T1_proact_pers,
+    T1_mind_aware,
+    T1_mind_accept
+    ), 
+  list(high =~ mean(.x, na.rm = T) + sd(.x, na.rm = T), 
+       low =~ mean(.x, na.rm = T) - sd(.x, na.rm = T)))
+
+## Making new grouping Variables
+lifesat_long =lifesat_long %&gt;% mutate(
+    Extraversion = case_when(
+      T1_extraversion &gt;= pers_higlow$T1_extraversion_high &amp; !is.na(T1_extraversion) ~ &quot;high&quot;,
+      T1_extraversion &lt;= pers_higlow$T1_extraversion_low &amp; !is.na(T1_extraversion) ~ &quot;low&quot;,
+      T1_extraversion &lt; pers_higlow$T1_extraversion_high &amp; T1_extraversion &gt; pers_higlow$T1_extraversion_low &amp; !is.na(T1_extraversion) ~ &quot;average&quot;
+    ),
+    
+    Agreeableness = case_when(
+      T1_agreeableness &gt;= pers_higlow$T1_agreeableness_high ~ &quot;high&quot;,
+      T1_agreeableness &lt;= pers_higlow$T1_agreeableness_low  ~ &quot;low&quot;,
+      T1_agreeableness &lt; pers_higlow$T1_agreeableness_high &amp; T1_agreeableness &gt; pers_higlow$T1_agreeableness_low ~ &quot;average&quot;
+    ),
+    
+    Openness = case_when(
+      T1_openness &gt;= pers_higlow$T1_openness_high ~ &quot;high&quot;,
+      T1_openness &lt;= pers_higlow$T1_openness_low ~ &quot;low&quot;,
+      T1_openness &lt; pers_higlow$T1_openness_high &amp; T1_openness &gt; pers_higlow$T1_openness_low ~ &quot;average&quot;
+    ),
+    
+    Conscientiousness = case_when(
+      T1_conscientiousness &gt;= pers_higlow$T1_conscientiousness_high ~ &quot;high&quot;,
+      T1_conscientiousness &lt;= pers_higlow$T1_conscientiousness_low ~ &quot;low&quot;,
+      T1_conscientiousness &lt; pers_higlow$T1_conscientiousness_high &amp; T1_conscientiousness &gt; pers_higlow$T1_conscientiousness_low ~ &quot;average&quot;
+    ),
+    
+    Stability = case_when(
+      T1_emostab &gt;= pers_higlow$T1_emostab_high ~ &quot;high&quot;,
+      T1_emostab &lt;= pers_higlow$T1_emostab_low ~ &quot;low&quot;,
+      T1_emostab &lt; pers_higlow$T1_emostab_high &amp; T1_emostab &gt; pers_higlow$T1_emostab_low ~ &quot;average&quot;
+    ),
+    
+    Mind_Aware = case_when(
+      T1_mind_aware &gt;= pers_higlow$T1_mind_aware_high ~ &quot;high&quot;,
+      T1_mind_aware &lt;= pers_higlow$T1_mind_aware_low ~ &quot;low&quot;,
+      T1_mind_aware &lt; pers_higlow$T1_mind_aware_high &amp; T1_mind_aware &gt; pers_higlow$T1_mind_aware_low ~ &quot;average&quot;
+    ),
+    
+    Mind_Accept = case_when(
+      T1_mind_accept &gt;= pers_higlow$T1_mind_accept_high ~ &quot;high&quot;,
+      T1_mind_accept &lt;= pers_higlow$T1_mind_accept_low ~ &quot;low&quot;,
+      T1_mind_accept &lt; pers_higlow$T1_mind_accept_high &amp; T1_mind_accept &gt; pers_higlow$T1_mind_accept_low ~ &quot;average&quot;
+    ),
+    
+    CSE = case_when(
+      T1_CSE &gt;= pers_higlow$T1_CSE_high ~ &quot;high&quot;,
+      T1_CSE &lt;= pers_higlow$T1_CSE_low ~ &quot;low&quot;,
+      T1_CSE &lt; pers_higlow$T1_CSE_high &amp; T1_CSE &gt; pers_higlow$T1_CSE_low ~ &quot;average&quot;
+    ),
+    
+    Proact_Pers = case_when(
+      T1_proact_pers &gt;= pers_higlow$T1_proact_pers_high ~ &quot;high&quot;,
+      T1_proact_pers &lt;= pers_higlow$T1_proact_pers_low ~ &quot;low&quot;,
+      T1_proact_pers &lt; pers_higlow$T1_proact_pers_high &amp; T1_proact_pers &gt; pers_higlow$T1_proact_pers_low ~ &quot;average&quot;
+    ),
+    
+    
+)
+
+lifesat_long[13:21] =  lapply(select(lifesat_long, Extraversion:Proact_Pers),factor, levels =c(&quot;low&quot;, &quot;average&quot;, &quot;high&quot;) , labels =c(&quot;Low&quot;, &quot;Average&quot;, &quot;High&quot;))
+
+lifesat_long = lifesat_long[lifesat_long$Life_Sat &gt; 0,]
+
+lifesat = ggplot(lifesat_long, aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = 1),col= &quot;#74c476&quot;, size = 1.5, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(size = 3,col=&quot;#74c476&quot;, stat = &quot;summary&quot;, fun = mean)+
+  geom_ribbon(aes(group = 1),fill=&quot;#74c476&quot;, alpha=0.4, stat = &quot;summary&quot;, fun.data = &quot;mean_sdl&quot;, fun.args = list(mult = 1) ) +
+  
+  scale_color_manual(values = &quot;#74c476&quot;)+
+  
+  coord_cartesian(ylim = c(3,7))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(3,7,1), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(caption = &quot;Note: Ribbon represents one SD above and below the mean.&quot;)+
+  font_colour
+
+lifesat</code></pre>
+<p><img src="Personality_files/figure-html/sat-1.png" width="672" /></p>
+<div id="big-five-2" class="section level2 tabset tabset-fade" number="4.1">
+<h2 class="tabset tabset-fade" number="4.1"><span class="header-section-number">4.1</span> Big Five</h2>
+<div id="extraversion-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Extraversion</h3>
+<pre class="r"><code>Extra_col_3 = c(&quot;#8478ca&quot;,&quot;#5445b1&quot;,&quot;#3a307a&quot;)
+
+lifesat_extra = ggplot(lifesat_long[is.na(lifesat_long$Extraversion)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Extraversion, color = Extraversion), size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(aes(color = Extraversion), size = 3, stat = &quot;summary&quot;, fun = mean)+
+  scale_color_manual(values = Extra_col_3)+
+  
+  coord_cartesian(ylim = c(4,6))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = &quot;top&quot;)+
+  labs(caption = &quot;Note: Borders for average were defined as one SD above and below the mean.&quot;)+
+  font_colour
+
+lifesat_extra</code></pre>
+<p><img src="Personality_files/figure-html/sat%20extr-1.png" width="672" /></p>
+</div>
+<div id="agreeableness-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Agreeableness</h3>
+<pre class="r"><code>Agree_col_3 = c(&quot;#ac937e&quot;,&quot;#876d57&quot;,&quot;#584739&quot;)
+
+lifesat_agree = ggplot(lifesat_long[is.na(lifesat_long$Agreeableness)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Agreeableness, color = Agreeableness), size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(aes(color = Agreeableness), size = 3, stat = &quot;summary&quot;, fun = mean)+
+  scale_color_manual(values = Agree_col_3)+
+  
+  coord_cartesian(ylim = c(4,6))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = &quot;top&quot;)+
+  labs(caption = &quot;Note: Borders for average were defined as one SD above and below the mean.&quot;)+
+  font_colour
+
+lifesat_agree</code></pre>
+<p><img src="Personality_files/figure-html/sat%20agree-1.png" width="672" /></p>
+</div>
+<div id="openness-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Openness</h3>
+<pre class="r"><code>Open_col_3 = c(&quot;#a4bfca&quot;,&quot;#749dae&quot;,&quot;#4f7687&quot;)
+
+lifesat_open = ggplot(lifesat_long[is.na(lifesat_long$Openness)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Openness, color = Openness), size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(aes(color = Openness), size = 3, stat = &quot;summary&quot;, fun = mean)+
+  scale_color_manual(values = Open_col_3)+
+  
+  coord_cartesian(ylim = c(4,6))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = &quot;top&quot;)+
+  labs(caption = &quot;Note: Borders for average were defined as one SD above and below the mean.&quot;)+
+  font_colour
+
+lifesat_open</code></pre>
+<p><img src="Personality_files/figure-html/sat%20open-1.png" width="672" /></p>
+</div>
+<div id="conscientiousness-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Conscientiousness</h3>
+<pre class="r"><code>Consc_col_3 = c(&quot;#fae5c9&quot;,&quot;#f3c483&quot;,&quot;#eca33d&quot;)
+
+lifesat_consc = ggplot(lifesat_long[is.na(lifesat_long$Conscientiousness)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Conscientiousness, color = Conscientiousness), size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(aes(color = Conscientiousness), size = 3, stat = &quot;summary&quot;, fun = mean)+
+  scale_color_manual(values = Consc_col_3)+
+  
+  coord_cartesian(ylim = c(4,6))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = &quot;top&quot;)+
+  labs(caption = &quot;Note: Borders for average were defined as one SD above and below the mean.&quot;)+
+  font_colour
+
+lifesat_consc</code></pre>
+<p><img src="Personality_files/figure-html/sat%20consc-1.png" width="672" /></p>
+</div>
+<div id="emotional-stability-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Emotional Stability</h3>
+<pre class="r"><code>Emot_col_3 = c(&quot;#982b54&quot;,&quot;#5c1a33&quot;,&quot;#200912&quot;)
+
+lifesat_emot = ggplot(lifesat_long[is.na(lifesat_long$Stability)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Stability, color = Stability), size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(aes(color = Stability), size = 3, stat = &quot;summary&quot;, fun = mean)+
+  scale_color_manual(values = Emot_col_3)+
+  
+  coord_cartesian(ylim = c(4,6))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = &quot;top&quot;)+
+  labs(caption = &quot;Note: Borders for average were defined as one SD above and below the mean.&quot;, color = &quot;Emotional Stability&quot;)+
+  font_colour
+
+lifesat_emot</code></pre>
+<p><img src="Personality_files/figure-html/sat%20emot-1.png" width="672" /></p>
+</div>
+</div>
+<div id="mindfulness---trait-2" class="section level2 tabset tabset-fade" number="4.2">
+<h2 class="tabset tabset-fade" number="4.2"><span class="header-section-number">4.2</span> Mindfulness - Trait</h2>
+<div id="awareness-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Awareness</h3>
+<pre class="r"><code>Rest_col_3 = c(&quot;#64a6d7&quot;,&quot;#3182bd&quot;,&quot;#215880&quot;)
+
+lifesat_aware = ggplot(lifesat_long[is.na(lifesat_long$Mind_Aware)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Mind_Aware, color = Mind_Aware), size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(aes(color = Mind_Aware), size = 3, stat = &quot;summary&quot;, fun = mean)+
+  scale_color_manual(values = Rest_col_3)+
+  
+  coord_cartesian(ylim = c(4,6))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = &quot;top&quot;)+
+  labs(caption = &quot;Note: Borders for average were defined as one SD above and below the mean.&quot;, color = &quot;Mindfulness - Awareness&quot;)+
+  font_colour
+
+lifesat_aware</code></pre>
+<p><img src="Personality_files/figure-html/sat%20aware-1.png" width="672" /></p>
+</div>
+<div id="acceptance-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Acceptance</h3>
+<pre class="r"><code>lifesat_acc = ggplot(lifesat_long[is.na(lifesat_long$Mind_Accept)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Mind_Accept, color = Mind_Accept), size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(aes(color = Mind_Accept), size = 3, stat = &quot;summary&quot;, fun = mean)+
+  scale_color_manual(values = Rest_col_3)+
+  
+  coord_cartesian(ylim = c(4,6))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = &quot;top&quot;)+
+  labs(caption = &quot;Note: Borders for average were defined as one SD above and below the mean.&quot;, color = &quot;Mindfulness - Acceptance&quot;)+
+  font_colour
+
+lifesat_acc</code></pre>
+<p><img src="Personality_files/figure-html/sat%20acc-1.png" width="672" /></p>
+</div>
+</div>
+<div id="proactive-personality-2" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> Proactive Personality</h2>
+<pre class="r"><code>lifesat_proact = ggplot(lifesat_long[is.na(lifesat_long$Proact_Pers)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Proact_Pers, color = Proact_Pers), size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(aes(color = Proact_Pers), size = 3, stat = &quot;summary&quot;, fun = mean)+
+  scale_color_manual(values = Rest_col_3)+
+  
+  coord_cartesian(ylim = c(4,6))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = &quot;top&quot;)+
+  labs(caption = &quot;Note: Borders for average were defined as one SD above and below the mean.&quot;, color = &quot;Proactive Personality&quot;)+
+  font_colour
+
+lifesat_proact</code></pre>
+<p><img src="Personality_files/figure-html/sat%20proact-1.png" width="672" /></p>
+</div>
+<div id="core-self-evaluations-2" class="section level2" number="4.4">
+<h2 number="4.4"><span class="header-section-number">4.4</span> Core Self Evaluations</h2>
+<pre class="r"><code>lifesat_CSE = ggplot(lifesat_long[is.na(lifesat_long$CSE)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = CSE, color = CSE), size = 1, stat = &quot;summary&quot;, fun = mean)+
+  geom_point(aes(color = CSE), size = 3, stat = &quot;summary&quot;, fun = mean)+
+  scale_color_manual(values = Rest_col_3)+
+  
+  coord_cartesian(ylim = c(3.5,6.5))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name =&quot;&quot; )+
+  scale_y_continuous(breaks = seq(3.5,6.5,0.5), name = &quot;Life Satisfaction&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = &quot;top&quot;)+
+  labs(caption = &quot;Note: Borders for average were defined as one SD above and below the mean.&quot;, color = &quot;Core Self Evaluations&quot;)+
+  font_colour
+
+lifesat_CSE</code></pre>
+<p><img src="Personality_files/figure-html/sat%20CSE-1.png" width="672" /></p>
+</div>
+</div>
+<div id="header-1" class="section level1 tabset tabset-fade" number="5">
+<h1 class="tabset tabset-fade" number="5"><span class="header-section-number">5</span> Header 1</h1>
 <div id="plot" class="section level2 unnumbered">
 <h2 class="unnumbered">Plot</h2>
 </div>
@@ -816,12 +1094,12 @@ CSE_change</code></pre>
 </div>
 <div id="section" class="section level1 unnumbered toc-ignore">
 <h1 class="unnumbered toc-ignore"></h1>
-<div id="header-2" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> Header 2</h2>
+<div id="header-2" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> Header 2</h2>
 </div>
 </div>
-<div id="header-1-1" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Header 1</h1>
+<div id="header-1-1" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Header 1</h1>
 </div>
 
 

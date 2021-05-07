@@ -37,11 +37,11 @@ options(scipen = 999)
 data_pers = read.csv("data/data_Personality.csv")
 
 months_PTG = c("May '20", "June '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20",
-               "January '21", "February '21", "March '21", "April '21")
+               "January '21", "February '21", "March '21", "April '21", "May '21")
 
 months_lifesat = c("December '19",
   "March '20","April '20","May '20", "June '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20",
-               "January '21", "February '21", "March '21", "April '21")
+               "January '21", "February '21", "March '21", "April '21", "May '21")
 
 months_Pers = c("December '19", "June '20", "March '21")
 months_CSE_Proact = c("December '19", "June '20", "April '21")
@@ -356,7 +356,7 @@ consc_change = ggplot(big5_long, aes(x=month, y = Consc)) +
   scale_y_continuous(breaks = seq(1,7,1), name = "Conscientiousness")+
   font_colour
 
-extra_change
+consc_change
 ```
 
 
@@ -511,12 +511,8 @@ PTG over Time
 
 
 # Life Satisfaction depending on Traits
-## Big Five {.tabset .tabset-fade} 
 
-### Extraversion {-}
-
-```{r change extr, include=TRUE}
-
+```{r sat, include = TRUE}
 lifesat_long = reshape(
   select(data_pers, 
          ID, 
@@ -620,234 +616,215 @@ lifesat_long =lifesat_long %>% mutate(
     
 )
 
-lifesat_long[13:21] =  lapply(select(lifesat_long, Extraversion:Proact_Pers),factor, levels =c("low", "average", "high") , labels =c("low", "average", "high"))
+lifesat_long[13:21] =  lapply(select(lifesat_long, Extraversion:Proact_Pers),factor, levels =c("low", "average", "high") , labels =c("Low", "Average", "High"))
 
-table(lifesat_long[lifesat_long$Agreeableness == "low","T1_agreeableness"])
+lifesat_long = lifesat_long[lifesat_long$Life_Sat > 0,]
 
-
-#continue with graphs!
-extra_change = ggplot(big5_long, aes(x=month, y = Extra)) +
-  geom_violin(trim = T,col= Extra_col ) +
-  geom_jitter(width = 0.1, size = 0.05,col= Extra_col, alpha = 0.3) +
+lifesat = ggplot(lifesat_long, aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = 1),col= "#74c476", size = 1.5, stat = "summary", fun = mean)+
+  geom_point(size = 3,col="#74c476", stat = "summary", fun = mean)+
+  geom_ribbon(aes(group = 1),fill="#74c476", alpha=0.4, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1) ) +
   
-  geom_line(aes(group=1, color = Extra_col), col= Extra_col, size = 1, stat = "summary", fun = mean)+
-  geom_point(col= Extra_col, size = 3, stat = "summary", fun = mean)+
-  geom_errorbar(width=.1,position=position_dodge(0.05), col =Extra_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  scale_color_manual(values = "#74c476")+
   
-  coord_cartesian(ylim = c(1,7))+
+  coord_cartesian(ylim = c(3,7))+
   theme_minimal()+
-  scale_x_discrete(limits = months_Pers, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Extraversion")+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(3,7,1), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(caption = "Note: Ribbon represents one SD above and below the mean.")+
   font_colour
 
-extra_change
+lifesat
+```
+
+
+## Big Five {.tabset .tabset-fade} 
+
+### Extraversion {-}
+
+```{r sat extr, include=TRUE}
+Extra_col_3 = c("#8478ca","#5445b1","#3a307a")
+
+lifesat_extra = ggplot(lifesat_long[is.na(lifesat_long$Extraversion)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Extraversion, color = Extraversion), size = 1, stat = "summary", fun = mean)+
+  geom_point(aes(color = Extraversion), size = 3, stat = "summary", fun = mean)+
+  scale_color_manual(values = Extra_col_3)+
+  
+  coord_cartesian(ylim = c(4,6))+
+  theme_minimal()+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "top")+
+  labs(caption = "Note: Borders for average were defined as one SD above and below the mean.")+
+  font_colour
+
+lifesat_extra
 
 ```
 
 ### Agreeableness {-}
 
-```{r change agree, include=TRUE, fig.show='hold'}
-agree_change = ggplot(big5_long, aes(x=month, y = Aggree)) +
-  geom_violin(trim = T,col= Agree_col ) +
-  geom_jitter(width = 0.1, size = 0.05,col= Agree_col, alpha = 0.3) +
+```{r sat agree, include=TRUE}
+Agree_col_3 = c("#ac937e","#876d57","#584739")
+
+lifesat_agree = ggplot(lifesat_long[is.na(lifesat_long$Agreeableness)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Agreeableness, color = Agreeableness), size = 1, stat = "summary", fun = mean)+
+  geom_point(aes(color = Agreeableness), size = 3, stat = "summary", fun = mean)+
+  scale_color_manual(values = Agree_col_3)+
   
-  geom_line(aes(group=1, color = Agree_col), col= Agree_col, size = 1, stat = "summary", fun = mean)+
-  geom_point(col= Agree_col, size = 3, stat = "summary", fun = mean)+
-  geom_errorbar(width=.1,position=position_dodge(0.05), col = Agree_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
-  
-  coord_cartesian(ylim = c(1,7))+
+  coord_cartesian(ylim = c(4,6))+
   theme_minimal()+
-  scale_x_discrete(limits = months_Pers, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Agreableness")+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "top")+
+  labs(caption = "Note: Borders for average were defined as one SD above and below the mean.")+
   font_colour
 
-agree_change
+lifesat_agree
 ```
 
 ### Openness {-}
 
-```{r change open, include=TRUE, fig.show='hold'}
-open_change = ggplot(big5_long, aes(x=month, y = Open)) +
-  geom_violin(trim = T,col= Open_col ) +
-  geom_jitter(width = 0.1, size = 0.05,col= Open_col, alpha = 0.3) +
+```{r sat open, include=TRUE}
+Open_col_3 = c("#a4bfca","#749dae","#4f7687")
+
+lifesat_open = ggplot(lifesat_long[is.na(lifesat_long$Openness)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Openness, color = Openness), size = 1, stat = "summary", fun = mean)+
+  geom_point(aes(color = Openness), size = 3, stat = "summary", fun = mean)+
+  scale_color_manual(values = Open_col_3)+
   
-  geom_line(aes(group=1, color = Open_col), col= Open_col, size = 1, stat = "summary", fun = mean)+
-  geom_point(col= Open_col, size = 3, stat = "summary", fun = mean)+
-  geom_errorbar(width=.1,position=position_dodge(0.05), col = Open_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
-  
-  coord_cartesian(ylim = c(1,7))+
+  coord_cartesian(ylim = c(4,6))+
   theme_minimal()+
-  scale_x_discrete(limits = months_Pers, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Openness")+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "top")+
+  labs(caption = "Note: Borders for average were defined as one SD above and below the mean.")+
   font_colour
 
-open_change
+lifesat_open
 ```
 
 
 ### Conscientiousness {-}
 
-```{r change consc, include=TRUE, fig.show='hold'}
-consc_change = ggplot(big5_long, aes(x=month, y = Consc)) +
-  geom_violin(trim = T,col= Consc_col ) +
-  geom_jitter(width = 0.1, size = 0.05,col= Consc_col, alpha = 0.3) +
+```{r sat consc, include=TRUE}
+Consc_col_3 = c("#fae5c9","#f3c483","#eca33d")
+
+lifesat_consc = ggplot(lifesat_long[is.na(lifesat_long$Conscientiousness)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Conscientiousness, color = Conscientiousness), size = 1, stat = "summary", fun = mean)+
+  geom_point(aes(color = Conscientiousness), size = 3, stat = "summary", fun = mean)+
+  scale_color_manual(values = Consc_col_3)+
   
-  geom_line(aes(group=1, color = Consc_col), col= Consc_col, size = 1, stat = "summary", fun = mean)+
-  geom_point(col= Consc_col, size = 3, stat = "summary", fun = mean)+
-  geom_errorbar(width=.1,position=position_dodge(0.05), col = Consc_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
-  
-  coord_cartesian(ylim = c(1,7))+
+  coord_cartesian(ylim = c(4,6))+
   theme_minimal()+
-  scale_x_discrete(limits = months_Pers, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Conscientiousness")+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "top")+
+  labs(caption = "Note: Borders for average were defined as one SD above and below the mean.")+
   font_colour
 
-extra_change
+lifesat_consc
 ```
 
 
 ### Emotional Stability {-}
 
-```{r change emot, include=TRUE, fig.show='hold'}
-emot_change = ggplot(big5_long, aes(x=month, y = Emot)) +
-  geom_violin(trim = T,col= Emot_col ) +
-  geom_jitter(width = 0.1, size = 0.05,col= Emot_col, alpha = 0.3) +
+```{r sat emot, include=TRUE}
+Emot_col_3 = c("#982b54","#5c1a33","#200912")
+
+lifesat_emot = ggplot(lifesat_long[is.na(lifesat_long$Stability)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Stability, color = Stability), size = 1, stat = "summary", fun = mean)+
+  geom_point(aes(color = Stability), size = 3, stat = "summary", fun = mean)+
+  scale_color_manual(values = Emot_col_3)+
   
-  geom_line(aes(group=1, color = Emot_col), col= Emot_col, size = 1, stat = "summary", fun = mean)+
-  geom_point(col= Emot_col, size = 3, stat = "summary", fun = mean)+
-  geom_errorbar(width=.1,position=position_dodge(0.05), col = Emot_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
-  
-  coord_cartesian(ylim = c(1,7))+
+  coord_cartesian(ylim = c(4,6))+
   theme_minimal()+
-  scale_x_discrete(limits = months_Pers, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Emotional Stability")+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "top")+
+  labs(caption = "Note: Borders for average were defined as one SD above and below the mean.", color = "Emotional Stability")+
   font_colour
 
-emot_change
+lifesat_emot
 ```
 
 ## Mindfulness - Trait {.tabset .tabset-fade}
 
 ### Awareness {-}
-```{r change aware, include=TRUE}
-Mind_long =   reshape(
+```{r sat aware, include=TRUE}
+Rest_col_3 = c("#64a6d7","#3182bd","#215880")
 
-  select(data_pers, ID,
-         ends_with("_mind_aware"),
-         ends_with("_mind_accept")
-         ),
-
-  varying = list(c("T1_mind_aware","T2_mind_aware","T5_mind_aware"),
-                 c("T1_mind_accept","T2_mind_accept","T5_mind_accept")
-                 ),
-
-  v.names = c("Mind_Aw","Mind_Ac"),
-
-  direction = "long",
-
-  timevar = "month",
-
-  idvar = "ID"
-)
-
-Mind_long$month = factor(Mind_long$month, labels = months_Mind)
-
-aware_change = ggplot(Mind_long, aes(x=month, y = Mind_Aw)) +
-  geom_violin(trim = T,col= Rest_col ) +
-  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+lifesat_aware = ggplot(lifesat_long[is.na(lifesat_long$Mind_Aware)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Mind_Aware, color = Mind_Aware), size = 1, stat = "summary", fun = mean)+
+  geom_point(aes(color = Mind_Aware), size = 3, stat = "summary", fun = mean)+
+  scale_color_manual(values = Rest_col_3)+
   
-  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
-  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
-  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
-  
-  coord_cartesian(ylim = c(1,7))+
+  coord_cartesian(ylim = c(4,6))+
   theme_minimal()+
-  scale_x_discrete(limits = months_Mind, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Mindfulness: Awareness")+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "top")+
+  labs(caption = "Note: Borders for average were defined as one SD above and below the mean.", color = "Mindfulness - Awareness")+
   font_colour
 
-aware_change
+lifesat_aware
 ```
 
 ### Acceptance {-}
-```{r change acc, include=TRUE}
-
-accept_change = ggplot(Mind_long, aes(x=month, y = Mind_Ac)) +
-  geom_violin(trim = T,col= Rest_col ) +
-  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+```{r sat acc, include=TRUE}
+lifesat_acc = ggplot(lifesat_long[is.na(lifesat_long$Mind_Accept)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Mind_Accept, color = Mind_Accept), size = 1, stat = "summary", fun = mean)+
+  geom_point(aes(color = Mind_Accept), size = 3, stat = "summary", fun = mean)+
+  scale_color_manual(values = Rest_col_3)+
   
-  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
-  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
-  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
-  
-  coord_cartesian(ylim = c(1,7))+
+  coord_cartesian(ylim = c(4,6))+
   theme_minimal()+
-  scale_x_discrete(limits = months_Mind, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Mindfulness: Acceptance")+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "top")+
+  labs(caption = "Note: Borders for average were defined as one SD above and below the mean.", color = "Mindfulness - Acceptance")+
   font_colour
 
-accept_change
+lifesat_acc
+
 ```
 
 ## Proactive Personality
-```{r change proact, include=TRUE}
-CES_Proact_long =   reshape(
-
-  select(data_pers, ID,
-         ends_with("proact_pers"),
-         ends_with("CSE")
-         ),
-
-  varying =  list(grep("CSE", names(data_pers), value = T),
-                 grep("proact", names(data_pers), value = T)
-                 ),
-
-  v.names = c("CSE","Proact"),
-
-  direction = "long",
-
-  timevar = "month",
-
-  idvar = "ID"
-)
-
-CES_Proact_long$month = factor(CES_Proact_long$month, labels = months_CSE_Proact)
-
-proact_change = ggplot(CES_Proact_long, aes(x=month, y = Proact)) +
-  geom_violin(trim = T,col= Rest_col ) +
-  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+```{r sat proact, include=TRUE}
+lifesat_proact = ggplot(lifesat_long[is.na(lifesat_long$Proact_Pers)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = Proact_Pers, color = Proact_Pers), size = 1, stat = "summary", fun = mean)+
+  geom_point(aes(color = Proact_Pers), size = 3, stat = "summary", fun = mean)+
+  scale_color_manual(values = Rest_col_3)+
   
-  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
-  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
-  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
-  
-  coord_cartesian(ylim = c(1,7))+
+  coord_cartesian(ylim = c(4,6))+
   theme_minimal()+
-  scale_x_discrete(limits = months_CSE_Proact, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Proactive Personality")+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(4,6,0.5), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "top")+
+  labs(caption = "Note: Borders for average were defined as one SD above and below the mean.", color = "Proactive Personality")+
   font_colour
 
-proact_change
+lifesat_proact
 ```
 
 ## Core Self Evaluations
-```{r change CSE, include=TRUE}
-
-CSE_change = ggplot(CES_Proact_long, aes(x=month, y = CSE)) +
-  geom_violin(trim = T,col= Rest_col ) +
-  geom_jitter(width = 0.1, size = 0.05,col= Rest_col, alpha = 0.3) +
+```{r sat CSE, include=TRUE}
+lifesat_CSE = ggplot(lifesat_long[is.na(lifesat_long$CSE)==F,], aes(x=month, y = Life_Sat)) +
+  geom_line(aes(group = CSE, color = CSE), size = 1, stat = "summary", fun = mean)+
+  geom_point(aes(color = CSE), size = 3, stat = "summary", fun = mean)+
+  scale_color_manual(values = Rest_col_3)+
   
-  geom_line(aes(group=1, color = Rest_col), col= Rest_col, size = 1, stat = "summary", fun = mean)+
-  geom_point(col= Rest_col, size = 3, stat = "summary", fun = mean)+
-  geom_errorbar(width=.1,position=position_dodge(0.05), col =Rest_col, stat = "summary", fun.data = "mean_sdl", fun.args = list(mult = 1)) +
-  
-  coord_cartesian(ylim = c(1,7))+
+  coord_cartesian(ylim = c(3.5,6.5))+
   theme_minimal()+
-  scale_x_discrete(limits = months_CSE_Proact, name ="" )+
-  scale_y_continuous(breaks = seq(1,7,1), name = "Core Self Evaluations")+
+  scale_x_discrete(limits = months_lifesat, name ="" )+
+  scale_y_continuous(breaks = seq(3.5,6.5,0.5), name = "Life Satisfaction")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "top")+
+  labs(caption = "Note: Borders for average were defined as one SD above and below the mean.", color = "Core Self Evaluations")+
   font_colour
 
-CSE_change
+lifesat_CSE
+
 ```
 
 
