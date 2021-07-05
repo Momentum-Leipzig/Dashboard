@@ -6,7 +6,7 @@ output:
     toc_float: true
     collapsed: false
     number_sections: true
-    toc_depth: 1
+    toc_depth: 2
     include:
       after_body: footer/_footer_Richard.txt
 bibliography: footer/references.bib
@@ -37,11 +37,11 @@ options(scipen = 999)
 data_pers = read.csv("data/data_Personality.csv")
 
 months_PTG = c("May '20", "June '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20",
-               "January '21", "February '21", "March '21", "April '21", "May '21")
+               "January '21", "February '21", "March '21", "April '21", "May '21", "June '21")
 
 months_lifesat = c("December '19",
   "March '20","April '20","May '20", "June '20", "July '20", "August '20", "September '20", "October '20", "November '20", "December '20",
-               "January '21", "February '21", "March '21", "April '21", "May '21")
+               "January '21", "February '21", "March '21", "April '21", "May '21", "June '21")
 
 months_Pers = c("December '19", "June '20", "March '21")
 months_CSE_Proact = c("December '19", "June '20", "April '21")
@@ -64,13 +64,17 @@ font_colour = theme(text = element_text(colour = "#3e3f3a"))
 
 
 # Introduction  
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+The COVID-19 crisis can be described as a far-reaching, drastic event, that affected everybody globally in some shape or form. How people react to the crisis is affected by multiple factors, such as government restrictions and communication, social surrounding and socioeconomic status and <b>individual traits and attitudes</b>.<br>
+The influence could be reciprocal, though. On the one hand, the new and unknown challenges the pandemic entailed might have been more burdensome for some people than for others, regardless of external circumstances. For example individuals with high <b>neuroticism</b>, the tendency to react emotionally to stressors and to get nervous easily, might have had less internal resources to cope with the uncertainty and additional demands that came with the pandemic. Another trait, commonly viewed as more desirable, could also be rather dysfunctional under the circumstances of the crisis: <b>Extraversion</b>. While normally the tendency to be outgoing and to connect to other people easily would be seen as helpful and attractive, in the context of contact restrictions and government mandated stay-at-home orders this personal quality could be dysfunctional and strenuous. </b><br>
+On the other hand, the deep impact the crisis had on everyone's personal life might have also lead to some <b>changes</b> in personality. This could manifest in a rather negative fashion, for example through <b>higher emotional instability</b>, but also positively through a more <b>mindful</b> attitude towards oneself. This forced pause in many lives, not including those who work in essential businesses of course, might have given some people the possibility to reflect upon their daily routines and hassles. Having had to <b>take a step back</b> and sit some part of this pandemic out could have resulted in a number of people being more mindful of themselves and their needs and desires. <br>
+All in all, personality certainly plays a key role in coping with the COVID-19 crisis. We were fortunate enough to have measured some aspects of personality in <b>December of 2019</b>, before the virus spread globally, and then at later points during the pandemic. This allows us to analyze the effect personality had on indicators of <b>well-being</b>, but also look at potential <b>changes of personality</b> itself. In the following sections, we present descriptive, rudimentary results from our longitudinal survey, first assessing the baseline personality of our participants, then considering possible variation over time, and finally analising the relationship of personality and life satisfaction. 
 
-# Personality in December 
+# Personality in December
 
 ## Big Five {.tabset .tabset-fade}
+To assess the Big-Five personality traits we used the translated short version of the Big Five Inventory [@Rammstedt.2005]. We administered it in December '19, June '20 and March '21. <br>
 
-### Extraversion {-}
+### Extraversion {-}  
 
 ```{r density Extrav , include=TRUE, fig.height=4}
 
@@ -87,8 +91,8 @@ density_EX_T1 = ggplot(data_pers, aes(T1_extraversion))+
 
 density_EX_T1
 ```
-
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.  
+<br>
+Extraversion is being defined as characteristically having skills, enterprising vocational interests, participation in sports, and so on [@McCrea.1999]. All in all, it can be seen as the tendency to be outgoing and sociable. As mostly expected from personality traits, the distribution here generally follows a normal distribution, with slightly more participants indicating higher values and overall more extreme expressions. <br>  
 
 ### Agreeableness {-}
 ```{r density Agr , include=TRUE, fig.height=4}
@@ -106,8 +110,10 @@ density_AG_T1 = ggplot(data_pers, aes(T1_agreeableness))+
 
 density_AG_T1
 ```
+<br>
+Agreeableness is being defined as having forgiving attitudes, believing in cooperation and using inoffensive language [@McCrea.1999]. More generally speaking, it represents the desire or inner motive of communion and social acceptance. In our sample, it followed a normal distribution, with slightly more people indicating higher values.  
 
-### Openness {-}
+### Openness {-}  
 
 ```{r density Open , include=TRUE, fig.height=4}
 
@@ -124,8 +130,10 @@ density_OP_T1 = ggplot(data_pers, aes(T1_openness))+
 
 density_OP_T1
 ```
+<br>
+People scoring high on openness to (new) experiences tend to be interested in travel and culture, have many different hobbies and diverse vocational interests [@McCrea.1999]. It is the tendency to be curious about and having an open attitude towards culture, the arts and experiences overall. Our participants characterized themselves as being rather open. The assumption of normality might be false.  
 
-### Conscientiousness {-}
+### Conscientiousness {-}  
 
 ```{r density Consc , include=TRUE, fig.height=4}
 
@@ -142,8 +150,10 @@ density_CO_T1 = ggplot(data_pers, aes(T1_conscientiousness))+
 
 density_CO_T1
 ```
+<br>
+Being conscientious generally means to be organized, diligent, reliable and to make long-term plans. Scoring high on this dimension indicates a need to do everything right and on time. Our sample described itself as being rather conscientious, forming a skewed distribution favoring higher values. If that is really true or an indicator of social desirability cannot be said at this point.  
 
-### Emotional Stability {-}
+### Emotional Stability {-}  
 
 ```{r density EmStab , include=TRUE, fig.height=4}
 
@@ -160,7 +170,8 @@ density_ES_T1 = ggplot(data_pers, aes(T1_emostab))+
 
 density_ES_T1
 ```
-
+<br>
+Emotional stability, or inversely coded as neuroticism, is regarded as having a high self esteem and optimistic attitudes [@McCrea.1999]. People with high emotional stability tend to be more resilient when facing adversity and more calm in general. As with most of the traits above, we found a rather skewed distribution, with more people indicating higher values.
 
 ## Mindfulness - Trait {.tabset .tabset-fade}
 
@@ -241,11 +252,8 @@ density_CSE_T1
 
   
 ---  
-  
+# Change over Time  
 
-# Change over Time
-  
-  
 ## Big Five {.tabset .tabset-fade} 
 
 ### Extraversion {-}
@@ -505,14 +513,13 @@ CSE_change
 ```
 
 Further Ideas: 
-Life Satisfaction depending on Personality traits and mindfulness
+
 PTG over Time
 
 
+# Life Satisfaction depending on Traits 
 
-# Life Satisfaction depending on Traits
-
-```{r sat, include = TRUE}
+```{r sat, include = TRUE, cache.whatever = months_lifesat}
 lifesat_long = reshape(
   select(data_pers, 
          ID, 
@@ -643,7 +650,7 @@ lifesat
 
 ### Extraversion {-}
 
-```{r sat extr, include=TRUE}
+```{r sat extr, include=TRUE, cache.whatever = lifesat}
 Extra_col_3 = c("#8478ca","#5445b1","#3a307a")
 
 lifesat_extra = ggplot(lifesat_long[is.na(lifesat_long$Extraversion)==F,], aes(x=month, y = Life_Sat)) +
@@ -665,7 +672,7 @@ lifesat_extra
 
 ### Agreeableness {-}
 
-```{r sat agree, include=TRUE}
+```{r sat agree, include=TRUE, cache.whatever = lifesat}
 Agree_col_3 = c("#ac937e","#876d57","#584739")
 
 lifesat_agree = ggplot(lifesat_long[is.na(lifesat_long$Agreeableness)==F,], aes(x=month, y = Life_Sat)) +
@@ -686,7 +693,7 @@ lifesat_agree
 
 ### Openness {-}
 
-```{r sat open, include=TRUE}
+```{r sat open, include=TRUE, cache.whatever = lifesat}
 Open_col_3 = c("#a4bfca","#749dae","#4f7687")
 
 lifesat_open = ggplot(lifesat_long[is.na(lifesat_long$Openness)==F,], aes(x=month, y = Life_Sat)) +
@@ -708,7 +715,7 @@ lifesat_open
 
 ### Conscientiousness {-}
 
-```{r sat consc, include=TRUE}
+```{r sat consc, include=TRUE, cache.whatever = lifesat}
 Consc_col_3 = c("#fae5c9","#f3c483","#eca33d")
 
 lifesat_consc = ggplot(lifesat_long[is.na(lifesat_long$Conscientiousness)==F,], aes(x=month, y = Life_Sat)) +
@@ -730,7 +737,7 @@ lifesat_consc
 
 ### Emotional Stability {-}
 
-```{r sat emot, include=TRUE}
+```{r sat emot, include=TRUE, cache.whatever = lifesat}
 Emot_col_3 = c("#982b54","#5c1a33","#200912")
 
 lifesat_emot = ggplot(lifesat_long[is.na(lifesat_long$Stability)==F,], aes(x=month, y = Life_Sat)) +
@@ -752,7 +759,7 @@ lifesat_emot
 ## Mindfulness - Trait {.tabset .tabset-fade}
 
 ### Awareness {-}
-```{r sat aware, include=TRUE}
+```{r sat aware, include=TRUE, cache.whatever = lifesat}
 Rest_col_3 = c("#64a6d7","#3182bd","#215880")
 
 lifesat_aware = ggplot(lifesat_long[is.na(lifesat_long$Mind_Aware)==F,], aes(x=month, y = Life_Sat)) +
@@ -772,7 +779,7 @@ lifesat_aware
 ```
 
 ### Acceptance {-}
-```{r sat acc, include=TRUE}
+```{r sat acc, include=TRUE, cache.whatever = lifesat}
 lifesat_acc = ggplot(lifesat_long[is.na(lifesat_long$Mind_Accept)==F,], aes(x=month, y = Life_Sat)) +
   geom_line(aes(group = Mind_Accept, color = Mind_Accept), size = 1, stat = "summary", fun = mean)+
   geom_point(aes(color = Mind_Accept), size = 3, stat = "summary", fun = mean)+
@@ -791,7 +798,7 @@ lifesat_acc
 ```
 
 ## Proactive Personality
-```{r sat proact, include=TRUE}
+```{r sat proact, include=TRUE, cache.whatever = lifesat}
 lifesat_proact = ggplot(lifesat_long[is.na(lifesat_long$Proact_Pers)==F,], aes(x=month, y = Life_Sat)) +
   geom_line(aes(group = Proact_Pers, color = Proact_Pers), size = 1, stat = "summary", fun = mean)+
   geom_point(aes(color = Proact_Pers), size = 3, stat = "summary", fun = mean)+
@@ -809,7 +816,7 @@ lifesat_proact
 ```
 
 ## Core Self Evaluations
-```{r sat CSE, include=TRUE}
+```{r sat CSE, include=TRUE, cache.whatever = lifesat}
 lifesat_CSE = ggplot(lifesat_long[is.na(lifesat_long$CSE)==F,], aes(x=month, y = Life_Sat)) +
   geom_line(aes(group = CSE, color = CSE), size = 1, stat = "summary", fun = mean)+
   geom_point(aes(color = CSE), size = 3, stat = "summary", fun = mean)+
@@ -828,24 +835,4 @@ lifesat_CSE
 ```
 
 
-# Header 1 {.tabset .tabset-fade}
 
-## Plot {-}
-
-```{r one wide figure, include = TRUE, out.width='100%', fig.height=3.5}
-
-
-```
-
-## More Information {-} 
-
-```{r one wide figure 2, include = TRUE, out.width='100%', fig.height=3.5}
-
-
-```
-
-# {.unnumbered .toc-ignore}
-
-## Header 2
-
-# Header 1

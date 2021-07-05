@@ -8,6 +8,8 @@ navbar:
       href: team.html
     - text: "Home Office"
       href: HomeOffice.html
+    - text: "Personality"
+      href: Personality.html
 
 output:
   html_document:

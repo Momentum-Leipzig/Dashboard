@@ -60,6 +60,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -330,6 +352,9 @@ div.tocify {
 <li>
   <a href="HomeOffice.html">Home Office</a>
 </li>
+<li>
+  <a href="Personality.html">Personality</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -364,12 +389,13 @@ div.tocify {
 </style>
 <div id="introduction" class="section level1" number="1">
 <h1 number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+<p>The COVID-19 crisis can be described as a far-reaching, drastic event, that affected everybody globally in some shape or form. How people react to the crisis is affected by multiple factors, such as government restrictions and communication, social surrounding and socioeconomic status and <b>individual traits and attitudes</b>.<br> The influence could be reciprocal, though. On the one hand, the new and unknown challenges the pandemic entailed might have been more burdensome for some people than for others, regardless of external circumstances. For example individuals with high <b>neuroticism</b>, the tendency to react emotionally to stressors and to get nervous easily, might have had less internal resources to cope with the uncertainty and additional demands that came with the pandemic. Another trait, commonly viewed as more desirable, could also be rather dysfunctional under the circumstances of the crisis: <b>Extraversion</b>. While normally the tendency to be outgoing and to connect to other people easily would be seen as helpful and attractive, in the context of contact restrictions and government mandated stay-at-home orders this personal quality could be dysfunctional and strenuous. </b><br> On the other hand, the deep impact the crisis had on everyone’s personal life might have also lead to some <b>changes</b> in personality. This could manifest in a rather negative fashion, for example through <b>higher emotional instability</b>, but also positively through a more <b>mindful</b> attitude towards oneself. This forced pause in many lives, not including those who work in essential businesses of course, might have given some people the possibility to reflect upon their daily routines and hassles. Having had to <b>take a step back</b> and sit some part of this pandemic out could have resulted in a number of people being more mindful of themselves and their needs and desires. <br> All in all, personality certainly plays a key role in coping with the COVID-19 crisis. We were fortunate enough to have measured some aspects of personality in <b>December of 2019</b>, before the virus spread globally, and then at later points during the pandemic. This allows us to analyze the effect personality had on indicators of <b>well-being</b>, but also look at potential <b>changes of personality</b> itself. In the following sections, we present descriptive, rudimentary results from our longitudinal survey, first assessing the baseline personality of our participants, then considering possible variation over time, and finally analising the relationship of personality and life satisfaction.</p>
 </div>
 <div id="personality-in-december" class="section level1" number="2">
 <h1 number="2"><span class="header-section-number">2</span> Personality in December</h1>
 <div id="big-five" class="section level2 tabset tabset-fade" number="2.1">
 <h2 class="tabset tabset-fade" number="2.1"><span class="header-section-number">2.1</span> Big Five</h2>
+<p>To assess the Big-Five personality traits we used the translated short version of the Big Five Inventory <span class="citation">(Rammstedt &amp; John, 2005)</span>. We administered it in December ’19, June ’20 and March ’21. <br></p>
 <div id="extraversion" class="section level3 unnumbered">
 <h3 class="unnumbered">Extraversion</h3>
 <pre class="r"><code>density_EX_T1 = ggplot(data_pers, aes(T1_extraversion))+
@@ -384,8 +410,7 @@ div.tocify {
   font_colour
 
 density_EX_T1</code></pre>
-<p><img src="Personality_files/figure-html/density%20Extrav%20-1.png" width="672" /></p>
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</p>
+<p><img src="Personality_files/figure-html/density%20Extrav%20-1.png" width="672" /> <br> Extraversion is being defined as characteristically having skills, enterprising vocational interests, participation in sports, and so on <span class="citation">(McCrea &amp; Costa, 1999)</span>. All in all, it can be seen as the tendency to be outgoing and sociable. As mostly expected from personality traits, the distribution here generally follows a normal distribution, with slightly more participants indicating higher values and overall more extreme expressions. <br></p>
 </div>
 <div id="agreeableness" class="section level3 unnumbered">
 <h3 class="unnumbered">Agreeableness</h3>
@@ -401,7 +426,7 @@ density_EX_T1</code></pre>
   font_colour
 
 density_AG_T1</code></pre>
-<p><img src="Personality_files/figure-html/density%20Agr%20-1.png" width="672" /></p>
+<p><img src="Personality_files/figure-html/density%20Agr%20-1.png" width="672" /> <br> Agreeableness is being defined as having forgiving attitudes, believing in cooperation and using inoffensive language <span class="citation">(McCrea &amp; Costa, 1999)</span>. More generally speaking, it represents the desire or inner motive of communion and social acceptance. In our sample, it followed a normal distribution, with slightly more people indicating higher values.</p>
 </div>
 <div id="openness" class="section level3 unnumbered">
 <h3 class="unnumbered">Openness</h3>
@@ -417,7 +442,7 @@ density_AG_T1</code></pre>
   font_colour
 
 density_OP_T1</code></pre>
-<p><img src="Personality_files/figure-html/density%20Open%20-1.png" width="672" /></p>
+<p><img src="Personality_files/figure-html/density%20Open%20-1.png" width="672" /> <br> People scoring high on openness to (new) experiences tend to be interested in travel and culture, have many different hobbies and diverse vocational interests <span class="citation">(McCrea &amp; Costa, 1999)</span>. It is the tendency to be curious about and having an open attitude towards culture, the arts and experiences overall. Our participants characterized themselves as being rather open. The assumption of normality might be false.</p>
 </div>
 <div id="conscientiousness" class="section level3 unnumbered">
 <h3 class="unnumbered">Conscientiousness</h3>
@@ -433,7 +458,7 @@ density_OP_T1</code></pre>
   font_colour
 
 density_CO_T1</code></pre>
-<p><img src="Personality_files/figure-html/density%20Consc%20-1.png" width="672" /></p>
+<p><img src="Personality_files/figure-html/density%20Consc%20-1.png" width="672" /> <br> Being conscientious generally means to be organized, diligent, reliable and to make long-term plans. Scoring high on this dimension indicates a need to do everything right and on time. Our sample described itself as being rather conscientious, forming a skewed distribution favoring higher values. If that is really true or an indicator of social desirability cannot be said at this point.</p>
 </div>
 <div id="emotional-stability" class="section level3 unnumbered">
 <h3 class="unnumbered">Emotional Stability</h3>
@@ -449,7 +474,7 @@ density_CO_T1</code></pre>
   font_colour
 
 density_ES_T1</code></pre>
-<p><img src="Personality_files/figure-html/density%20EmStab%20-1.png" width="672" /></p>
+<p><img src="Personality_files/figure-html/density%20EmStab%20-1.png" width="672" /> <br> Emotional stability, or inversely coded as neuroticism, is regarded as having a high self esteem and optimistic attitudes <span class="citation">(McCrea &amp; Costa, 1999)</span>. People with high emotional stability tend to be more resilient when facing adversity and more calm in general. As with most of the traits above, we found a rather skewed distribution, with more people indicating higher values.</p>
 </div>
 </div>
 <div id="mindfulness---trait" class="section level2 tabset tabset-fade" number="2.2">
@@ -773,7 +798,8 @@ proact_change</code></pre>
 
 CSE_change</code></pre>
 <p><img src="Personality_files/figure-html/change%20CSE-1.png" width="672" /></p>
-<p>Further Ideas: Life Satisfaction depending on Personality traits and mindfulness PTG over Time</p>
+<p>Further Ideas:</p>
+<p>PTG over Time</p>
 </div>
 </div>
 <div id="life-satisfaction-depending-on-traits" class="section level1" number="4">
@@ -1081,25 +1107,15 @@ lifesat_proact</code></pre>
 
 lifesat_CSE</code></pre>
 <p><img src="Personality_files/figure-html/sat%20CSE-1.png" width="672" /></p>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-McCrea.1999" class="csl-entry">
+McCrea, R. R., &amp; Costa, P. T. (1999). A five-factor theory of personality. In L. A. Pervin &amp; O. P. John (Eds.), <em>Handbook of personality</em> (pp. 139–153). Guilford.
+</div>
+<div id="ref-Rammstedt.2005" class="csl-entry">
+Rammstedt, B., &amp; John, O. P. (2005). Kurzversion des big five inventory (BFI-k). <em>Diagnostica</em>, <em>51</em>(4), 195–206. <a href="https://doi.org/10.1026/0012-1924.51.4.195">https://doi.org/10.1026/0012-1924.51.4.195</a>
 </div>
 </div>
-<div id="header-1" class="section level1 tabset tabset-fade" number="5">
-<h1 class="tabset tabset-fade" number="5"><span class="header-section-number">5</span> Header 1</h1>
-<div id="plot" class="section level2 unnumbered">
-<h2 class="unnumbered">Plot</h2>
 </div>
-<div id="more-information" class="section level2 unnumbered">
-<h2 class="unnumbered">More Information</h2>
-</div>
-</div>
-<div id="section" class="section level1 unnumbered toc-ignore">
-<h1 class="unnumbered toc-ignore"></h1>
-<div id="header-2" class="section level2" number="5.1">
-<h2 number="5.1"><span class="header-section-number">5.1</span> Header 2</h2>
-</div>
-</div>
-<div id="header-1-1" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> Header 1</h1>
 </div>
 
 
@@ -1165,7 +1181,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1",
+      selectors: "h1,h2",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
